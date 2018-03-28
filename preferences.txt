@@ -1,0 +1,18 @@
+audio_dir: /home/rolando/Documents/corpus
+textgrid_dir: /home/rolando/Documents/corpus
+audio_extension: .wav
+all_tier_names: tone phoneme word
+point_tiers: tone
+deep_search: 0
+show: 3
+adjust_volume: 1
+open_as_LongSound: 0
+spectrogram.min_range: 0
+spectrogram.max_range: 5000
+spectrogram.dynamic_range: 60
+spectrogram.view_lenght: 0.005
+analysis.pitch: 0
+analysis.intensity: 1
+analysis.formants: 0
+analysis.pulse: 0
+textGridEditor.default_values: 1
