@@ -7,7 +7,14 @@ if praatVersion < 6033
 endif
 ## Static menu
 Add menu command: "Objects", "Goodies", "Annotation assistant", "", 0, ""
-Add menu command: "Objects", "Goodies", "Run plug-in...", "Annotation assistant", 1, "scripts/run_plugin.praat"
+Add menu command: "Objects", "Goodies", "Run...", "Annotation assistant", 1, "scripts/run_plugin.praat"
+Add menu command: "Objects", "Goodies", "Do all", "Annotation assistant", 1, ""
+Add menu command: "Objects", "Goodies", "Add tiers...", "Do all", 2, "scripts/doAll_add_tier.praat"
+Add menu command: "Objects", "Goodies", "Remove tiers...", "Do all", 2, "scripts/doAll_remove_tier.praat"
+Add menu command: "Objects", "Goodies", "Rename tiers...", "Do all", 2, "scripts/doAll_rename_tier.praat"
+#Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
+#Add menu command: "Objects", "Goodies", "TextGrids report...", "Do all", 2, "scripts/daAll_tg_report.praat"
+
 Add menu command: "Objects", "Goodies", "-", "", 1, ""
 Add menu command: "Objects", "Goodies", "Audio preferences...", "Audio transcriber", 1, "scripts/settings_Sound.praat"
 Add menu command: "Objects", "Goodies", "TextGridEditor preferences...", "Audio transcriber", 1, "scripts/settings_TextGridEditor.praat"
