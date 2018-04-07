@@ -12,11 +12,11 @@ include ../procedures/config.proc
 include ../procedures/get_tier_number.proc
 
 @config.init: "../preferences.txt"
-beginPause: "Rename tiers (do all)..."
+beginPause: "Rename tiers (do all)"
   comment: "Input:"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  comment: "Rename tiers..."
+  comment: "Rename tier(s)..."
   sentence: "Tier name", ""
   word: "Rename as", ""
   comment: "Output:"

@@ -11,7 +11,7 @@
 include ../procedures/config.proc
 
 @config.init: "../preferences.txt"
-beginPause: "Remove tiers (do all)..."
+beginPause: "Remove tiers (do all)"
   comment: "Input:"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
