@@ -13,7 +13,9 @@ Add menu command: "Objects", "Goodies", "Insert tier...", "Do all", 2, "scripts/
 Add menu command: "Objects", "Goodies", "Duplicate tier...", "Do all", 2, "scripts/doAll_duplicate_tier.praat"
 Add menu command: "Objects", "Goodies", "Remove tier...", "Do all", 2, "scripts/doAll_remove_tier.praat"
 Add menu command: "Objects", "Goodies", "Set tier name...", "Do all", 2, "scripts/doAll_set_tier_name.praat"
-#Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
+Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
+Add menu command: "Objects", "Goodies", "Replace tier text...", "Do all", 2, "scripts/doAll_replace_tier_text.praat"
+
 #Add menu command: "Objects", "Goodies", "TextGrids report...", "Do all", 2, "scripts/daAll_tg_report.praat"
 
 Add menu command: "Objects", "Goodies", "-", "", 1, ""
