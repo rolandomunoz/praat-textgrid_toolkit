@@ -11,12 +11,12 @@
 include ../procedures/config.proc
 
 @config.init: "../preferences.txt"
-beginPause: "Add tiers (do all)..."
+beginPause: "Insert tier (do all)"
   comment: "Input:"
   comment: "The directories where your files are stored..."
   sentence: "Audio folder", config.init.return$["audio_dir"]
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  comment: "Create tiers..."
+  comment: "Insert tier..."
   sentence: "All tier names", config.init.return$["all_tier_names"]
   sentence: "Which of these are point tiers", config.init.return$["point_tiers"]
   comment: "Search INSIDE TextGrids?"
@@ -64,6 +64,6 @@ for i to n_fileList
 endfor
 removeObject: fileList
 
-writeInfoLine: "Add tiers..."
+writeInfoLine: "Add tier..."
 appendInfoLine: "Number of modified TextGrids: ", modifiedFileCounter
 appendInfoLine: "Number of created TextGrids: ", newFileCounter
