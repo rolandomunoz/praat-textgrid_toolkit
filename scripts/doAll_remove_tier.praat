@@ -20,9 +20,9 @@ beginPause: "Remove tier (do all)"
   comment: "Output:"
   comment: "The directory where the resulting files will be stored..."
   sentence: "Save in", ""
-clicked = endPause: "Continue", "Quit", 1
+clicked = endPause: "Cancel", "Apply", "Ok", 3
 
-if clicked=2
+if clicked = 1
   exitScript()
 endif
 
@@ -70,3 +70,7 @@ writeInfoLine: "Remove tiers"
 appendInfoLine: "Number of files: ", n_fileList
 appendInfoLine: "Number of modified TextGrids: ", modifiedCounter
 appendInfoLine: "Number of deleted TextGrids: ", deletedFileCounter
+
+if clicked
+  runScript: "doAll_remove_tier.praat"
+endif

@@ -19,9 +19,9 @@ beginPause: "Audio settings"
   word: "Audio extension", config.init.return$["audio_extension"]
   boolean: "Open as LongSound", number(config.init.return$["open_as_LongSound"])
   boolean: "Adjust volume (only Sound)", number(config.init.return$["adjust_volume"])
-clicked = endPause: "Continue", "Quit", 1
+clicked = endPause: "Cancel", "Apply", "Ok", 3
 
-if clicked =2
+if clicked = 1
   exitScript()
 endif
 
@@ -29,3 +29,7 @@ endif
 @config.setField: "open_as_LongSound", string$(open_as_LongSound)
 adjust_volume= if open_as_LongSound then 0 else adjust_volume fi
 @config.setField: "adjust_volume", string$(adjust_volume)
+
+if clicked = 2
+  runScript: "settings_Sound.praat"
+endif

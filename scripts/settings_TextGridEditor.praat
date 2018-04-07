@@ -28,9 +28,9 @@ beginPause: "TextGridEditor settings"
   boolean: "Show intensity", number(config.init.return$["analysis.intensity"])
   boolean: "Show formants", number(config.init.return$["analysis.formants"])
   boolean: "Show pulse", number(config.init.return$["analysis.pulse"])
-clicked = endPause: "Continue", "Quit", 1
+clicked = endPause: "Cancel", "Apply", "Ok", 3
 
-if clicked =2
+if clicked = 1
   exitScript()
 endif
 
@@ -43,3 +43,7 @@ endif
 @config.setField: "analysis.intensity", string$(show_intensity)
 @config.setField: "analysis.formants", string$(show_formants)
 @config.setField: "analysis.pulse", string$(show_pulse)
+
+if clicked = 2
+  runScript: "settings_TextGridEditor.praat"
+endif

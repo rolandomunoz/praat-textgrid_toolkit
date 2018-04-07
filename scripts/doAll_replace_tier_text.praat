@@ -37,9 +37,9 @@ beginPause: "Replace tier text (do all)"
   comment: "Output:"
   comment: "The directory where the resulting files will be stored..."
   sentence: "Save in", ""
-clicked = endPause: "Continue", "Quit", 1
+clicked = endPause: "Cancel", "Apply", "Ok", 3
 
-if clicked=2
+if clicked=1
   exitScript()
 endif
 
@@ -109,3 +109,7 @@ removeObject: str_tierList, fileList
 writeInfoLine: "Replace tier name"
 appendInfoLine: "Number of files: ", n_fileList
 appendInfoLine: "Number of modified TextGrids: ", tierCounter
+
+if clicked=2
+  runScript: "doAll_replace_tier_text.praat"
+endif

@@ -24,9 +24,9 @@ beginPause: "Insert tier (do all)"
   comment: "Output:"
   comment: "The directory where the resulting files will be stored..."
   sentence: "Save in", ""
-clicked = endPause: "Continue", "Quit", 1
+clicked = endPause: "Cancel", "Apply", "Ok", 3
 
-if clicked=2
+if clicked = 1
   exitScript()
 endif
 
@@ -67,3 +67,7 @@ removeObject: fileList
 writeInfoLine: "Add tier"
 appendInfoLine: "Number of modified TextGrids: ", modifiedFileCounter
 appendInfoLine: "Number of created TextGrids: ", newFileCounter
+
+if clicked = 2
+  runScript: "doAll_insert_tier.praat"
+endif
