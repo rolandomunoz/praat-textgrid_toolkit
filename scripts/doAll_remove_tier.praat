@@ -66,6 +66,7 @@ for iFile to n_fileList
   removeObject: tg
 endfor
 removeObject: str_tierList, fileList
-writeInfoLine: "Remove tiers..."
+writeInfoLine: "Remove tiers"
+appendInfoLine: "Number of files: ", n_fileList
 appendInfoLine: "Number of modified TextGrids: ", modifiedCounter
 appendInfoLine: "Number of deleted TextGrids: ", deletedFileCounter

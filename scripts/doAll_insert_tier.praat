@@ -64,6 +64,6 @@ for i to n_fileList
 endfor
 removeObject: fileList
 
-writeInfoLine: "Add tier..."
+writeInfoLine: "Add tier"
 appendInfoLine: "Number of modified TextGrids: ", modifiedFileCounter
 appendInfoLine: "Number of created TextGrids: ", newFileCounter

@@ -61,6 +61,7 @@ for iFile to n_fileList
 endfor
 
 removeObject: str_tierList, fileList
-writeInfoLine: "Rename tiers..."
-appendInfoLine: "Number of modified tiers: ", tierCounter
+writeInfoLine: "Rename tiers"
+appendInfoLine: "Number of files: ", n_fileList
+appendInfoLine: "Number of modified TextGrids: ", tierCounter
 
