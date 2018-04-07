@@ -12,13 +12,13 @@ include ../procedures/config.proc
 include ../procedures/get_tier_number.proc
 
 @config.init: "../preferences.txt"
-beginPause: "Rename tier (do all)"
+beginPause: "Set tier name (do all)"
   comment: "Input:"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  comment: "Rename tier(s)..."
+  comment: "Set tier(s)..."
   sentence: "Tier name", ""
-  word: "Rename as", ""
+  word: "New tier name", ""
   comment: "Output:"
   comment: "The directory where the resulting files will be stored..."
   sentence: "Save in", ""
@@ -53,7 +53,7 @@ for iFile to n_fileList
     tier= getTierNumber.return[str_tier$]
     if tier
       tierCounter+=1
-      Set tier name: tier, rename_as$
+      Set tier name: tier, new_tier_name$
     endif
   endfor
   Save as text file: save_in$ + "/" + tg$
@@ -61,7 +61,7 @@ for iFile to n_fileList
 endfor
 
 removeObject: str_tierList, fileList
-writeInfoLine: "Rename tiers"
+writeInfoLine: "Set tier name"
 appendInfoLine: "Number of files: ", n_fileList
 appendInfoLine: "Number of modified TextGrids: ", tierCounter
 

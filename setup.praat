@@ -12,7 +12,7 @@ Add menu command: "Objects", "Goodies", "Do all", "Annotation assistant", 1, ""
 Add menu command: "Objects", "Goodies", "Insert tier...", "Do all", 2, "scripts/doAll_insert_tier.praat"
 Add menu command: "Objects", "Goodies", "Duplicate tier...", "Do all", 2, "scripts/doAll_duplicate_tier.praat"
 Add menu command: "Objects", "Goodies", "Remove tier...", "Do all", 2, "scripts/doAll_remove_tier.praat"
-Add menu command: "Objects", "Goodies", "Rename tier...", "Do all", 2, "scripts/doAll_rename_tier.praat"
+Add menu command: "Objects", "Goodies", "Set tier name...", "Do all", 2, "scripts/doAll_set_tier_name.praat"
 #Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
 #Add menu command: "Objects", "Goodies", "TextGrids report...", "Do all", 2, "scripts/daAll_tg_report.praat"
 
