@@ -16,7 +16,7 @@ beginPause: "Replace tier text (do all)"
   comment: "Input:"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  comment: "Duplicate tier..."
+  comment: "Replace text..."
   word: "Tier name", ""
   sentence: "Search", ""
   sentence: "Replace", ""
