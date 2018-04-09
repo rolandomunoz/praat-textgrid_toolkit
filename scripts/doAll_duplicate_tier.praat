@@ -13,16 +13,12 @@ include ../procedures/get_tier_number.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Duplicate tier (do all)"
-  comment: "Input:"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
   comment: "Duplicate tier..."
-  word: "Tier name", ""
-  word: "After tier", ""
-  word: "New tier name", ""
-  comment: "Output:"
-  comment: "The directory where the resulting files will be stored..."
-  sentence: "Save in", ""
+  word: "Tier name", config.init.return$["duplicate_tier.tier_name"]
+  word: "After tier", config.init.return$["duplicate_tier.after_tier"]
+  word: "New tier name", config.init.return$["duplicate_tier.new_tier_name"]
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked = 1
@@ -30,6 +26,16 @@ if clicked = 1
 endif
 
 @config.setField: "textgrid_dir", textgrid_folder$
+@config.setField: "duplicate_tier.tier_name", tier_name$
+@config.setField: "duplicate_tier.after_tier", after_tier$
+@config.setField: "duplicate_tier.new_tier_name", new_tier_name$
+
+# Check dialogue box
+if textgrid_folder$ == ""
+  pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
+  runScript: "doAll_duplicate_tier.praat"
+  exitScript()
+endif
 
 str_tierList= Create Strings as tokens: tier_name$, " ,"
 n_tierList= Get number of strings
@@ -41,7 +47,7 @@ if tier_name$ == new_tier_name$
   new_tier_name$ = new_tier_name$ + ".dup"
 endif
 
-tierCounter = 0
+counter = 0
 getTierNumber.return[tier_name$]= 0
 getTierNumber.return[after_tier$]= 0
 
@@ -53,18 +59,18 @@ for iFile to n_fileList
   position= getTierNumber.return[after_tier$] + 1
   
   if tier
-    tierCounter+=1
+    counter+=1
     Duplicate tier: tier, position, new_tier_name$
-    Save as text file: save_in$ + "/" + tg$
+    Save as text file: textgrid_folder$ + "/" + tg$
   endif
   removeObject: tg
 endfor
 
 removeObject: str_tierList, fileList
-writeInfoLine: "Duplicate tier"
+writeInfoLine: "Duplicate tier..."
 appendInfoLine: "Number of files: ", n_fileList
-appendInfoLine: "Number of modified TextGrids: ", tierCounter
+appendInfoLine: "Number of modified files: ", counter
 
 if clicked = 2
-  runScript: "doAll_duplicate.praat"
+  runScript: "doAll_duplicate_tier.praat"
 endif

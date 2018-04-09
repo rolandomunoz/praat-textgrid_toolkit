@@ -12,21 +12,28 @@ include ../procedures/config.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Remove tier (do all)"
-  comment: "Input:"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
   comment: "Remove tiers..."
-  sentence: "All tier names", ""
-  comment: "Output:"
-  comment: "The directory where the resulting files will be stored..."
-  sentence: "Save in", ""
+  sentence: "All tier names", config.init.return$["remove_tier.all_tier_names"]
+  comment: "If remove all tiers, then DELETE TextGrid?"
+  boolean: "Yes", number(config.init.return$["remove_tier.delete_textgrid"])
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked = 1
   exitScript()
 endif
 
+# Save the values from the dialogue box
 @config.setField: "textgrid_dir", textgrid_folder$
+@config.setField: "remove_tier.all_tier_names", all_tier_names$
+
+# Check dialogue box
+if textgrid_folder$ == ""
+  pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
+  runScript: "doAll_remove_tier.praat"
+  exitScript()
+endif
 
 str_tierList= Create Strings as tokens: all_tier_names$, " ,"
 n_tierList= Get number of strings
@@ -36,40 +43,45 @@ n_fileList= Get number of strings
 
 modifiedCounter = 0
 deletedFileCounter = 0
+
 for iFile to n_fileList
-  tg$= object$[fileList, iFile]
-  tg= Read from file: textgrid_folder$ + "/" +tg$
-  deleteFile= 0
+  tg$ = object$[fileList, iFile]
+  tg = Read from file: textgrid_folder$ + "/" +tg$
+  saveFile= 0
   
   for iTierList to n_tierList
-    str_tier$= object$[str_tierList, iTierList]
     nTiers= Get number of tiers
+    str_tier$= object$[str_tierList, iTierList]
+    
     for iTier to nTiers
       tg_tier$ = Get tier name: iTier
       if tg_tier$ = str_tier$
         if nTiers = 1
-          deleteFile: save_in$ + "/" + tg$
-          deleteFile= 1
-          deletedFileCounter+=1
+          saveFile= 0
+          if yes
+            deleteFile: textgrid_folder$ + "/" + tg$
+            deletedFileCounter+=1
+          endif
         else
+          saveFile= 1
           Remove tier: iTier
-          modifiedCounter+=1
         endif
         iTier = nTiers
       endif
     endfor
   endfor
   
-  if !deleteFile
-    Save as text file: save_in$ + "/" + tg$
+  if saveFile
+    modifiedCounter+=1
+    Save as text file: textgrid_folder$ + "/" + tg$
   endif
   removeObject: tg
 endfor
 removeObject: str_tierList, fileList
-writeInfoLine: "Remove tiers"
+writeInfoLine: "Remove tiers..."
 appendInfoLine: "Number of files: ", n_fileList
-appendInfoLine: "Number of modified TextGrids: ", modifiedCounter
-appendInfoLine: "Number of deleted TextGrids: ", deletedFileCounter
+appendInfoLine: "Number of modified files: ", modifiedCounter
+appendInfoLine: "Number of deleted files: ", deletedFileCounter
 
 if clicked
   runScript: "doAll_remove_tier.praat"

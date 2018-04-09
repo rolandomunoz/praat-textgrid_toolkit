@@ -13,22 +13,28 @@ include ../procedures/get_tier_number.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Set tier name (do all)"
-  comment: "Input:"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
   comment: "Set tier(s)..."
-  sentence: "Tier name", ""
-  word: "New tier name", ""
-  comment: "Output:"
-  comment: "The directory where the resulting files will be stored..."
-  sentence: "Save in", ""
+  sentence: "Tier name", config.init.return$["set_tier_name.tier_name"]
+  word: "New name", config.init.return$["set_tier_name.new_name"]
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked = 1
   exitScript()
 endif
 
+# Save the values from the dialogue box
 @config.setField: "textgrid_dir", textgrid_folder$
+@config.setField: "set_tier_name.tier_name", tier_name$
+@config.setField: "set_tier_name.new_tier_name", new_name$
+
+# Check dialogue box
+if textgrid_folder$ == ""
+  pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
+  runScript: "doAll_set_tier_name.praat"
+  exitScript()
+endif
 
 str_tierList= Create Strings as tokens: tier_name$, " ,"
 n_tierList= Get number of strings
@@ -36,8 +42,7 @@ n_tierList= Get number of strings
 fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
 n_fileList= Get number of strings
 
-tierCounter = 0
-fileCounter = 0
+counter = 0
 for iFile to n_fileList
   for j to n_tierList
     str_tier$ = object$[str_tierList, j]
@@ -52,18 +57,19 @@ for iFile to n_fileList
     str_tier$ = object$[str_tierList, j]
     tier= getTierNumber.return[str_tier$]
     if tier
-      tierCounter+=1
-      Set tier name: tier, new_tier_name$
+      counter+=1
+      Set tier name: tier, new_name$
+      Save as text file: textgrid_folder$ + "/" + tg$
+      j = n_tierList
     endif
   endfor
-  Save as text file: save_in$ + "/" + tg$
   removeObject: tg
 endfor
 
 removeObject: str_tierList, fileList
-writeInfoLine: "Set tier name"
+writeInfoLine: "Set tier name..."
 appendInfoLine: "Number of files: ", n_fileList
-appendInfoLine: "Number of modified TextGrids: ", tierCounter
+appendInfoLine: "Number of modified files: ", counter
 
 if clicked = 2
   runScript: "doAll_set_tier_name.praat"

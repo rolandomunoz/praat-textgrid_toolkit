@@ -13,14 +13,13 @@ include ../procedures/get_tier_number.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Replace tier text (do all)"
-  comment: "Input:"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
   comment: "Replace text..."
-  word: "Tier name", ""
-  sentence: "Search", ""
-  sentence: "Replace", ""
-  optionMenu: "Mode", 1
+  word: "Tier name", config.init.return$["replace_tier_text.tier_name"]
+  sentence: "Search", config.init.return$["replace_tier_text.search"]
+  sentence: "Replace", config.init.return$["replace_tier_text.replace"]
+  optionMenu: "Mode", number(config.init.return$["replace_tier_text.mode"])
 #    option: "is equal to"
 #    option: "is not equal to"
 #    option: "contains"
@@ -34,16 +33,25 @@ beginPause: "Replace tier text (do all)"
 #    option: "contains a word starting with"
     option: "Literals"
     option: "Matches (regex)"
-  comment: "Output:"
-  comment: "The directory where the resulting files will be stored..."
-  sentence: "Save in", ""
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked=1
   exitScript()
 endif
 
+# Save the values from the dialogue box
 @config.setField: "textgrid_dir", textgrid_folder$
+@config.setField: "replace_tier_text.tier_name", tier_name$
+@config.setField: "replace_tier_text.search", search$
+@config.setField: "replace_tier_text.replace", replace$
+@config.setField: "replace_tier_text.mode", string$(mode)
+
+# Check dialogue box
+if textgrid_folder$ == ""
+  pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
+  runScript: "doAll_replace_tier_text.praat"
+  exitScript()
+endif
 
 str_tierList= Create Strings as tokens: tier_name$, " ,"
 n_tierList= Get number of strings
@@ -83,7 +91,7 @@ mode$= if mode = 1 then "Literals" else "Regular Expressions" fi
 #   replace$= replace$
 # endif
 
-tierCounter = 0
+counter = 0
 getTierNumber.return[tier_name$]= 0
 
 for iFile to n_fileList
@@ -93,23 +101,23 @@ for iFile to n_fileList
   tier= getTierNumber.return[tier_name$]
   
   if tier
-    tierCounter+=1
+    counter+=1
     isInterval= Is interval tier: tier
     if isInterval
       Replace interval text: tier, 0, 0, search$, replace$, mode$
     else
       Replace point text: tier, 0, 0, search$, replace$, mode$
     endif
-    Save as text file: save_in$ + "/" + tg$
+    Save as text file: textgrid_folder$ + "/" + tg$
   endif
   removeObject: tg
 endfor
 
 removeObject: str_tierList, fileList
-writeInfoLine: "Replace tier name"
+writeInfoLine: "Replace tier name..."
 appendInfoLine: "Number of files: ", n_fileList
-appendInfoLine: "Number of modified TextGrids: ", tierCounter
+appendInfoLine: "Number of modified files: ", counter
 
-if clicked=2
+if clicked = 2
   runScript: "doAll_replace_tier_text.praat"
 endif

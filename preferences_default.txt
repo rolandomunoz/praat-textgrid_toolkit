@@ -1,10 +1,22 @@
-audio_dir: /home/rolando/Desktop/corpus
-textgrid_dir: /home/rolando/Desktop/corpus
+run_plugin.all_tier_names: tone phoneme word
+run_plugin.point_tiers: tone
+run_plugin.deep_search: 0
+run_plugin.show: 1
+insert_tier.all_tier_names: tone phoneme word
+insert_tier.point_tiers: tone
+insert_tier.create_textgrid: 1
+replace_tier_text.tier_name: phon
+replace_tier_text.search: a
+replace_tier_text.replace: a
+replace_tier_text.mode: 1
+duplicate_tier.tier_name: text.orth
+duplicate_tier.after_tier: 
+duplicate_tier.new_tier_name: text.phon
+remove_tier.all_tier_names: phon word
+remove_tier.delete_textgrid: 1
+set_tier_name.tier_name: Phoneme Phon ph
+set_tier_name.new_name: phon
 audio_extension: .wav
-all_tier_names: tone phoneme word
-point_tiers: tone
-deep_search: 0
-show: 1
 adjust_volume: 0
 open_as_LongSound: 0
 spectrogram.min_range: 0
@@ -16,3 +28,5 @@ analysis.intensity: 0
 analysis.formants: 0
 analysis.pulse: 0
 textGridEditor.default_values: 0
+audio_dir: /home/rolando/Desktop/corpus
+textgrid_dir: /home/rolando/Desktop/corpus
