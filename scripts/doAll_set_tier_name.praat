@@ -10,11 +10,13 @@
 #
 include ../procedures/config.proc
 include ../procedures/get_tier_number.proc
+include ../procedures/list_recursive_path.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Set tier name (do all)"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
+  boolean: "Recursive search", number(config.init.return$["set_tier_name.recursive_search"])
   comment: "Set tier(s)..."
   sentence: "Tier name", config.init.return$["set_tier_name.tier_name"]
   word: "New name", config.init.return$["set_tier_name.new_name"]
@@ -27,7 +29,8 @@ endif
 # Save the values from the dialogue box
 @config.setField: "textgrid_dir", textgrid_folder$
 @config.setField: "set_tier_name.tier_name", tier_name$
-@config.setField: "set_tier_name.new_tier_name", new_name$
+@config.setField: "set_tier_name.new_name", new_name$
+@config.setField: "set_tier_name.recursive_search", string$(recursive_search)
 
 # Check dialogue box
 if textgrid_folder$ == ""
@@ -39,7 +42,12 @@ endif
 str_tierList= Create Strings as tokens: tier_name$, " ,"
 n_tierList= Get number of strings
 
-fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
+if recursive_search
+  @findFiles: textgrid_folder$, "/*.TextGrid"
+  fileList= selected("Strings")
+else
+  fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
+endif
 n_fileList= Get number of strings
 
 counter = 0
