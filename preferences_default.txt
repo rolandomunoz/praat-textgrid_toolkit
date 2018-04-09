@@ -9,6 +9,7 @@ replace_tier_text.tier_name: phon
 replace_tier_text.search: a
 replace_tier_text.replace: a
 replace_tier_text.mode: 1
+replace_tier_text.recursive_search: 0
 duplicate_tier.tier_name: text.orth
 duplicate_tier.after_tier: 
 duplicate_tier.new_tier_name: text.phon

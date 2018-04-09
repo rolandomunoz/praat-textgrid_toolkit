@@ -10,11 +10,13 @@
 #
 include ../procedures/config.proc
 include ../procedures/get_tier_number.proc
+include ../procedures/list_recursive_path.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Replace tier text (do all)"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
+  boolean: "Recursive search", number(config.init.return$["replace_tier_text.recursive_search"])
   comment: "Replace text..."
   word: "Tier name", config.init.return$["replace_tier_text.tier_name"]
   sentence: "Search", config.init.return$["replace_tier_text.search"]
@@ -45,6 +47,7 @@ endif
 @config.setField: "replace_tier_text.search", search$
 @config.setField: "replace_tier_text.replace", replace$
 @config.setField: "replace_tier_text.mode", string$(mode)
+@config.setField: "replace_tier_text.recursive_search", string$(recursive_search)
 
 # Check dialogue box
 if textgrid_folder$ == ""
@@ -56,11 +59,16 @@ endif
 str_tierList= Create Strings as tokens: tier_name$, " ,"
 n_tierList= Get number of strings
 
-fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
+if recursive_search
+  @findFiles: textgrid_folder$, "/*.TextGrid"
+  fileList= selected("Strings")
+else
+  fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
+endif
 n_fileList= Get number of strings
 
 mode$= if mode = 1 then "Literals" else "Regular Expressions" fi
-
+mode_mod$= if mode = 1 then "contains" else "matches (regex)" fi
 # mode$ = "Regular Expressions"
 # if mode = 1
 #   replace$= replace$
@@ -101,14 +109,23 @@ for iFile to n_fileList
   tier= getTierNumber.return[tier_name$]
   
   if tier
-    counter+=1
     isInterval= Is interval tier: tier
     if isInterval
-      Replace interval text: tier, 0, 0, search$, replace$, mode$
+      is_text= Count intervals where: tier, mode_mod$, search$
     else
-      Replace point text: tier, 0, 0, search$, replace$, mode$
+      is_text= Count points where: tier, mode_mod$, search$
     endif
-    Save as text file: textgrid_folder$ + "/" + tg$
+
+    if is_text
+      counter+=1
+      if isInterval
+        Replace interval text: tier, 0, 0, search$, replace$, mode$
+      else
+        Replace point text: tier, 0, 0, search$, replace$, mode$
+      endif
+      Save as text file: textgrid_folder$ + "/" + tg$
+    endif
+
   endif
   removeObject: tg
 endfor
