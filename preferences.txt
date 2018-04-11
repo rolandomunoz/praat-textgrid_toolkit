@@ -5,6 +5,7 @@ run_plugin.show: 1
 insert_tier.all_tier_names: tone phoneme word
 insert_tier.point_tiers: tone
 insert_tier.create_textgrid: 1
+insert_tier.recursive_search: 0
 replace_tier_text.tier_name: phon
 replace_tier_text.search: a
 replace_tier_text.replace: a

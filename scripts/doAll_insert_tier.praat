@@ -9,12 +9,14 @@
 # <http://www.gnu.org/licenses/>.
 #
 include ../procedures/config.proc
+include ../procedures/list_recursive_path.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Insert tier (do all)"
   comment: "The directories where your files are stored..."
   sentence: "Audio folder", config.init.return$["audio_dir"]
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
+  boolean: "Recursive search", number(config.init.return$["insert_tier.recursive_search"])
   comment: "Insert tier..."
   sentence: "All tier names", config.init.return$["insert_tier.all_tier_names"]
   sentence: "Which of these are point tiers", config.init.return$["insert_tier.point_tiers"]
@@ -34,6 +36,7 @@ audio_extension$= config.init.return$["audio_extension"]
 @config.setField: "insert_tier.all_tier_names", all_tier_names$
 @config.setField: "insert_tier.point_tiers", which_of_these_are_point_tiers$
 @config.setField: "insert_tier.create_textgrid", string$(yes)
+@config.setField: "insert_tier.recursive_search", string$(recursive_search)
 
 # Check dialogue box
 if textgrid_folder$ == ""
@@ -46,8 +49,23 @@ elsif all_tier_names$ == ""
   exitScript()
 endif
 
-fileList= Create Strings as file list: "fileList", audio_folder$ + "/*" + audio_extension$
+# Find directories
+if recursive_search
+  if startsWith(textgrid_folder$, ".")
+    textgrid_folder$ = audio_folder$ + "/" + textgrid_folder$
+  else
+    writeInfoLine: "Insert tier (do all)"
+    appendInfoLine: "When using 'Recursive search' option, you need to provide a relative path in the 'TextGrid folder' field"
+    appendInfoLine: "TextGrid locations are defined in relation to the their audio files."
+    exitScript()
+  endif
+  @findFiles: audio_folder$, "/*'audio_extension$'"
+  fileList= selected("Strings")
+else
+  fileList= Create Strings as file list: "fileList", audio_folder$ + "/*.'audio_extension$'"
+endif
 n_fileList= Get number of strings
+
 
 newFileCounter= 0
 modifiedFileCounter = 0
