@@ -17,8 +17,7 @@ include ../procedures/config.proc
 
 beginPause: "Audio settings"
   word: "Audio extension", config.init.return$["audio_extension"]
-  boolean: "Open as LongSound", number(config.init.return$["open_as_LongSound"])
-  boolean: "Adjust volume (only Sound)", number(config.init.return$["adjust_volume"])
+  boolean: "Adjust volume", number(config.init.return$["adjust_volume"])
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked = 1
@@ -26,9 +25,9 @@ if clicked = 1
 endif
 
 @config.setField: "audio_extension", audio_extension$
-@config.setField: "open_as_LongSound", string$(open_as_LongSound)
-adjust_volume= if open_as_LongSound then 0 else adjust_volume fi
 @config.setField: "adjust_volume", string$(adjust_volume)
+open_as_LongSound= if adjust_volume then 0 else 1 fi
+@config.setField: "open_as_LongSound", string$(open_as_LongSound)
 
 if clicked = 2
   runScript: "settings_Sound.praat"
