@@ -15,7 +15,7 @@ include ../procedures/list_recursive_path.proc
 beginPause: "Insert tier (do all)"
   comment: "The directories where your files are stored..."
   sentence: "Audio folder", config.init.return$["audio_dir"]
-  sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
+  sentence: "Textgrid folder", config.init.return$["insert_tier.recursive_search.textgrid_dir"]
   boolean: "Recursive search", number(config.init.return$["insert_tier.recursive_search"])
   comment: "Insert tier..."
   sentence: "All tier names", config.init.return$["insert_tier.all_tier_names"]
@@ -32,7 +32,7 @@ audio_extension$= config.init.return$["audio_extension"]
 
 # Save the values from the dialogue box
 @config.setField: "audio_dir", audio_folder$
-@config.setField: "textgrid_dir", textgrid_folder$
+@config.setField: "insert_tier.recursive_search.textgrid_dir", textgrid_folder$
 @config.setField: "insert_tier.all_tier_names", all_tier_names$
 @config.setField: "insert_tier.point_tiers", which_of_these_are_point_tiers$
 @config.setField: "insert_tier.create_textgrid", string$(yes)

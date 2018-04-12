@@ -6,6 +6,7 @@ insert_tier.all_tier_names: tone phoneme word
 insert_tier.point_tiers: tone
 insert_tier.create_textgrid: 1
 insert_tier.recursive_search: 0
+insert_tier.recursive_search.textgrid_dir: 
 replace_tier_text.tier_name: phon
 replace_tier_text.search: a
 replace_tier_text.replace: a
@@ -14,6 +15,7 @@ replace_tier_text.recursive_search: 0
 duplicate_tier.tier_name: text.orth
 duplicate_tier.after_tier: 
 duplicate_tier.new_tier_name: text.phon
+duplicate_tier.recursive_search: 0
 remove_tier.all_tier_names: phon word
 remove_tier.delete_textgrid: 1
 set_tier_name.tier_name: Phoneme Phon ph

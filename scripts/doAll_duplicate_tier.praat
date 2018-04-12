@@ -10,11 +10,13 @@
 #
 include ../procedures/config.proc
 include ../procedures/get_tier_number.proc
+include ../procedures/list_recursive_path.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Duplicate tier (do all)"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
+  boolean: "Recursive search", number(config.init.return$["duplicate_tier.recursive_search"])
   comment: "Duplicate tier..."
   word: "Tier name", config.init.return$["duplicate_tier.tier_name"]
   word: "After tier", config.init.return$["duplicate_tier.after_tier"]
@@ -29,6 +31,7 @@ endif
 @config.setField: "duplicate_tier.tier_name", tier_name$
 @config.setField: "duplicate_tier.after_tier", after_tier$
 @config.setField: "duplicate_tier.new_tier_name", new_tier_name$
+@config.setField: "duplicate_tier.recursive_search", string$(recursive_search)
 
 # Check dialogue box
 if textgrid_folder$ == ""
@@ -40,9 +43,16 @@ endif
 str_tierList= Create Strings as tokens: tier_name$, " ,"
 n_tierList= Get number of strings
 
-fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
+# Find files
+if recursive_search
+  @findFiles: textgrid_folder$, "/*.TextGrid"
+  fileList= selected("Strings")
+else
+  fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
+endif
 n_fileList= Get number of strings
 
+# Do not duplicate tiers!
 if tier_name$ == new_tier_name$
   new_tier_name$ = new_tier_name$ + ".dup"
 endif
