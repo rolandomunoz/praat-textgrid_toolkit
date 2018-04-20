@@ -15,11 +15,11 @@ include ../procedures/list_recursive_path.proc
 beginPause: "Create TextGrid (from audio files) (do all)"
   comment: "The directories where your files are stored..."
   sentence: "Audio folder", config.init.return$["audio_dir"]
-  sentence: "Textgrid folder", config.init.return$["insert_tier.recursive_search.textgrid_dir"]
-  boolean: "Recursive search", number(config.init.return$["insert_tier.recursive_search"])
+  sentence: "Textgrid folder", config.init.return$["create_textgrid.recursive_search.textgrid_dir"]
+  boolean: "Recursive search", number(config.init.return$["create_textgrid.recursive_search"])
   comment: "To TextGrid..."
-  sentence: "All tier names", config.init.return$["insert_tier.all_tier_names"]
-  sentence: "Which of these are point tiers", config.init.return$["insert_tier.point_tiers"]
+  sentence: "All tier names", config.init.return$["create_textgrid.all_tier_names"]
+  sentence: "Which of these are point tiers", config.init.return$["create_textgrid.point_tiers"]
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked = 1
