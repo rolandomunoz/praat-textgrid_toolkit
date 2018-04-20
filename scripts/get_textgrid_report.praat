@@ -1,13 +1,28 @@
 include ../procedures/list_recursive_path.proc
+include ../procedures/config.proc
 
-dir$ = "/home/rolando/Documents/shared/assignment_3"
-recursive_search = 1
+@config.init: "../preferences.txt"
+
+beginPause: "Get TextGrid report"
+  sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
+  boolean: "Recursive search", number(config.init.return$["get_textgrid_report.recursive_search"])
+  boolean: "Rich report", number(config.init.return$["get_textgrid_report.rich_report"])
+clicked = endPause: "Cancel", "Apply", "Ok", 3
+
+if clicked = 1
+  exitScript()
+endif
+
+# Save the values from the dialogue box
+@config.setField: "textgrid_dir", textgrid_folder$
+@config.setField: "get_textgrid_report.recursive_search", string$(recursive_search)
+@config.setField: "get_textgrid_report.rich_report", string$(rich_report)
 
 if recursive_search
-  @findFiles: dir$, "/*.TextGrid"
+  @findFiles: textgrid_folder$, "/*.TextGrid"
   fileList = selected("Strings")
 else
-  fileList = Create Strings as file list: "fileList", dir$ + "/*.TextGrid"
+  fileList = Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
 endif
 n_fileList = Get number of strings
 
@@ -23,7 +38,7 @@ for i to n_fileList
 
   # Read all the tiers from the TextGrid  
   tg$ = object$[fileList, i]
-  tg = Read from file: dir$ + "/" + tg$
+  tg = Read from file: textgrid_folder$ + "/" + tg$
   n_tiers= Get number of tiers
 
   for j to n_tiers
@@ -47,7 +62,7 @@ for i to n_fileList
 
        if object[tb, row, "duplicated"] > 1
          isAnyDuplicatedTier= 1
-         infoDuplicated$ = infoDuplicated$ + "tier: " + tier$ + newline$ + "number of duplications: " +  string$(object[tb, row, "duplicated"]) + newline$ + "file: " + "'dir$'/'tg$'"+ newline$ + newline$
+         infoDuplicated$ = infoDuplicated$ + "tier: " + tier$ + newline$ + "number of duplications: " +  string$(object[tb, row, "duplicated"]) + newline$ + "file: " + "'textgrid_folder$'/'tg$'"+ newline$ + newline$
        endif
     else
       # Add an entry to the Table and initialize the occurrence counter
@@ -65,23 +80,23 @@ endfor
 # Print report
 selectObject: tb
 Remove column: "duplicated"
-
 info$ = List: "no"
 
 writeInfoLine: "Tier summary:"
-
 appendInfoLine: "___________________________________________________________________"
 appendInfoLine: "Tier list:"
 for i to object[tb].nrow
   appendInfoLine: i, tab$, object$[tb, i, "tier"]
 endfor
 
-appendInfoLine: "___________________________________________________________________"
-appendInfoLine: "Detailed tier list:"
-appendInfoLine: ""
-info$ = replace$(info$, "tier	tier_counter	interval_counter" + newline$, "",  1)
-info$ = replace_regex$(info$, "^(.*)\t(.*)\t(.*)$", "tier: \1\nnumber of tiers: \2\nnumber of intervals: \3\n",  0)
-appendInfo: info$ - newline$
+if rich_report
+  appendInfoLine: "___________________________________________________________________"
+  appendInfoLine: "Detailed tier list:"
+  appendInfoLine: ""
+
+  info$ = replace$(info$, "tier	tier_counter	interval_counter", "tier occurrences targets",  1)
+  appendInfoLine: info$
+endif
 
 if isAnyDuplicatedTier
   appendInfoLine: "___________________________________________________________________"
@@ -91,3 +106,7 @@ if isAnyDuplicatedTier
 endif
 
 removeObject: fileList, tb
+
+if clicked = 2
+  runScript: "get_textgrid_report.praat"
+endif

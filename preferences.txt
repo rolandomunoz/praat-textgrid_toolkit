@@ -4,12 +4,11 @@ run_plugin.deep_search: 0
 run_plugin.show: 1
 create_textgrid.all_tier_names: tone phoneme word
 create_textgrid.point_tiers: tone
-create_textgrid.recursive_search: 1
-create_textgrid.recursive_search.textgrid_dir: .
-insert_tier.all_tier_names: word phone
-insert_tier.point_tiers: 
-insert_tier.recursive_search: 1
-insert_tier.recursive_search.textgrid_dir: .
+create_textgrid.recursive_search: 0
+create_textgrid.recursive_search.textgrid_dir: 
+insert_tier.all_tier_names: tone phoneme word
+insert_tier.point_tiers: tone
+insert_tier.recursive_search: 0
 replace_tier_text.tier_name: phon
 replace_tier_text.search: a
 replace_tier_text.replace: a
@@ -36,5 +35,7 @@ analysis.intensity: 0
 analysis.formants: 0
 analysis.pulse: 0
 textGridEditor.default_values: 0
-audio_dir: /home/rolando/.praat-dir/plugin_annotation_assistant/test
-textgrid_dir: /home/rolando/.praat-dir/plugin_annotation_assistant/test
+audio_dir: /home/rolando/Desktop/corpus
+textgrid_dir: /home/rolando/Desktop/corpus
+get_textgrid_report.recursive_search: 0
+get_textgrid_report.rich_report: 0
