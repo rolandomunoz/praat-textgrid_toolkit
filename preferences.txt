@@ -20,6 +20,7 @@ duplicate_tier.new_tier_name: text.phon
 duplicate_tier.recursive_search: 0
 remove_tier.all_tier_names: phon word
 remove_tier.delete_textgrid: 1
+remove_tier.recursive_search: 0
 set_tier_name.tier_name: Phoneme Phon ph
 set_tier_name.new_name: phon
 set_tier_name.recursive_search: 0

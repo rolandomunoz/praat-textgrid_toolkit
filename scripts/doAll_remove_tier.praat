@@ -9,13 +9,15 @@
 # <http://www.gnu.org/licenses/>.
 #
 include ../procedures/config.proc
+include ../procedures/list_recursive_path.proc
 
 @config.init: "../preferences.txt"
 beginPause: "Remove tier (do all)"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
+  boolean: "Recursive search", number(config.init.return$["remove_tier.recursive_search"])
   comment: "Remove tiers..."
-  sentence: "All tier names", config.init.return$["remove_tier.all_tier_names"]
+  word: "Tier name", config.init.return$["remove_tier.all_tier_names"]
   comment: "If remove all tiers, then DELETE TextGrid?"
   boolean: "Yes", number(config.init.return$["remove_tier.delete_textgrid"])
 clicked = endPause: "Cancel", "Apply", "Ok", 3
@@ -24,9 +26,12 @@ if clicked = 1
   exitScript()
 endif
 
+str_tier$ = tier_name$
+
 # Save the values from the dialogue box
 @config.setField: "textgrid_dir", textgrid_folder$
-@config.setField: "remove_tier.all_tier_names", all_tier_names$
+@config.setField: "remove_tier.all_tier_names", tier_name$
+@config.setField: "remove_tier.recursive_search", string$(recursive_search)
 
 # Check dialogue box
 if textgrid_folder$ == ""
@@ -35,49 +40,49 @@ if textgrid_folder$ == ""
   exitScript()
 endif
 
-str_tierList= Create Strings as tokens: all_tier_names$, " ,"
-n_tierList= Get number of strings
-
-fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
+# Find directories
+if recursive_search
+  @findFiles: textgrid_folder$, "/*.TextGrid"
+  fileList= selected("Strings")
+else
+  fileList= Create Strings as file list: "fileList", audio_folder$ + "/*.'audio_extension$'"
+endif
 n_fileList= Get number of strings
 
 modifiedCounter = 0
 deletedFileCounter = 0
 
 for iFile to n_fileList
-  tg$ = object$[fileList, iFile]
-  tg = Read from file: textgrid_folder$ + "/" +tg$
+  tgPath$ = textgrid_folder$ + "/" + object$[fileList, iFile]
+  tg = Read from file: tgPath$
+  nTiers= Get number of tiers
+
   saveFile= 0
-  
-  for iTierList to n_tierList
-    nTiers= Get number of tiers
-    str_tier$= object$[str_tierList, iTierList]
-    
-    for iTier to nTiers
-      tg_tier$ = Get tier name: iTier
-      if tg_tier$ = str_tier$
-        if nTiers = 1
-          saveFile= 0
-          if yes
-            deleteFile: textgrid_folder$ + "/" + tg$
-            deletedFileCounter+=1
-          endif
-        else
-          saveFile= 1
-          Remove tier: iTier
+
+  for iTier to nTiers
+    tg_tier$ = Get tier name: iTier
+    if tg_tier$ = str_tier$
+      if nTiers = 1
+        saveFile= 0
+        if yes
+          deleteFile: tgPath$
+          deletedFileCounter+=1
         endif
-        iTier = nTiers
+      else
+        saveFile= 1
+        Remove tier: iTier
       endif
-    endfor
+      iTier = nTiers
+    endif
   endfor
   
   if saveFile
     modifiedCounter+=1
-    Save as text file: textgrid_folder$ + "/" + tg$
+    Save as text file: tgPath$
   endif
   removeObject: tg
 endfor
-removeObject: str_tierList, fileList
+removeObject: fileList
 writeInfoLine: "Remove tiers..."
 appendInfoLine: "Number of files: ", n_fileList
 appendInfoLine: "Number of modified files: ", modifiedCounter
