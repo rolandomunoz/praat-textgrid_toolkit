@@ -26,7 +26,7 @@ else
 endif
 n_fileList = Get number of strings
 
-tb= Create Table with column names: "tier summary", 0, "tier tier_counter interval_counter duplicated"
+tb= Create Table with column names: "tier summary", 0, "tier tier_counter target_counter duplicated"
 infoDuplicated$ = ""
 isAnyDuplicatedTier = 0
 
@@ -39,13 +39,17 @@ for i to n_fileList
   # Read all the tiers from the TextGrid  
   tg$ = object$[fileList, i]
   tg = Read from file: textgrid_folder$ + "/" + tg$
-  n_tiers= Get number of tiers
+  nTiers= Get number of tiers
 
-  for j to n_tiers
+  for j to nTiers
     selectObject: tg
     tier$ = Get tier name: j
-    nIntervals = Count intervals where: j, "is not equal to", ""
-
+    isInterval= Is interval tier: j
+    if isInterval
+      nTargets = Count intervals where: j, "is not equal to", ""
+    else
+      nTargets = Count points where: j, "is not equal to", ""
+    endif
     # Search inside the table Tier Summary if the tier name exists or not. Then complete the table.
     selectObject: tb
     row = Search column: "tier", tier$
@@ -54,11 +58,11 @@ for i to n_fileList
        # Add an occurrence to the existing tier
        tier_counter= object[tb, row, "tier_counter"] + 1
        duplicated= object[tb, row, "duplicated"] + 1
-       nIntervals = object[tb, row, "interval_counter"] + nIntervals
+       nTargets = object[tb, row, "target_counter"] + nTargets
 
        Set numeric value: row, "tier_counter", tier_counter
        Set numeric value: row, "duplicated", duplicated
-       Set numeric value: row, "interval_counter", nIntervals
+       Set numeric value: row, "target_counter", nTargets
 
        if object[tb, row, "duplicated"] > 1
          isAnyDuplicatedTier= 1
@@ -71,7 +75,7 @@ for i to n_fileList
       Set string value: row, "tier", tier$
       Set numeric value: row, "tier_counter", 1
       Set numeric value: row, "duplicated", 1
-      Set numeric value: row, "interval_counter", nIntervals
+      Set numeric value: row, "target_counter", nTargets
    endif
   endfor
   removeObject: tg
@@ -94,7 +98,7 @@ if rich_report
   appendInfoLine: "Detailed tier list:"
   appendInfoLine: ""
 
-  info$ = replace$(info$, "tier	tier_counter	interval_counter", "tier occurrences targets",  1)
+  info$ = replace$(info$, "tier	tier_counter	target_counter", "tier occurrences targets",  1)
   appendInfoLine: info$
 endif
 
