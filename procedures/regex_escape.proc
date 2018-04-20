@@ -1,0 +1,23 @@
+# Copyright 2018 Rolando Munoz Aramburú
+
+procedure regexEscape: .string
+  .string = replace$(.string, "\", "\\", 0)
+  .string = replace$(.string, "^", "\^", 0)
+  .string = replace$(.string, "$", "\$", 0)
+  .string = replace$(.string, "{", "\{", 0)
+  .string = replace$(.string, "}", "\}", 0)
+  .string = replace$(.string, "[", "\[", 0)
+  .string = replace$(.string, "]", "\]", 0)
+  .string = replace$(.string, "(", "\(", 0)
+  .string = replace$(.string, ")", "\)", 0)
+  .string = replace$(.string, ".", "\.", 0)
+  .string = replace$(.string, "*", "\*", 0)
+  .string = replace$(.string, "+", "\?", 0)
+  .string = replace$(.string, "?", "\?", 0)
+  .string = replace$(.string, "|", "\|", 0)
+  .string = replace$(.string, "<", "\<", 0)
+  .string = replace$(.string, ">", "\>", 0)
+  .string = replace$(.string, "-", "\-", 0)
+  .string = replace$(.string, "&", "\&", 0)
+  .return$ = .string
+endproc

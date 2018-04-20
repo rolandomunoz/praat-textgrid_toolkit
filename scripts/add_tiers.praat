@@ -1,7 +1,7 @@
 # This script modify the tiers in a TextGrid, so it moves them or creates
 # new ones.
 #
-# Written by Rolando Muñoz A. (28 March 2018)
+# Written by Rolando Munoz A. (28 March 2018)
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

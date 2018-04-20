@@ -1,7 +1,7 @@
-# Copyright 2017 Rolando Muñoz
+# Copyright 2017 Rolando Munoz
 # Set the default values for the TextGridEditor
 #
-# Written by Rolando Muñoz A. (24 Sep 2017)
+# Written by Rolando Munoz A. (24 Sep 2017)
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

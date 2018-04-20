@@ -8,10 +8,10 @@ insert_tier.create_textgrid: 1
 insert_tier.recursive_search: 1
 insert_tier.recursive_search.textgrid_dir: .
 replace_tier_text.tier_name: id
-replace_tier_text.search: .+
-replace_tier_text.replace: q4
-replace_tier_text.mode: 2
-replace_tier_text.recursive_search: 1
+replace_tier_text.search: a
+replace_tier_text.replace: a
+replace_tier_text.mode: 1
+replace_tier_text.recursive_search: 0
 duplicate_tier.tier_name: phrase.mp
 duplicate_tier.after_tier: phrase.mp
 duplicate_tier.new_tier_name: id

@@ -1,4 +1,4 @@
-# Copyright 2017 Rolando Muñoz Aramburú
+# Copyright 2017 Rolando Munoz Aramburú
 
 if praatVersion < 6033
   appendInfoLine: "Plug-in name: Annotation Assistant"
