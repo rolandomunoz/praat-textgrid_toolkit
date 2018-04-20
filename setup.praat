@@ -9,6 +9,8 @@ endif
 Add menu command: "Objects", "Goodies", "Annotation assistant", "", 0, ""
 Add menu command: "Objects", "Goodies", "Run...", "Annotation assistant", 1, "scripts/run_plugin.praat"
 Add menu command: "Objects", "Goodies", "Do all", "Annotation assistant", 1, ""
+Add menu command: "Objects", "Goodies", "Create TextGrid (from audio files)...", "Do all", 2, "scripts/doAll_create_textgrid.praat"
+Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
 Add menu command: "Objects", "Goodies", "Insert tier...", "Do all", 2, "scripts/doAll_insert_tier.praat"
 Add menu command: "Objects", "Goodies", "Duplicate tier...", "Do all", 2, "scripts/doAll_duplicate_tier.praat"
 Add menu command: "Objects", "Goodies", "Remove tier...", "Do all", 2, "scripts/doAll_remove_tier.praat"

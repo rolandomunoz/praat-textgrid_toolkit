@@ -14,36 +14,29 @@ include ../procedures/list_recursive_path.proc
 @config.init: "../preferences.txt"
 beginPause: "Insert tier (do all)"
   comment: "The directories where your files are stored..."
-  sentence: "Audio folder", config.init.return$["audio_dir"]
-  sentence: "Textgrid folder", config.init.return$["insert_tier.recursive_search.textgrid_dir"]
+  sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
   boolean: "Recursive search", number(config.init.return$["insert_tier.recursive_search"])
   comment: "Insert tier..."
   sentence: "All tier names", config.init.return$["insert_tier.all_tier_names"]
   sentence: "Which of these are point tiers", config.init.return$["insert_tier.point_tiers"]
-  comment: "CREATE a TextGrid if not found?"
-  boolean: "Yes", number(config.init.return$["insert_tier.create_textgrid"])
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked = 1
   exitScript()
 endif
 
-audio_extension$= config.init.return$["audio_extension"]
-
 # Save the values from the dialogue box
-@config.setField: "audio_dir", audio_folder$
-@config.setField: "insert_tier.recursive_search.textgrid_dir", textgrid_folder$
+@config.setField: "textgrid_dir", textgrid_folder$
 @config.setField: "insert_tier.all_tier_names", all_tier_names$
 @config.setField: "insert_tier.point_tiers", which_of_these_are_point_tiers$
-@config.setField: "insert_tier.create_textgrid", string$(yes)
 @config.setField: "insert_tier.recursive_search", string$(recursive_search)
 
 # Check dialogue box
 if textgrid_folder$ == ""
-  pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
+  pauseScript: "The field 'TextGrid folder' is empty. Please complete it"
   runScript: "doAll_insert_tier.praat"
   exitScript()
-elsif all_tier_names$ == ""
+elsif
   pauseScript: "The field 'All tier names' is empty. Please complete it"
   runScript: "doAll_insert_tier.praat"
   exitScript()
@@ -51,48 +44,31 @@ endif
 
 # Find directories
 if recursive_search
-  if startsWith(textgrid_folder$, ".")
-    textgrid_folder$ = audio_folder$ + "/" + textgrid_folder$
-  else
-    writeInfoLine: "Insert tier (do all)"
-    appendInfoLine: "When using 'Recursive search' option, you need to provide a relative path in the 'TextGrid folder' field"
-    appendInfoLine: "TextGrid locations are defined in relation to the their audio files."
-    exitScript()
-  endif
-  @findFiles: audio_folder$, "/*'audio_extension$'"
+  @findFiles: textgrid_folder$, "/*.TextGrid"
   fileList= selected("Strings")
 else
   fileList= Create Strings as file list: "fileList", audio_folder$ + "/*.'audio_extension$'"
 endif
 n_fileList= Get number of strings
 
-
-newFileCounter= 0
 modifiedFileCounter = 0
+
+# Open each file
 for i to n_fileList
-  sd$= object$[fileList, i]
-  tg$= sd$ - audio_extension$ + ".TextGrid"
-  if fileReadable(textgrid_folder$ + "/" +tg$)
+  tgPath$ = textgrid_folder$ + "/" + object$[fileList, i]
+  
+  if fileReadable(tgPath$)
+    tg = Read from file: tgPath$
     modifiedFileCounter+=1
-    tg= Read from file: textgrid_folder$ + "/" +tg$
     runScript: "add_tiers.praat", all_tier_names$, which_of_these_are_point_tiers$
-    Save as text file: textgrid_folder$ + "/" + tg$
+    Save as text file: tgPath$
     removeObject: tg
-  else
-    if yes
-      newFileCounter+=1
-      sd = Open long sound file: audio_folder$ + "/" +sd$
-      tg = To TextGrid: all_tier_names$, which_of_these_are_point_tiers$
-      Save as text file: textgrid_folder$ + "/" + tg$
-      removeObject: sd, tg
-    endif
   endif
 endfor
 removeObject: fileList
 
 writeInfoLine: "Add tier..."
 appendInfoLine: "Number of modified files: ", modifiedFileCounter
-appendInfoLine: "Number of new files: ", newFileCounter
 
 if clicked = 2
   runScript: "doAll_insert_tier.praat"

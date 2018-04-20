@@ -2,9 +2,12 @@ run_plugin.all_tier_names: tone phoneme word
 run_plugin.point_tiers: tone
 run_plugin.deep_search: 0
 run_plugin.show: 1
+create_textgrid.all_tier_names: 
+create_textgrid.point_tiers: 
+create_textgrid.recursive_search: 0
+create_textgrid.recursive_search.textgrid_dir: 
 insert_tier.all_tier_names: tone phoneme word
 insert_tier.point_tiers: tone
-insert_tier.create_textgrid: 1
 insert_tier.recursive_search: 0
 insert_tier.recursive_search.textgrid_dir: 
 replace_tier_text.tier_name: phon
