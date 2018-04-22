@@ -1,10 +1,10 @@
-run_plugin.textgrid_dir: ../tgs
-run_plugin.audio_dir: /home/rolando/.praat-dir/plugin_annotation_assistant/test/test_03
+run_plugin.textgrid_dir: /home/rolando/Desktop/corpus
+run_plugin.audio_dir: /home/rolando/Desktop/corpus
 run_plugin.all_tier_names: tone phoneme word
 run_plugin.point_tiers: tone
 run_plugin.deep_search: 0
-run_plugin.show: 3
-run_plugin.recursive_search: 1
+run_plugin.show: 1
+run_plugin.recursive_search: 0
 create_textgrid.all_tier_names: tone phoneme word
 create_textgrid.point_tiers: tone
 create_textgrid.recursive_search: 0
