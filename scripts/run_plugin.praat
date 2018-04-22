@@ -17,8 +17,9 @@ include ../procedures/config.proc
 
 beginPause: "Annotation assistant"
   comment: "The directories where your files are stored..."
-  sentence: "Audio folder", config.init.return$["audio_dir"]
-  sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
+  sentence: "Audio folder", config.init.return$["run_plugin.audio_dir"]
+  sentence: "Textgrid folder", config.init.return$["run_plugin.textgrid_dir"]
+  boolean: "Recursive search", number(config.init.return$["run_plugin.recursive_search"])
   comment: "Create tiers..."
   sentence: "All tier names", config.init.return$["run_plugin.all_tier_names"]
   sentence: "Which of these are point tiers", config.init.return$["run_plugin.point_tiers"]
@@ -35,8 +36,9 @@ if clicked = 1
 endif
 
 # Save the values from the dialogue box
-@config.setField: "audio_dir", audio_folder$
-@config.setField: "textgrid_dir", textgrid_folder$
+@config.setField: "run_plugin.audio_dir", audio_folder$
+@config.setField: "run_plugin.textgrid_dir", textgrid_folder$
+@config.setField: "run_plugin.recursive_search", string$(recursive_search)
 @config.setField: "run_plugin.all_tier_names", all_tier_names$
 @config.setField: "run_plugin.point_tiers", which_of_these_are_point_tiers$
 @config.setField: "run_plugin.show", string$(show)
@@ -45,7 +47,7 @@ endif
 # Check dialogue box
 if textgrid_folder$ == ""
   pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
-  runScript: "doAll_remove_tier_name.praat"
+  runScript: "run_plugin.praat"
   exitScript()
 elsif
   pauseScript: "The field 'All tier names$' is empty. Please complete it"
@@ -74,7 +76,7 @@ if default_values
 endif
 
 # Create Corpus table
-runScript: "create_corpus_table.praat", textgrid_folder$, audio_folder$, audio_extension$, all_tier_names$, search_inside_TextGrids
+runScript: "create_corpus_table.praat", audio_folder$, textgrid_folder$, recursive_search, audio_extension$, all_tier_names$, search_inside_TextGrids
 tb_corpus= selected("Table")
 
 if show < 3
@@ -107,14 +109,14 @@ while pause
   annotation= object[tb_corpus, file_number, "annotation"]
   all_tiers= object[tb_corpus, file_number, "all_tiers"]
   
-  sd$= object$[tb_corpus, file_number, "sound_file"]
-  tg$= sd$ - audio_extension$ + ".TextGrid"
+  sdPath$= object$[tb_corpus, file_number, "audio_path"]
+  tgPath$= object$[tb_corpus, file_number, "annotation_path"]
   
   # Open a Sound file from the list
   if open_as_LongSound
-    sd = Open long sound file: audio_folder$ + "/"+ sd$
+    sd = Open long sound file: sdPath$
   else
-    sd = Read from file: audio_folder$ + "/"+ sd$
+    sd = Read from file: sdPath$
     if adjust_volume
       Formula: "self*'volume'"
     endif
@@ -123,7 +125,7 @@ while pause
   # If the corresponding textgrid exists, then open it. Otherwise, create it
   if annotation
     # Open the TextGrid
-    tg = Read from file: textgrid_folder$ + "/"+ tg$
+    tg = Read from file: tgPath$
     if deep_search
       if !all_tiers
         status$= "modified"
@@ -161,7 +163,7 @@ while pause
     Set numeric value: file_number, "annotation", 1
     Set numeric value: file_number, "all_tiers", 1
     selectObject: tg
-    Save as text file: textgrid_folder$ + "/"+ tg$
+    Save as text file: tgPath$
   endif
 
   removeObject: sd, tg

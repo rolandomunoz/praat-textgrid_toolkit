@@ -9,22 +9,33 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
+include ../procedures/list_recursive_path.proc
+
 form Create corpus table
   comment The directories where your files are stored...
-  sentence TextGrid_folder
-  sentence Sound_folder
+  sentence Audio_folder
+  sentence Textgrid_folder
+  boolean Recursive_search
   word Audio_extension .wav
-  comment Search inside TextGrids?
+  comment Search inside textgrids?
   sentence All_tier_names
   boolean Yes
 endform
 
+textgrid_folder$ = if textgrid_folder$ == "" then "." else textgrid_folder$ fi
+relative_path = if startsWith(textgrid_folder$, ".") then  1 else 0 fi
+
 # List all files in a Strings object, then build a Table corpus
-fileList= Create Strings as file list: "fileList", sound_folder$ + "/*" + audio_extension$
-nFiles = Get number of strings
+if recursive_search
+  @findFiles: audio_folder$, "/*'audio_extension$'"
+  fileList= selected("Strings")
+else
+  fileList= Create Strings as file list: "fileList", audio_folder$ + "/*'audio_extension$'"
+endif
+nFiles= Get number of strings
 
 ## Create Corpus table
-tbCorpus= Create Table with column names: "corpus", nFiles, "sound_file annotation all_tiers"
+tbCorpus= Create Table with column names: "corpus", nFiles, "audio_file annotation all_tiers audio_path annotation_path"
 
 if !nFiles
   removeObject: fileList
@@ -41,16 +52,22 @@ if deepSearch
 endif
 
 for i to nFiles
-  sd$= object$[fileList, i]
-  tg$= sd$ - audio_extension$ + ".TextGrid"
-  tgDir$= textGrid_folder$+ "/"+ tg$
+  sdPath$ = audio_folder$ + "/" + object$[fileList, i]
+  sd$ = replace_regex$(sdPath$, ".*/", "", 1)
+  basename$ =  sd$ - audio_extension$
 
-  isAnnotation= if fileReadable(tgDir$) then 1 else 0 fi
+  if relative_path
+    tgPath$ = (sdPath$ - sd$) + textgrid_folder$ + "/" + basename$ + ".TextGrid"
+  else
+    tgPath$ = textgrid_folder$ + "/" + basename$ + ".TextGrid"
+  endif
+  
+  isAnnotation = if fileReadable(tgPath$) then 1 else 0 fi
   isAllTier= 0
   
   if isAnnotation
     if deepSearch
-      tg= Read from file: tgDir$
+      tg= Read from file: tgPath$
       @_isAnyMissingTier: strTiers, str_nTiers
       isAllTier= if '_isAnyMissingTier.return' then 0 else 1 fi
       removeObject: tg
@@ -58,9 +75,11 @@ for i to nFiles
   endif
   
   selectObject: tbCorpus
-  Set string value: i, "sound_file", sd$
+  Set string value: i, "audio_file", sd$
   Set numeric value: i, "annotation", isAnnotation
   Set numeric value: i, "all_tiers", isAllTier
+  Set string value: i, "audio_path", sdPath$
+  Set string value: i, "annotation_path", tgPath$
 endfor
 
 if deepSearch
