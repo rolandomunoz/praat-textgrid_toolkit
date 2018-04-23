@@ -6,7 +6,6 @@ include ../procedures/config.proc
 beginPause: "Get TextGrid report"
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
   boolean: "Recursive search", number(config.init.return$["get_textgrid_report.recursive_search"])
-  boolean: "Rich report", number(config.init.return$["get_textgrid_report.rich_report"])
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked = 1
@@ -16,7 +15,6 @@ endif
 # Save the values from the dialogue box
 @config.setField: "textgrid_dir", textgrid_folder$
 @config.setField: "get_textgrid_report.recursive_search", string$(recursive_search)
-@config.setField: "get_textgrid_report.rich_report", string$(rich_report)
 
 if recursive_search
   @findFiles: textgrid_folder$, "/*.TextGrid"
@@ -84,23 +82,16 @@ endfor
 # Print report
 selectObject: tb
 Remove column: "duplicated"
-info$ = List: "no"
+info$ = List: "yes"
 
 writeInfoLine: "Tier summary:"
 appendInfoLine: "___________________________________________________________________"
 appendInfoLine: "Tier list:"
 for i to object[tb].nrow
-  appendInfoLine: i, tab$, object$[tb, i, "tier"]
+  appendInfo: i, tab$, object$[tb, i, "tier"] + tab$
+  appendInfo: "(ocurrences= ", object$[tb, i, "tier_counter"], ", "
+  appendInfoLine: "targets= ", object$[tb, i, "target_counter"], ")"
 endfor
-
-if rich_report
-  appendInfoLine: "___________________________________________________________________"
-  appendInfoLine: "Detailed tier list:"
-  appendInfoLine: ""
-
-  info$ = replace$(info$, "tier	tier_counter	target_counter", "tier occurrences targets",  1)
-  appendInfoLine: info$
-endif
 
 if isAnyDuplicatedTier
   appendInfoLine: "___________________________________________________________________"
