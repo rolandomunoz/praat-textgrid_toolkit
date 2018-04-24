@@ -1,7 +1,7 @@
 # Open one by one, all the audio files and their TextGrids in the specified directory
 # If the TextGrid does not exist, then create a new one
 #
-# Written by Rolando Munoz A. (28 March 2018)
+# Written by Rolando Munoz A. (24 April 2018)
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
