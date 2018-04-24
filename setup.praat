@@ -5,13 +5,20 @@ if praatVersion < 6033
   appendInfoLine: "Warning: This plug-in only works on Praat version above 6.0.32. Please, get a more recent version of Praat."
   appendInfoLine: "Praat website: http://www.fon.hum.uva.nl/praat/"
 endif
-## Static menu
+
+# Static menu
 Add menu command: "Objects", "Goodies", "Annotation assistant", "", 0, ""
-Add menu command: "Objects", "Goodies", "Run...", "Annotation assistant", 1, "scripts/run_plugin.praat"
 
+## Do each
+Add menu command: "Objects", "Goodies", "Do each", "Annotation assistant", 1, ""
+Add menu command: "Objects", "Goodies", "View & Edit...", "Do each", 2, "scripts/doEach_open_files.praat"
+Add menu command: "Objects", "Goodies", "View & Edit (advanced)...", "Do each", 2, "scripts/doEach_open_files_advanced.praat"
+Add menu command: "Objects", "Goodies", "View & Edit (query)...", "Do each", 2, "scripts/doEach_open_files_by_query.praat"
 
+## Do all
 Add menu command: "Objects", "Goodies", "Do all", "Annotation assistant", 1, ""
-Add menu command: "Objects", "Goodies", "Create TextGrid (from audio files)...", "Do all", 2, "scripts/doAll_create_textgrid.praat"
+Add menu command: "Objects", "Goodies", "Create TextGrid...", "Do all", 2, "scripts/doAll_create_textgrid.praat"
+Add menu command: "Objects", "Goodies", "Create TextGrid (silences)...", "Do all", 2, "scripts/doAll_create_textgrid_silences.praat"
 Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
 Add menu command: "Objects", "Goodies", "Insert tier...", "Do all", 2, "scripts/doAll_insert_tier.praat"
 Add menu command: "Objects", "Goodies", "Duplicate tier...", "Do all", 2, "scripts/doAll_duplicate_tier.praat"
@@ -22,8 +29,6 @@ Add menu command: "Objects", "Goodies", "Replace tier text...", "Do all", 2, "sc
 
 Add menu command: "Objects", "Goodies", "Query", "Annotation assistant", 1, ""
 Add menu command: "Objects", "Goodies", "Get TextGrid report...", "Query", 2, "scripts/get_textgrid_report.praat"
-#Add menu command: "Objects", "Goodies", "Is any missing file...", "Query", 2, "scripts/get_tier_name_summary.praat"
-#Add menu command: "Objects", "Goodies", "TextGrids report...", "Do all", 2, "scripts/daAll_tg_report.praat"
 
 Add menu command: "Objects", "Goodies", "-", "", 1, ""
 Add menu command: "Objects", "Goodies", "Audio preferences...", "Audio transcriber", 1, "scripts/settings_Sound.praat"
