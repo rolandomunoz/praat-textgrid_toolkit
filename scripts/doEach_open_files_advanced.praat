@@ -15,7 +15,7 @@ include ../procedures/config.proc
 
 @config.init: "../preferences.txt"
 
-beginPause: "Annotation assistant"
+beginPause: "View & Edit (advanced)"
   comment: "The directories where your files are stored..."
   sentence: "Audio folder", config.init.return$["run_plugin.audio_dir"]
   sentence: "Textgrid folder", config.init.return$["run_plugin.textgrid_dir"]
@@ -47,11 +47,11 @@ endif
 # Check dialogue box
 if textgrid_folder$ == ""
   pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
-  runScript: "run_plugin.praat"
+  runScript: "doEach_transcriber.praat"
   exitScript()
 elsif
   pauseScript: "The field 'All tier names$' is empty. Please complete it"
-  runScript: "run_plugin.praat"
+  runScript: "doEach_transcriber.praat"
   exitScript()
 endif
 
@@ -93,7 +93,7 @@ if !number_of_files
   removeObject: tb_corpus
   writeInfoLine: "Cannot find any case."
   if clicked = 2
-    runScript: "run_plugin.praat"
+    runScript: "doEach_transcriber.praat"
   endif
   exitScript()
 endif
@@ -176,5 +176,5 @@ while pause
 endwhile
 
 if clicked = 2
-  runScript: "run_plugin.praat"
+  runScript: "doEach_transcriber.praat"
 endif
