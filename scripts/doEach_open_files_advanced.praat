@@ -47,11 +47,11 @@ endif
 # Check dialogue box
 if textgrid_folder$ == ""
   pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
-  runScript: "doEach_transcriber.praat"
+  runScript: "doEach_open_files_advanced.praat"
   exitScript()
 elsif
   pauseScript: "The field 'All tier names$' is empty. Please complete it"
-  runScript: "doEach_transcriber.praat"
+  runScript: "doEach_open_files_advanced.praat"
   exitScript()
 endif
 
@@ -93,7 +93,7 @@ if !number_of_files
   removeObject: tb_corpus
   writeInfoLine: "Cannot find any case."
   if clicked = 2
-    runScript: "doEach_transcriber.praat"
+    runScript: "doEach_open_files_advanced.praat"
   endif
   exitScript()
 endif
@@ -176,5 +176,5 @@ while pause
 endwhile
 
 if clicked = 2
-  runScript: "doEach_transcriber.praat"
+  runScript: "doEach_open_files_advanced.praat"
 endif
