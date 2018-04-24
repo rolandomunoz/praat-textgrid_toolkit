@@ -40,7 +40,7 @@ relative_path = if startsWith(textgrid_folder$, ".") then  1 else 0 fi
 # Check dialogue box
 if all_tier_names$ == ""
   pauseScript: "The field 'All tier names' is empty. Please complete it."
-  runScript: "doAll_insert_tier.praat"
+  runScript: "doAll_create_textgrid.praat"
   exitScript()
 endif
 
