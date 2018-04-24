@@ -148,7 +148,7 @@ while pause
     Show analyses: "yes", show_pitch, show_intensity, show_formants, show_pulse, 10
   endif
   
-  beginPause: "Audio transcriber"
+  beginPause: ""
     comment: "Status: 'status$'"
     comment: "Case: 'file_number'/'number_of_files'"
     natural: "Next file",  if (file_number + 1) > number_of_files then 1 else file_number + 1 fi
