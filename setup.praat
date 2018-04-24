@@ -13,7 +13,7 @@ Add menu command: "Objects", "Goodies", "Annotation assistant", "", 0, ""
 Add menu command: "Objects", "Goodies", "Do each", "Annotation assistant", 1, ""
 Add menu command: "Objects", "Goodies", "View & Edit...", "Do each", 2, "scripts/doEach_open_files.praat"
 Add menu command: "Objects", "Goodies", "View & Edit (advanced)...", "Do each", 2, "scripts/doEach_open_files_advanced.praat"
-Add menu command: "Objects", "Goodies", "View & Edit (query)...", "Do each", 2, "scripts/doEach_open_files_by_query.praat"
+Add menu command: "Objects", "Goodies", "View & Edit when...", "Do each", 2, "scripts/doEach_open_files_when.praat"
 
 ## Do all
 Add menu command: "Objects", "Goodies", "Do all", "Annotation assistant", 1, ""
