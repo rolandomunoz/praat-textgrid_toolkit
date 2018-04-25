@@ -140,9 +140,6 @@ while pause
   endeditor
 
   if clicked_pause = 1
-    selectObject: tb_corpus
-    Set numeric value: file_number, "annotation", 1
-    Set numeric value: file_number, "all_tiers", 1
     selectObject: tg
     Save as text file: tgPath$
   endif
