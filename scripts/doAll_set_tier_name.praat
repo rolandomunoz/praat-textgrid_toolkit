@@ -75,9 +75,15 @@ for iFile to n_fileList
 endfor
 
 removeObject: str_tierList, fileList
-writeInfoLine: "Set tier name..."
-appendInfoLine: "Number of files: ", n_fileList
-appendInfoLine: "Number of modified files: ", counter
+
+# Print info
+writeInfoLine: "Set tier name"
+appendInfoLine: "Input:"
+appendInfoLine: "  Tier name: ",  tier_name$
+appendInfoLine: "  New name: ",  new_name$
+appendInfoLine: "Output:"
+appendInfoLine: "  Files (total): ", n_fileList
+appendInfoLine: "  Modified files (total): ", counter
 
 if clicked = 2
   runScript: "doAll_set_tier_name.praat"

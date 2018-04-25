@@ -67,12 +67,14 @@ for i to n_fileList
 endfor
 removeObject: fileList
 
+# Print info
 writeInfoLine: "Add tier"
 appendInfoLine: "Input:"
 appendInfoLine: "  All tier names: ", all_tier_names$
 appendInfoLine: "  Which of these are point tiers: ", which_of_these_are_point_tiers$
 appendInfoLine: "Ouput:"
-appendInfoLine: "  Number of modified files: ", modifiedFileCounter
+appendInfoLine: "  Files (total): ", modifiedFileCounter
+# appendInfoLine: "  Modfied files (total): ", modifiedFileCounter
 
 if clicked = 2
   runScript: "doAll_insert_tier.praat"

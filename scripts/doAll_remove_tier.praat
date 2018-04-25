@@ -83,10 +83,16 @@ for iFile to n_fileList
   removeObject: tg
 endfor
 removeObject: fileList
-writeInfoLine: "Remove tiers..."
-appendInfoLine: "Number of files: ", n_fileList
-appendInfoLine: "Number of modified files: ", modifiedCounter
-appendInfoLine: "Number of deleted files: ", deletedFileCounter
+
+# Print info
+writeInfoLine: "Remove tiers"
+appendInfoLine: "Input:"
+appendInfoLine: "  Tier name: ",  tier_name$
+appendInfoLine: "  Delete TextGrid: ", if yes then "yes" else "no" fi
+appendInfoLine: "Output:"
+appendInfoLine: "  Files (total): ", n_fileList
+appendInfoLine: "  Modified files (total): ", modifiedCounter
+appendInfoLine: "  Deleted files (total): ", deletedFileCounter
 
 if clicked
   runScript: "doAll_remove_tier.praat"

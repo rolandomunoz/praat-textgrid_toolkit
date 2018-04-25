@@ -79,8 +79,10 @@ for i to n_fileList
 endfor
 removeObject: fileList
 
-writeInfoLine: "Create TextGrid (silences)..."
-appendInfoLine: "Number of new files: ", newFileCounter
+writeInfoLine: "Create TextGrid (silences)"
+appendInfoLine: "Output"
+appendInfoLine: "  New files (total): ", newFileCounter
+
 
 if clicked = 2
   runScript: "doAll_create_textgrid.praat"

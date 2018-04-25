@@ -131,9 +131,17 @@ for iFile to n_fileList
 endfor
 
 removeObject: str_tierList, fileList
-writeInfoLine: "Replace tier name..."
-appendInfoLine: "Number of files: ", n_fileList
-appendInfoLine: "Number of modified files: ", counter
+
+# Print info
+writeInfoLine: "Replace tier name"
+appendInfoLine: "Input:"
+appendInfoLine: "  Tier name: ", tier_name$
+appendInfoLine: "  Search: ", search$
+appendInfoLine: "  Replace: ", replace$
+appendInfoLine: "  Mode: ", mode$
+appendInfoLine: "Output:"
+appendInfoLine: "  Files (total): ", n_fileList
+appendInfoLine: "  Modified files (total): ", counter
 
 if clicked = 2
   runScript: "doAll_replace_tier_text.praat"
