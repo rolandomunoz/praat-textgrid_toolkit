@@ -45,7 +45,7 @@ if recursive_search
   @findFiles: textgrid_folder$, "/*.TextGrid"
   fileList= selected("Strings")
 else
-  fileList= Create Strings as file list: "fileList", audio_folder$ + "/*.'audio_extension$'"
+  fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
 endif
 n_fileList= Get number of strings
 
