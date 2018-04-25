@@ -68,6 +68,8 @@ endfor
 removeObject: fileList
 
 writeInfoLine: "Add tier..."
+appendInfoLine: "All tier names", all_tier_names$
+appendInfoLine: "Which of these are point tiers", which_of_these_are_point_tiers$
 appendInfoLine: "Number of modified files: ", modifiedFileCounter
 
 if clicked = 2
