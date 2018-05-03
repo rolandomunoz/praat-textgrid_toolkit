@@ -76,7 +76,7 @@ endif
 nFiles= Get number of strings
 
 file_number = 1
-volume = 1
+volume = 0.99
 
 if nFiles
   pause = 1
@@ -106,7 +106,7 @@ while pause
   else
     sd = Read from file: sdPath$
     if adjust_volume
-      Formula: "self*'volume'"
+      Scale peak: volume
     endif
   endif
   
