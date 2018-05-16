@@ -2,25 +2,17 @@
 
 This plug-in provides you with some tools that are helpful when annotating a set of audio files.
 
-## Features
-
-- Insert tier
-- Search level:
-  - TextGrid
-  - Tier
-- Show:
-  - New cases
-  - Complete cases
-  - All cases
-- Query
-
-
-## Getting Started
+## Documentation
+- [Website](https://rolandomunoz.github.io/plugin_annotationAssistant.html)
+- [Getting Started](https://rolandomunoz.github.io/plugin_annotationAssistant_gettingStarted.html)
+- [Manual](https://rolandomunoz.github.io/plugin_annotationAssistant_manual.htmll)
 
 ## Author
 
-- Rolando Muñoz
+- Rolando Muñoz Aramburú
 
 ## License
 
-This project is licensed under the GPL3 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU GPL terms - see the [LICENSE.md](https://gitlab.com/praat_plugins_rma/plugin_tokenizer/blob/master/LICENSE)
+ file for details.
+ 

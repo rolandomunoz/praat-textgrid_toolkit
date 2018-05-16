@@ -1,12 +1,12 @@
 Plugin: Annotation assistant
 Author: Rolando Muñoz A. <rmunoz@gmail.com>
 Homepage: https://gitlab.com/praat_plugins_rma/annotation_assistant
-Version: 1.0.0 (beta)
-Last modified: 02-April-2018
+Version: 0.0.1
+Last modified: 30-May-2018
 Description:
   - A tool for transcribing audio files. It is possible to create TextGrids, also add and reorganize tiers whithin a TextGrid.
 Depends:
   - Praat: 6.30.2+
 License: GPL3
 How to cite: 
- - Muñoz A., Rolando (2018). Annotation assistant[Praat plug-in]. Version 1.0.0, retrived 05 March 2018 from https://gitlab.com/praat_plugins_rma/annotation_assistant
+ - Muñoz A., Rolando (2018). Annotation assistant[Praat plug-in]. Version 0.0.1, retrived 16 May2018 from https://gitlab.com/praat_plugins_rma/annotation_assistant
