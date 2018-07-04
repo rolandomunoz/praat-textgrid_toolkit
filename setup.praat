@@ -14,11 +14,11 @@ endif
 # Static menu
 Add menu command: "Objects", "Goodies", "Annotation assistant", "", 0, ""
 
-## Do each
-Add menu command: "Objects", "Goodies", "Do each", "Annotation assistant", 1, ""
-Add menu command: "Objects", "Goodies", "View & Edit...", "Do each", 2, "scripts/doEach_open_files.praat"
-Add menu command: "Objects", "Goodies", "View & Edit (advanced)...", "Do each", 2, "scripts/doEach_open_files_advanced.praat"
-Add menu command: "Objects", "Goodies", "View & Edit when...", "Do each", 2, "scripts/doEach_open_files_when.praat"
+## Do one-by-one
+Add menu command: "Objects", "Goodies", "Do one-by-one", "Annotation assistant", 1, ""
+Add menu command: "Objects", "Goodies", "View & Edit...", "Do one-by-one", 2, "scripts/doEach_open_files.praat"
+Add menu command: "Objects", "Goodies", "View & Edit (advanced)...", "Do one-by-one", 2, "scripts/doEach_open_files_advanced.praat"
+Add menu command: "Objects", "Goodies", "View & Edit when...", "Do one-by-one", 2, "scripts/doEach_open_files_when.praat"
 
 ## Do all
 Add menu command: "Objects", "Goodies", "Do all", "Annotation assistant", 1, ""
