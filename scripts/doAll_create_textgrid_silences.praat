@@ -44,14 +44,9 @@ relative_path = if startsWith(textgrid_folder$, ".") then  1 else 0 fi
 
 # Check dialogue box
 
-
 # Find directories
-if recursive_search
-  @findFiles: audio_folder$, "/*'audio_extension$'"
-  fileList= selected("Strings")
-else
-  fileList= Create Strings as file list: "fileList", audio_folder$ + "/*'audio_extension$'"
-endif
+@createStringAsFileList: "fileList", audio_folder$ + "/*'audio_extension$'", recursive_search
+fileList= selected("Strings")
 n_fileList= Get number of strings
 
 newFileCounter= 0

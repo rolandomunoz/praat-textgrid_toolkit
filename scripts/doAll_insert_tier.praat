@@ -43,12 +43,8 @@ elsif
 endif
 
 # Find directories
-if recursive_search
-  @findFiles: textgrid_folder$, "/*.TextGrid"
-  fileList= selected("Strings")
-else
-  fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
-endif
+@createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
+fileList= selected("Strings")
 n_fileList= Get number of strings
 
 modifiedFileCounter = 0

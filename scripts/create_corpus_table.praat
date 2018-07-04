@@ -26,12 +26,8 @@ textgrid_folder$ = if textgrid_folder$ == "" then "." else textgrid_folder$ fi
 relative_path = if startsWith(textgrid_folder$, ".") then  1 else 0 fi
 
 # List all files in a Strings object, then build a Table corpus
-if recursive_search
-  @findFiles: audio_folder$, "/*'audio_extension$'"
-  fileList= selected("Strings")
-else
-  fileList= Create Strings as file list: "fileList", audio_folder$ + "/*'audio_extension$'"
-endif
+@createStringAsFileList: "fileList", audio_folder$ + "/*'audio_extension$'", recursive_search
+fileList= selected("Strings")
 nFiles= Get number of strings
 
 ## Create Corpus table
@@ -102,6 +98,5 @@ procedure _isAnyMissingTier: .stringsID, .strings_n
       endif
     endfor
   endfor
-  
   .return= if .counter = .strings_n then 0 else 1 fi
 endproc

@@ -16,13 +16,10 @@ endif
 @config.setField: "textgrid_dir", textgrid_folder$
 @config.setField: "get_textgrid_report.recursive_search", string$(recursive_search)
 
-if recursive_search
-  @findFiles: textgrid_folder$, "/*.TextGrid"
-  fileList = selected("Strings")
-else
-  fileList = Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
-endif
-n_fileList = Get number of strings
+
+@createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
+fileList= selected("Strings")
+n_fileList= Get number of strings
 
 tb= Create Table with column names: "tier summary", 0, "tier tier_counter target_counter duplicated"
 infoDuplicated$ = ""

@@ -42,12 +42,9 @@ endif
 str_tierList= Create Strings as tokens: tier_name$, " ,"
 n_tierList= Get number of strings
 
-if recursive_search
-  @findFiles: textgrid_folder$, "/*.TextGrid"
-  fileList= selected("Strings")
-else
-  fileList= Create Strings as file list: "fileList", textgrid_folder$ + "/*.TextGrid"
-endif
+
+@createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
+fileList= selected("Strings")
 n_fileList= Get number of strings
 
 counter = 0
