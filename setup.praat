@@ -6,6 +6,11 @@ if praatVersion < 6033
   appendInfoLine: "Praat website: http://www.fon.hum.uva.nl/praat/"
 endif
 
+if not fileReadable("preferences.txt")
+  preferences$ = readFile$("preferences_default.txt")
+  writeFile: "preferences.txt", preferences$
+endif
+
 # Static menu
 Add menu command: "Objects", "Goodies", "Annotation assistant", "", 0, ""
 
