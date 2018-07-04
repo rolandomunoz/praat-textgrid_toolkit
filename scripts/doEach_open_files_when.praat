@@ -34,6 +34,8 @@ if clicked = 1
   exitScript()
 endif
 
+writeInfoLine: "View & Edit when:"
+appendInfoLine: "Sorry, this command is not available yet."
 exitScript()
 
 # Save the values from the dialogue box
@@ -70,18 +72,15 @@ if default_values
 endif
 
 # Find directories
-if recursive_search
-  @findFiles: textgrid_folder$, "/*.TextGrid"
-  fileList= selected("Strings")
-else
-  fileList= Create Strings as file list: "fileList", audio_folder$ + "/*.'audio_extension$'"
-endif
-n_fileList= Get number of strings
+@createStringAsFileList: "fileList", audio_folder$ + "/*'audio_extension$'", recursive_search
+fileList= selected("Strings")
 
 file_number = 1
 volume = 1
 pause = 1
 
+writeInfoLine: "Sorry, this command is not available yet."
+exitScript()
 ## Create corpus table
 while pause
   file_number = if file_number > number_of_files then 1 else file_number fi
