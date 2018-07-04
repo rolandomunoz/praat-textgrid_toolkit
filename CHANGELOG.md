@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unrealised]
 
+### Added
+  - `View & Edit when...` command
+  
+### Changed
+  - Rename menu `Do each` to `Do one-by-one`
+  
+### Fixed
+  - Recursive search in `Do one-by-one` commands
+  
+### Modified
+  - Recursive search procedures
+  
 ## [1.0.0] - 2018-05-30
 
 ### Added
