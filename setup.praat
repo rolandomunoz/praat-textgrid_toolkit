@@ -30,7 +30,8 @@ Add menu command: "Objects", "Goodies", "Duplicate tier...", "Do all", 2, "scrip
 Add menu command: "Objects", "Goodies", "Remove tier...", "Do all", 2, "scripts/doAll_remove_tier.praat"
 Add menu command: "Objects", "Goodies", "Set tier name...", "Do all", 2, "scripts/doAll_set_tier_name.praat"
 Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
-Add menu command: "Objects", "Goodies", "Replace tier text...", "Do all", 2, "scripts/doAll_replace_tier_text.praat"
+Add menu command: "Objects", "Goodies", "Replace text...", "Do all", 2, "scripts/doAll_replace_text.praat"
+Add menu command: "Objects", "Goodies", "Replace text (dictionary)...", "Do all", 2, "scripts/doAll_replace_text_from_csv.praat"
 
 Add menu command: "Objects", "Goodies", "Query", "Annotation assistant", 1, ""
 Add menu command: "Objects", "Goodies", "Get TextGrid report...", "Query", 2, "scripts/get_textgrid_report.praat"
