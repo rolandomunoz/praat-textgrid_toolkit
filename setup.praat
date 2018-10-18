@@ -12,16 +12,13 @@ if not fileReadable("preferences.txt")
 endif
 
 # Static menu
-Add menu command: "Objects", "Goodies", "Annotation assistant", "", 0, ""
+Add menu command: "Objects", "Goodies", "Annotation Tools", "", 0, ""
 
-## Do one-by-one
-Add menu command: "Objects", "Goodies", "Do one-by-one", "Annotation assistant", 1, ""
-Add menu command: "Objects", "Goodies", "View & Edit...", "Do one-by-one", 2, "scripts/doEach_open_files.praat"
-Add menu command: "Objects", "Goodies", "View & Edit (advanced)...", "Do one-by-one", 2, "scripts/doEach_open_files_advanced.praat"
-Add menu command: "Objects", "Goodies", "View & Edit when...", "Do one-by-one", 2, "scripts/doEach_open_files_when.praat"
+## Do 
+Add menu command: "Objects", "Goodies", "Open files (TextGridEditor)...", "Annotation Tools", 1, "scripts/textgridEditor_open_files.praat"
 
 ## Do all
-Add menu command: "Objects", "Goodies", "Do all", "Annotation assistant", 1, ""
+Add menu command: "Objects", "Goodies", "Do all", "Annotation Tools", 1, ""
 Add menu command: "Objects", "Goodies", "Create TextGrid...", "Do all", 2, "scripts/doAll_create_textgrid.praat"
 Add menu command: "Objects", "Goodies", "Create TextGrid (silences)...", "Do all", 2, "scripts/doAll_create_textgrid_silences.praat"
 Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
@@ -33,12 +30,8 @@ Add menu command: "Objects", "Goodies", "-", "Do all", 2, ""
 Add menu command: "Objects", "Goodies", "Replace text...", "Do all", 2, "scripts/doAll_replace_text.praat"
 Add menu command: "Objects", "Goodies", "Replace text (dictionary)...", "Do all", 2, "scripts/doAll_replace_text_from_csv.praat"
 
-Add menu command: "Objects", "Goodies", "Query", "Annotation assistant", 1, ""
+Add menu command: "Objects", "Goodies", "Query", "Annotation Tools", 1, ""
 Add menu command: "Objects", "Goodies", "Get TextGrid report...", "Query", 2, "scripts/get_textgrid_report.praat"
 
 Add menu command: "Objects", "Goodies", "-", "", 1, ""
-Add menu command: "Objects", "Goodies", "Audio preferences...", "Audio transcriber", 1, "scripts/settings_Sound.praat"
-Add menu command: "Objects", "Goodies", "TextGridEditor preferences...", "Audio transcriber", 1, "scripts/settings_TextGridEditor.praat"
-Add menu command: "Objects", "Goodies", "Reset preferences", "Audio transcriber", 1, "scripts/settings_default_preferences.praat"
-Add menu command: "Objects", "Goodies", "-", "", 1, ""
-Add menu command: "Objects", "Goodies", "About", "Annotation assistant", 1, "scripts/about.praat"
+Add menu command: "Objects", "Goodies", "About", "Annotation Tools", 1, "scripts/about.praat"
