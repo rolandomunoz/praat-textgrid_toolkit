@@ -33,7 +33,10 @@ Add menu command: "Objects", "Goodies", "Replace text (dictionary)...", "Modify"
 
 Add menu command: "Objects", "Goodies", "Query", "Annotation Tools", 1, ""
 Add menu command: "Objects", "Goodies", "Get TextGrid report...", "Query", 2, "scripts/get_textgrid_report.praat"
-Add menu command: "Objects", "Goodies", "Get duration...", "Query", 2, "scripts/get_duration.praat"
+Add menu command: "Objects", "Goodies", "Report duration...", "Query", 2, "scripts/get_duration.praat"
 
 Add menu command: "Objects", "Goodies", "-", "", 1, ""
 Add menu command: "Objects", "Goodies", "About", "Annotation Tools", 1, "scripts/about.praat"
+
+# Dynamic menu
+Add action command: "TextGrid", 1, "", 0, "", 0, "Report duration...", "Get total duration", 2, "scripts/dynamic_menu/get_duration_by_tier.praat"
