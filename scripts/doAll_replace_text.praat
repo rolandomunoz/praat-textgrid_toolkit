@@ -140,5 +140,5 @@ appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", counter
 
 if clicked = 2
-  runScript: "doAll_replace_tier_text.praat"
+  runScript: "doAll_replace_text.praat"
 endif
