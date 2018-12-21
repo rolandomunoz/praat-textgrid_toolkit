@@ -22,13 +22,16 @@ form Replace text (dictionary)
   boolean Recursive_search 0
   comment TextGrid Object:
   word Tier_name phrase
-  boolean Erase_unmatched_text 0
 endform
 
 # Check table
-wordCol$ = "word"
-pronunciationCol$ = "pronunciation"
 dictionary = Read Table from comma-separated file: dictionary_path$
+searchColumn = Get column index: search_column$
+replaceColumn = Get column index: replace_column$
+if not searchColumn or not replaceColumn
+  writeInfoLine: "Sorry, column names could not be found. Try again!"
+  exitScript()
+endif
 
 # Open TextGrids one by one
 @createStringAsFileList: "fileList",  tg_folder_path$ + "/*.TextGrid", recursive_search
@@ -46,26 +49,25 @@ for iFile to nFiles
   tier= getTierNumber.return[tier_name$]
   
   if tier
-    isInterval = Is interval tier: tier
+    replaceTier = tier + 1
+    Duplicate tier: tier, replaceTier, replace_column$
+    isInterval = Is interval tier: replaceTier
     type$ = if isInterval then "interval" else "point" fi
-    nTypes = do("Get number of 'type$'s...", tier)
+    nTypes = do("Get number of 'type$'s...", replaceTier)
     for iType to nTypes
       selectObject: tg
-      label$ = do$("Get label of 'type$'...", tier, iType)
+      label$ = do$("Get label of 'type$'...", replaceTier, iType)
       if label$ <> ""
         selectObject: dictionary 
         isWord = Search column: search_column$, label$
+        save = 1
         if isWord
-          save = 1
           selectObject: tg
           row = isWord
-          do("Set 'type$' text...", tier, iType, object$[dictionary, row, replace_column$])
+          do("Set 'type$' text...", replaceTier, iType, object$[dictionary, row, replace_column$])
         else
-          if erase_unmatched_text
-            save = 1
-            selectObject: tg
-            do("Set 'type$' text...", tier, iType, "#")        
-          endif
+          selectObject: tg
+          do("Set 'type$' text...", replaceTier, iType, "*'label$'")
         endif
       endif
     endfor
@@ -79,6 +81,9 @@ for iFile to nFiles
 endfor
 
 selectObject: dictionary
+
+Set column label (label): search_column$, "search"
+Set column label (label): replace_column$, "replace"
 Save as comma-separated file: "../temp/dictionary.csv"
 
 removeObject: fileList, dictionary
