@@ -90,6 +90,6 @@ appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", modifiedCounter
 appendInfoLine: "  Deleted files (total): ", deletedFileCounter
 
-if clicked
+if clicked == 2
   runScript: "doAll_remove_tier.praat"
 endif
