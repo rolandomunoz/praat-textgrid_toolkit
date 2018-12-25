@@ -53,7 +53,7 @@ while pause
   audio_name$ = basename$ - tg_ext$ + audio_ext$
   
   if relative_path
-    audio_full_path$ = path$ + "/" + audio_name$
+    audio_full_path$ = path$ + "/" + audioFolder$ + "/" + audio_name$
   else
     audio_full_path$ = audioFolder$ + "/" + audio_name$
   endif
