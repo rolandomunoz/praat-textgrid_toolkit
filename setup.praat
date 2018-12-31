@@ -36,6 +36,9 @@ Add menu command: "Objects", "Goodies", "Get info from annotation files...", "Qu
 Add menu command: "Objects", "Goodies", "Find annotation files with...", "Query", 2, "scripts/find_tg_with.praat"
 Add menu command: "Objects", "Goodies", "Report duration...", "Query", 2, "scripts/get_duration.praat"
 
+Add menu command: "Objects", "Goodies", "Corpus", "Annotation Tools", 1, ""
+Add menu command: "Objects", "Goodies", "Build corpus...", "Corpus", 2, "scripts/corpus_build_corpus.praat"
+
 Add menu command: "Objects", "Goodies", "-", "", 1, ""
 Add menu command: "Objects", "Goodies", "About", "Annotation Tools", 1, "scripts/about.praat"
 
