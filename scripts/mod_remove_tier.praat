@@ -36,7 +36,7 @@ str_tier$ = tier_name$
 # Check dialogue box
 if textgrid_folder$ == ""
   pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
-  runScript: "doAll_remove_tier.praat"
+  runScript: "mod_remove_tier.praat"
   exitScript()
 endif
 
@@ -91,5 +91,5 @@ appendInfoLine: "  Modified files (total): ", modifiedCounter
 appendInfoLine: "  Deleted files (total): ", deletedFileCounter
 
 if clicked == 2
-  runScript: "doAll_remove_tier.praat"
+  runScript: "mod_remove_tier.praat"
 endif

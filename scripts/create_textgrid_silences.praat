@@ -80,5 +80,5 @@ appendInfoLine: "  New files (total): ", newFileCounter
 
 
 if clicked = 2
-  runScript: "doAll_create_textgrid.praat"
+  runScript: "create_textgrid.praat"
 endif

@@ -52,7 +52,7 @@ endif
 # Check dialogue box
 if textgrid_folder$ == ""
   pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
-  runScript: "doAll_replace_tier_text.praat"
+  runScript: "mod_replace_tier_text.praat"
   exitScript()
 endif
 
@@ -140,5 +140,5 @@ appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", counter
 
 if clicked = 2
-  runScript: "doAll_replace_text.praat"
+  runScript: "mod_replace_text.praat"
 endif

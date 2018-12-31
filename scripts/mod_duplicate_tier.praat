@@ -1,4 +1,4 @@
-# Written by Rolando Munoz A. (28 March 2018)
+# Written by Rolando Munoz A. (7 April 2018)
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,75 +13,78 @@ include ../procedures/get_tier_number.proc
 include ../procedures/list_recursive_path.proc
 
 @config.init: "../preferences.txt"
-beginPause: "Set tier name (do all)"
+beginPause: "Duplicate tier (do all)"
   comment: "The directory where your TextGrid files are stored..."
   sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  boolean: "Recursive search", number(config.init.return$["set_tier_name.recursive_search"])
-  comment: "Set tier(s)..."
-  sentence: "Tier name", config.init.return$["set_tier_name.tier_name"]
-  word: "New name", config.init.return$["set_tier_name.new_name"]
+  boolean: "Recursive search", number(config.init.return$["duplicate_tier.recursive_search"])
+  comment: "Duplicate tier..."
+  word: "Tier name", config.init.return$["duplicate_tier.tier_name"]
+  word: "After tier", config.init.return$["duplicate_tier.after_tier"]
+  word: "New tier name", config.init.return$["duplicate_tier.new_tier_name"]
 clicked = endPause: "Cancel", "Apply", "Ok", 3
 
 if clicked = 1
   exitScript()
 endif
 
-# Save the values from the dialogue box
 @config.setField: "textgrid_dir", textgrid_folder$
-@config.setField: "set_tier_name.tier_name", tier_name$
-@config.setField: "set_tier_name.new_name", new_name$
-@config.setField: "set_tier_name.recursive_search", string$(recursive_search)
+@config.setField: "duplicate_tier.tier_name", tier_name$
+@config.setField: "duplicate_tier.after_tier", after_tier$
+@config.setField: "duplicate_tier.new_tier_name", new_tier_name$
+@config.setField: "duplicate_tier.recursive_search", string$(recursive_search)
 
 # Check dialogue box
 if textgrid_folder$ == ""
   pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
-  runScript: "doAll_set_tier_name.praat"
+  runScript: "mod_duplicate_tier.praat"
   exitScript()
 endif
 
 str_tierList= Create Strings as tokens: tier_name$, " ,"
 n_tierList= Get number of strings
 
-
+# Find files
 @createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
+# Do not duplicate tiers!
+if tier_name$ == new_tier_name$
+  new_tier_name$ = new_tier_name$ + ".dup"
+endif
+
 counter = 0
+getTierNumber.return[tier_name$]= 0
+getTierNumber.return[after_tier$]= 0
+
 for iFile to n_fileList
-  for j to n_tierList
-    str_tier$ = object$[str_tierList, j]
-    getTierNumber.return[str_tier$]= 0
-  endfor
-  
   tg$ = object$[fileList, iFile]
   tg = Read from file: textgrid_folder$ + "/" +tg$
   @getTierNumber
+  tier= getTierNumber.return[tier_name$]
+  position= getTierNumber.return[after_tier$] + 1
   
-  for j to n_tierList
-    str_tier$ = object$[str_tierList, j]
-    tier= getTierNumber.return[str_tier$]
-    if tier
-      counter+=1
-      Set tier name: tier, new_name$
-      Save as text file: textgrid_folder$ + "/" + tg$
-      j = n_tierList
-    endif
-  endfor
+  if tier
+    counter+=1
+    Duplicate tier: tier, position, new_tier_name$
+    Save as text file: textgrid_folder$ + "/" + tg$
+  endif
   removeObject: tg
 endfor
 
 removeObject: str_tierList, fileList
 
+
 # Print info
-writeInfoLine: "Set tier name"
+writeInfoLine: "Duplicate tier"
 appendInfoLine: "Input:"
 appendInfoLine: "  Tier name: ",  tier_name$
-appendInfoLine: "  New name: ",  new_name$
+appendInfoLine: "  After tier: ", after_tier$
+appendInfoLine: "  New tier name: ", new_tier_name$
 appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", counter
 
 if clicked = 2
-  runScript: "doAll_set_tier_name.praat"
+  runScript: "mod_duplicate_tier.praat"
 endif

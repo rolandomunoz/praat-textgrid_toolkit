@@ -34,11 +34,11 @@ endif
 # Check dialogue box
 if textgrid_folder$ == ""
   pauseScript: "The field 'TextGrid folder' is empty. Please complete it"
-  runScript: "doAll_insert_tier.praat"
+  runScript: "mod_insert_tier.praat"
   exitScript()
 elsif
   pauseScript: "The field 'All tier names' is empty. Please complete it"
-  runScript: "doAll_insert_tier.praat"
+  runScript: "mod_insert_tier.praat"
   exitScript()
 endif
 
@@ -73,5 +73,5 @@ appendInfoLine: "  Files (total): ", modifiedFileCounter
 # appendInfoLine: "  Modfied files (total): ", modifiedFileCounter
 
 if clicked = 2
-  runScript: "doAll_insert_tier.praat"
+  runScript: "mod_insert_tier.praat"
 endif
