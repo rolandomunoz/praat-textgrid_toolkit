@@ -56,7 +56,7 @@ for i to n_fileList
   if fileReadable(tgPath$)
     tg = Read from file: tgPath$
     modifiedFileCounter+=1
-    runScript: "add_tiers.praat", all_tier_names$, which_of_these_are_point_tiers$
+    runScript: "_add_tiers.praat", all_tier_names$, which_of_these_are_point_tiers$
     Save as text file: tgPath$
     removeObject: tg
   endif
