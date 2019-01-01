@@ -1,20 +1,21 @@
 form Read annotation files
   comment Folder with annotation files:
-  text tg_folder /home/rolando/gdrive/proyectos/spanish/spanish_stops/voiced_stops/data
+  text tg_folder /home/rolando/corpus
   comment Folder with sound files:
-  text audio_folder . ( = Relative path)
+  text audio_folder . (= Relative path)
   boolean Adjust_volume 1
   comment Table columns:
-  natural File_name 10
-  integer Start_time 6
-  integer End_time 7
-  integer Text 5
+  natural File_name 5
+  integer Start_time 3
+  integer End_time 4
+  integer Text 1
 endform
 
 tb = selected()
 n_files = object[tb].nrow
 file_number = 1
 relative_path = if startsWith(audio_folder$, ".") then 1 else 0 fi
+audio_folder$ = if audio_folder$ == ". (= Relative path)" then "." else audio_folder$ fi
 tg_ext$ = "TextGrid"
 audio_ext$ = "wav"
 volume = 0.99
@@ -69,7 +70,7 @@ while pause
     Select: tmin, tmax
   endif
   
-  beginPause: "file bfile_numberser"
+  beginPause: "File browser"
     comment: "Case: 'file_number'/'n_files'"
     natural: "Next file",  if (file_number + 1) > n_files then 1 else file_number + 1 fi
     if adjust_volume
