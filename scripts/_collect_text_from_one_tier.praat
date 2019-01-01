@@ -12,12 +12,12 @@ endform
 # Find files
 @createStringAsFileList: "fileList", tg_folder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
-nList = Get number of strings
+nFiles = Get number of strings
 
 # Collect database
 tbDatabase = Create Table with column names: "first", 0, "tmin text tmax filename"
 
-for iFile to nList
+for iFile to nFiles
   tgName$ = object$[fileList, iFile]
   tgFullPath$ = tg_folder$ + "/" + tgName$
   tg = Read from file: tgFullPath$
