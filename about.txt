@@ -4,7 +4,7 @@ Homepage: https://gitlab.com/praat_plugins_rma/annotation_assistant
 Version: 0.0.1
 Last modified: 22-Feb-2019
 Description:
-  - A tool for transcribing audio files. It is possible to create TextGrids, also add and reorganize tiers whithin a TextGrid.
+  - A plug-in for creating, manipulating and querying TextGrid files.
 Depends:
   - Praat: 6.30.2+
 License: GPL3
