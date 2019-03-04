@@ -8,7 +8,6 @@ form Read annotation files
   natural File_name 5
   integer Start_time 3
   integer End_time 4
-  integer Text 1
 endform
 
 tb = selected()
@@ -27,9 +26,6 @@ while pause
   
   # Read from table
   tg$ = object$[tb, file_number, file_name]
-  if not text
-    text$ = object$[tb, file_number, text]
-  endif
   
   # Get tg and sd fullpaths
   tg_full_path$ = tg_folder$ + "/" + tg$
