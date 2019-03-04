@@ -1,4 +1,4 @@
-# Written by Rolando Munoz A. (28 March 2018)
+# Written by Rolando Munoz A. (04 March 2019)
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -8,42 +8,29 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/config.proc
 include ../procedures/list_recursive_path.proc
 
-@config.init: "../preferences.txt"
-beginPause: "Insert tier (do all)"
-  comment: "The directories where your files are stored..."
-  sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  boolean: "Recursive search", number(config.init.return$["insert_tier.recursive_search"])
-  comment: "Insert tier..."
-  sentence: "All tier names", config.init.return$["insert_tier.all_tier_names"]
-  sentence: "Which of these are point tiers", config.init.return$["insert_tier.point_tiers"]
-clicked = endPause: "Cancel", "Apply", "Ok", 3
-
-if clicked = 1
-  exitScript()
-endif
-
-# Save the values from the dialogue box
-@config.setField: "textgrid_dir", textgrid_folder$
-@config.setField: "insert_tier.all_tier_names", all_tier_names$
-@config.setField: "insert_tier.point_tiers", which_of_these_are_point_tiers$
-@config.setField: "insert_tier.recursive_search", string$(recursive_search)
+form Insert tier
+  comment Folder with annotation files:
+  text tgFolder /home/rolando/corpus
+  boolean Recursive_search 0
+  comment Insert tier...
+  sentence All_tier_names Mary John bell
+  sentence Which_of_these_are_point_tiers bell
+endform
 
 # Check dialogue box
-if textgrid_folder$ == ""
-  pauseScript: "The field 'TextGrid folder' is empty. Please complete it"
-  runScript: "mod_insert_tier.praat"
+if tgFolder$ == ""
+  writeInfoLine: "The field 'TextGrid folder' is empty."
   exitScript()
-elsif
-  pauseScript: "The field 'All tier names' is empty. Please complete it"
-  runScript: "mod_insert_tier.praat"
+elsif all_tier_names$ == ""
+  writeInfoLine: "The field 'All tier names' is empty."
   exitScript()
 endif
 
 # Find directories
-@createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
+@createStringAsFileList: "fileList", tgFolder$ + "/*TextGrid", recursive_search
+
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
@@ -51,8 +38,7 @@ modifiedFileCounter = 0
 
 # Open each file
 for i to n_fileList
-  tgPath$ = textgrid_folder$ + "/" + object$[fileList, i]
-  
+  tgPath$ = tgFolder$ + "/" + object$[fileList, i]
   if fileReadable(tgPath$)
     tg = Read from file: tgPath$
     modifiedFileCounter+=1
@@ -71,7 +57,3 @@ appendInfoLine: "  Which of these are point tiers: ", which_of_these_are_point_t
 appendInfoLine: "Ouput:"
 appendInfoLine: "  Files (total): ", modifiedFileCounter
 # appendInfoLine: "  Modfied files (total): ", modifiedFileCounter
-
-if clicked = 2
-  runScript: "mod_insert_tier.praat"
-endif
