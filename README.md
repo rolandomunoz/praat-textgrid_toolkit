@@ -1,4 +1,4 @@
-# Annotation assistant
+# tgToolkit
 
 This plug-in provides you with some tools that are helpful when annotating a set of audio files.
 
