@@ -49,7 +49,7 @@ for iFile to n_fileList
   removeObject: tg
 endfor
 
-removeObject: str_tierList, fileList
+removeObject: fileList
 
 # Print info
 writeInfoLine: "Set tier name"
