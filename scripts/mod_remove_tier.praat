@@ -1,4 +1,4 @@
-# Written by Rolando Munoz A. (28 March 2018)
+# Written by Rolando Munoz A. (05 March 2019)
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -8,40 +8,28 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/config.proc
 include ../procedures/list_recursive_path.proc
 
-@config.init: "../preferences.txt"
-beginPause: "Remove tier (do all)"
-  comment: "The directory where your TextGrid files are stored..."
-  sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  boolean: "Recursive search", number(config.init.return$["remove_tier.recursive_search"])
-  comment: "Remove tiers..."
-  word: "Tier name", config.init.return$["remove_tier.all_tier_names"]
-  comment: "If remove all tiers, then DELETE TextGrid?"
-  boolean: "Yes", number(config.init.return$["remove_tier.delete_textgrid"])
-clicked = endPause: "Cancel", "Apply", "Ok", 3
-
-if clicked = 1
-  exitScript()
-endif
+form Remove tier
+  comment Folder with annotation files:
+  text tgFolder /home/rolando/corpus
+  boolean Recursive_search 0
+  comment Remove tiers...
+  word Tier_name
+  comment If remove all tiers, then DELETE TextGrid?
+  boolean Yes 0
+endform
 
 str_tier$ = tier_name$
 
-# Save the values from the dialogue box
-@config.setField: "textgrid_dir", textgrid_folder$
-@config.setField: "remove_tier.all_tier_names", tier_name$
-@config.setField: "remove_tier.recursive_search", string$(recursive_search)
-
 # Check dialogue box
-if textgrid_folder$ == ""
-  pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
-  runScript: "mod_remove_tier.praat"
+if tgFolder$ == ""
+  writeInfoLine: "The field 'TextGrid folder' is empty."
   exitScript()
-endif
+endifendif
 
 # Find directories
-@createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
+@createStringAsFileList: "fileList", tgFolder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
@@ -49,8 +37,10 @@ modifiedCounter = 0
 deletedFileCounter = 0
 
 for iFile to n_fileList
-  tgPath$ = textgrid_folder$ + "/" + object$[fileList, iFile]
-  tg = Read from file: tgPath$
+  tg$ = object$[fileList, iFile]
+  tgFullPath$ = tgFolder$ + "/" +tg$
+
+  tg = Read from file: tgFullPath$
   nTiers= Get number of tiers
 
   saveFile= 0
@@ -61,7 +51,7 @@ for iFile to n_fileList
       if nTiers = 1
         saveFile= 0
         if yes
-          deleteFile: tgPath$
+          deleteFile: tgFullPath$
           deletedFileCounter+=1
         endif
       else
@@ -74,7 +64,7 @@ for iFile to n_fileList
   
   if saveFile
     modifiedCounter+=1
-    Save as text file: tgPath$
+    Save as text file: tgFullPath$
   endif
   removeObject: tg
 endfor
@@ -89,7 +79,3 @@ appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", modifiedCounter
 appendInfoLine: "  Deleted files (total): ", deletedFileCounter
-
-if clicked == 2
-  runScript: "mod_remove_tier.praat"
-endif
