@@ -12,6 +12,8 @@ form Find TextGrids with...
 #  sentence Which_of_these_are_point_tiers?
 endform
 
+tb= Create Table with column names: "fileList", 0, "filename"
+
 # Check dialogue box
 tierList = Create Strings as tokens: all_tier_names$, " "
 nSearchTier = Get number of strings
@@ -22,8 +24,6 @@ wordListTier = To WordList
 @createStringAsFileList: "fileList", tg_folder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 nList = Get number of strings
-
-writeInfoLine: "Report missing tiers"
 
 for iFile to nList
   tgName$ = object$[fileList, iFile]
@@ -41,14 +41,20 @@ for iFile to nList
     tierCounter = if isTier then tierCounter + 1 else tierCounter fi
   endfor
 
+  selectObject: tb
+  
   if find_TextGrid_which == 1
     if nSearchTier == tierCounter
-      appendInfoLine: tgPath$
+      Append row
+      row = object[tb].nrow
+      Set string value: row, "filename", tgPath$
     endif
   elsif find_TextGrid_which == 2
     if nSearchTier > tierCounter
-      appendInfoLine: tgPath$
-    endif  
+      Append row
+      row = object[tb].nrow
+      Set string value: row, "filename", tgPath$
+    endif
   endif
   removeObject: tg
 endfor
