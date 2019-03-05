@@ -38,12 +38,14 @@ if tier_name$ == new_tier_name$
 endif
 
 counter = 0
-getTierNumber.return[tier_name$]= 0
-getTierNumber.return[after_tier$]= 0
 
 for iFile to n_fileList
+  getTierNumber.return[tier_name$]= 0
+  getTierNumber.return[after_tier$]= 0
+
   tg$ = object$[fileList, iFile]
   tgFullPath$ = tgFolder$ + "/" +tg$
+  
   tg = Read from file: tgFullPath$
   @getTierNumber
   tier= getTierNumber.return[tier_name$]
