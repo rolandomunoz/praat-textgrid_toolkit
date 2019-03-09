@@ -1,5 +1,4 @@
-# Written by Rolando Munoz A. (20 April 2018)
-#
+# Written by Rolando Munoz A. (2018-2019)
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -8,44 +7,33 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/config.proc
 include ../procedures/list_recursive_path.proc
 
-@config.init: "../preferences.txt"
-beginPause: "Create TextGrid (silences)(do all)"
-  comment: "The directories where your files are stored..."
-  sentence: "Audio folder", config.init.return$["audio_dir"]
-  sentence: "Textgrid folder", config.init.return$["create_textgrid.recursive_search.textgrid_dir"]
-  boolean: "Recursive search", number(config.init.return$["create_textgrid.recursive_search"])
-  comment: "To TextGrid (silences)..."
-  comment: "Parameters for the intensity analysis"
-  real: "Minimum pitch (Hz)", 100
-  real: "Time step (s)", 0.0
-  comment: "Silent intervals detection"
-  real: "Silence threshold (dB)", -25.0
-  real: "Minimum silent interval duration (s)", 0.1
-  real: "Minimum sounding interval duration (s)", 0.1
-  word: "Silent interval label", "silent"
-  word: "Sounding interval label", "sounding"
-clicked = endPause: "Cancel", "Apply", "Ok", 3
+form Create TextGrid (silences)
+  comment Folder with sound files:
+  text sdFolder /home/rolando/corpus
+  boolean Recursive_search 0
+  comment Folder with annotation files:
+  text tgFolder .
+  #(= relative path to sound files)
+  comment To TextGrid (silences)...
+  comment Parameters for the intensity analysis
+  real Minimum_pitch_(Hz) 100
+  real Time_step_(s) 0.0
+  comment Silent intervals detection
+  real Silence_threshold_(dB) -25.0
+  real Minimum_silent_interval_duration_(s) 0.1
+  real Minimum_sounding_interval_duration_(s) 0.1
+  word Silent_interval_label silent
+  word Sounding_interval_label sounding
+endform
 
-if clicked = 1
-  exitScript()
-endif
-
-# Save the values from the dialogue box
-@config.setField: "audio_dir", audio_folder$
-@config.setField: "create_textgrid.recursive_search.textgrid_dir", textgrid_folder$
-@config.setField: "create_textgrid.recursive_search", string$(recursive_search)
-
-audio_extension$= config.init.return$["audio_extension"]
-textgrid_folder$ = if textgrid_folder$ == "" then "." else textgrid_folder$ fi
-relative_path = if startsWith(textgrid_folder$, ".") then  1 else 0 fi
-
-# Check dialogue box
+audio_extension$= ".wav"
+tgFolder$ = if tgFolder$ == "" then "." else tgFolder$ fi
+relative_path = if startsWith(tgFolder$, ".") then 1 else 0 fi
 
 # Find directories
-@createStringAsFileList: "fileList", audio_folder$ + "/*'audio_extension$'", recursive_search
+@createStringAsFileList: "fileList", sdFolder$ + "/*'audio_extension$'", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
@@ -53,14 +41,14 @@ newFileCounter= 0
 
 # Open each file
 for i to n_fileList
-  sdPath$ = audio_folder$ + "/" + object$[fileList, i]
+  sdPath$ = sdFolder$ + "/" + object$[fileList, i]
   sd$ = replace_regex$(sdPath$, ".*/", "", 1)
   basename$ =  sd$ - audio_extension$
 
   if relative_path
-    tgPath$ = sdPath$ - sd$ + "/" + textgrid_folder$ + "/" + basename$ + ".TextGrid"
+    tgPath$ = sdPath$ - sd$ + "/" + tgFolder$ + "/" + basename$ + ".TextGrid"
   else
-    tgPath$ = textgrid_folder$ + "/" + basename$ + ".TextGrid"
+    tgPath$ = tgFolder$ + "/" + basename$ + ".TextGrid"
   endif
   
   if not fileReadable(tgPath$)
@@ -77,8 +65,3 @@ removeObject: fileList
 writeInfoLine: "Create TextGrid (silences)"
 appendInfoLine: "Output"
 appendInfoLine: "  New files (total): ", newFileCounter
-
-
-if clicked = 2
-  runScript: "create_textgrid.praat"
-endif

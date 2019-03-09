@@ -8,41 +8,24 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/config.proc
 include ../procedures/list_recursive_path.proc
 
 @config.init: "../preferences.txt"
-beginPause: "Create TextGrid (from audio files) (do all)"
-  comment: "The directories where your files are stored..."
-  sentence: "Audio folder", config.init.return$["audio_dir"]
-  sentence: "Textgrid folder", config.init.return$["create_textgrid.recursive_search.textgrid_dir"]
-  boolean: "Recursive search", number(config.init.return$["create_textgrid.recursive_search"])
-  comment: "To TextGrid..."
-  sentence: "All tier names", config.init.return$["create_textgrid.all_tier_names"]
-  sentence: "Which of these are point tiers", config.init.return$["create_textgrid.point_tiers"]
-clicked = endPause: "Cancel", "Apply", "Ok", 3
+form Create TextGrid
+  comment Folder with sound files:
+  text sdFolder /home/rolando/corpus
+  boolean Recursive_search 0
+  comment Folder with annotation files:
+  text tgFolder .
+  #(= relative path to sound files)
+  comment To TextGrid...
+  sentence All_tier_names Mary John bell
+  sentence Which_of_these_are_point_tiers bell
+endform
 
-if clicked = 1
-  exitScript()
-endif
-
-# Save the values from the dialogue box
-@config.setField: "audio_dir", audio_folder$
-@config.setField: "create_textgrid.recursive_search.textgrid_dir", textgrid_folder$
-@config.setField: "create_textgrid.all_tier_names", all_tier_names$
-@config.setField: "create_textgrid.point_tiers", which_of_these_are_point_tiers$
-@config.setField: "create_textgrid.recursive_search", string$(recursive_search)
-
-audio_extension$= config.init.return$["audio_extension"]
+audio_extension$= ".wav"
 textgrid_folder$ = if textgrid_folder$ == "" then "." else textgrid_folder$ fi
 relative_path = if startsWith(textgrid_folder$, ".") then  1 else 0 fi
-
-# Check dialogue box
-if all_tier_names$ == ""
-  pauseScript: "The field 'All tier names' is empty. Please complete it."
-  runScript: "create_textgrid.praat"
-  exitScript()
-endif
 
 # Find directories
 @createStringAsFileList: "fileList", audio_folder$ + "/*'audio_extension$'", recursive_search
@@ -80,7 +63,3 @@ appendInfoLine: "  All tier names: ",  all_tier_names$
 appendInfoLine: "  Which of these are point tiers: ", which_of_these_are_point_tiers$
 appendInfoLine: "Ouput:"
 appendInfoLine: "  New files (total): ", newFileCounter
-
-if clicked = 2
-  runScript: "create_textgrid.praat"
-endif
