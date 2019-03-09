@@ -4,6 +4,7 @@ A tool for processing many annotation files at once. Use this plug-in to create,
 
 ## Documentation
 - [Website](https://rolandomunoz.github.io/praat_tools/tg_toolkit.html)
+- [Manual](https://rolandomunoz.github.io/man/tg_toolkit_man.pdf)
 
 ## Author
 
