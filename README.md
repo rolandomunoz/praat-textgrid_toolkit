@@ -1,11 +1,9 @@
-# tgToolkit
+# TgToolkit
 
 This plug-in provides you with some tools that are helpful when annotating a set of audio files.
 
 ## Documentation
-- [Website](https://rolandomunoz.github.io/plugin_annotationAssistant.html)
-- [Getting Started](https://rolandomunoz.github.io/plugin_annotationAssistant_gettingStarted.html)
-- [Manual](https://rolandomunoz.github.io/plugin_annotationAssistant_manual.htmll)
+- [Website](https://rolandomunoz.github.io/praat_tools/tg_toolkit.html)
 
 ## Author
 
