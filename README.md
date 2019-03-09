@@ -1,6 +1,6 @@
 # TgToolkit
 
-This plug-in provides you with some tools that are helpful when annotating a set of audio files.
+A tool for processing many annotation files at once. Use this plug-in to create, modify or query your annotation files. Some additional features allows you summarize your transcriptions.
 
 ## Documentation
 - [Website](https://rolandomunoz.github.io/praat_tools/tg_toolkit.html)
