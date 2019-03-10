@@ -1,4 +1,4 @@
-# Written by Rolando Munoz A. (7 April 2018)
+# Written by Rolando Munoz A. (2018-2019)
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -8,20 +8,18 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/config.proc
 include ../procedures/get_tier_number.proc
 include ../procedures/list_recursive_path.proc
 
-@config.init: "../preferences.txt"
-beginPause: "Replace tier text (do all)"
-  comment: "The directory where your TextGrid files are stored..."
-  sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  boolean: "Recursive search", number(config.init.return$["replace_tier_text.recursive_search"])
-  comment: "Replace text..."
-  word: "Tier name", config.init.return$["replace_tier_text.tier_name"]
-  sentence: "Search", config.init.return$["replace_tier_text.search"]
-  sentence: "Replace", config.init.return$["replace_tier_text.replace"]
-  optionMenu: "Mode", number(config.init.return$["replace_tier_text.mode"])
+form Replace tier text
+  comment Folder with annotation files:
+  text tgFolderPath /home/user/Desktop/corpus
+  boolean Recursive_search 0
+  comment Replace text...
+  word Tier_name phrase
+  sentence Search a
+  sentence Replace a
+  optionmenu Mode 1
 #    option: "is equal to"
 #    option: "is not equal to"
 #    option: "contains"
@@ -33,33 +31,11 @@ beginPause: "Replace tier text (do all)"
 #    option: "contains a word equal to"
 #    option: "does not contain a word equal to"
 #    option: "contains a word starting with"
-    option: "Literals"
-    option: "Matches (regex)"
-clicked = endPause: "Cancel", "Apply", "Ok", 3
+    option Literals
+    option Matches (regex)
+endform
 
-if clicked=1
-  exitScript()
-endif
-
-# Save the values from the dialogue box
-@config.setField: "textgrid_dir", textgrid_folder$
-@config.setField: "replace_tier_text.tier_name", tier_name$
-@config.setField: "replace_tier_text.search", search$
-@config.setField: "replace_tier_text.replace", replace$
-@config.setField: "replace_tier_text.mode", string$(mode)
-@config.setField: "replace_tier_text.recursive_search", string$(recursive_search)
-
-# Check dialogue box
-if textgrid_folder$ == ""
-  pauseScript: "The field 'Textgrid folder' is empty. Please complete it"
-  runScript: "mod_replace_tier_text.praat"
-  exitScript()
-endif
-
-str_tierList= Create Strings as tokens: tier_name$, " ,"
-n_tierList= Get number of strings
-
-@createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
+@createStringAsFileList: "fileList", tgFolderPath$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
@@ -96,11 +72,13 @@ mode_mod$= if mode = 1 then "contains" else "matches (regex)" fi
 # endif
 
 counter = 0
-getTierNumber.return[tier_name$]= 0
 
 for iFile to n_fileList
   tg$ = object$[fileList, iFile]
-  tg = Read from file: textgrid_folder$ + "/" +tg$
+  tgFullPath$ = tgFolderPath$ + "/" +tg$
+  
+  tg = Read from file: tgFullPath$
+  getTierNumber.return[tier_name$]= 0
   @getTierNumber
   tier= getTierNumber.return[tier_name$]
   
@@ -119,14 +97,13 @@ for iFile to n_fileList
       else
         Replace point text: tier, 0, 0, search$, replace$, mode$
       endif
-      Save as text file: textgrid_folder$ + "/" + tg$
+      Save as text file: tgFullPath$
     endif
-
   endif
   removeObject: tg
 endfor
 
-removeObject: str_tierList, fileList
+removeObject: fileList
 
 # Print info
 writeInfoLine: "Replace tier name"
@@ -138,7 +115,3 @@ appendInfoLine: "  Mode: ", mode$
 appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", counter
-
-if clicked = 2
-  runScript: "mod_replace_text.praat"
-endif

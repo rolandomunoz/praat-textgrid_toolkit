@@ -8,7 +8,6 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/config.proc
 include ../procedures/get_tier_number.proc
 include ../procedures/list_recursive_path.proc
 
