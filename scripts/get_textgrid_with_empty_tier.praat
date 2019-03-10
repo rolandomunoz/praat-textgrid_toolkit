@@ -1,23 +1,13 @@
 include ../procedures/list_recursive_path.proc
-include ../procedures/config.proc
 
-@config.init: "../preferences.txt"
+form "Get TextGrid report"
+  comment Folder with annotation files:
+  text tgFolder /home/rolando/corpus
+  boolean Recursive_search 0
+  word Tier_name
+endform
 
-beginPause: "Get TextGrid report"
-  sentence: "Textgrid folder", config.init.return$["textgrid_dir"]
-  word: "Tier name", ""
-  boolean: "Recursive search", number(config.init.return$["get_textgrid_report.recursive_search"])
-clicked = endPause: "Cancel", "Apply", "Ok", 3
-
-if clicked = 1
-  exitScript()
-endif
-
-# Save the values from the dialogue box
-@config.setField: "textgrid_dir", textgrid_folder$
-@config.setField: "get_textgrid_report.recursive_search", string$(recursive_search)
-
-@createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
+@createStringAsFileList: "fileList", tgFolder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
@@ -31,7 +21,7 @@ for i to n_fileList
 
   # Read all the tiers from the TextGrid  
   tg$ = object$[fileList, i]
-  tg = Read from file: textgrid_folder$ + "/" + tg$
+  tg = Read from file: tgFolder$ + "/" + tg$
   nTiers= Get number of tiers
 
   selectObject: tg
