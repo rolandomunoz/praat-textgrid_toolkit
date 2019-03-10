@@ -1,11 +1,11 @@
-form Paths to TextGridEditor
+form To TextGridEditor
   comment Folder with annotation files:
   text tg_folder /home/rolando/corpus
   comment Folder with sound files:
   text audio_folder . (= Relative path)
   boolean Adjust_volume 1
   comment Table columns:
-  word File_name file_name
+  word Filename filename
   word Start_time tmin
   word End_time tmax
 endform
