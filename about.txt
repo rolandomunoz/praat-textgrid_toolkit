@@ -2,11 +2,11 @@ Plugin: tgToolkit
 Author: Rolando Muñoz A. <rmunoz@gmail.com>
 Homepage: https://gitlab.com/praat_plugins_rma/annotation_assistant
 Version: 0.0.1
-Last modified: 22-Feb-2019
+Last modified: 10-Mar-2019
 Description:
-  - A plug-in for creating, manipulating and querying TextGrid files.
+  - A tool for processing many annotation files at once. Use this plug-in to create, modify or query your annotation files. Some additional features allows you summarize your transcriptions.
 Depends:
   - Praat: 6.30.2+
 License: GPL3
 How to cite: 
- - Muñoz A., Rolando (2019). tgToolkit[Praat plug-in]. Version 0.0.1, retrived 16 May2018 from https://gitlab.com/praat_plugins_rma/annotation_assistant
+ - Muñoz A., Rolando (2019). TgToolkit[Praat plug-in]. Version 0.0.1, retrived 10 Mar 2019 from https://gitlab.com/praat_plugins_rma/annotation_assistant
