@@ -1,16 +1,20 @@
-form Read annotation files
+form Paths to TextGridEditor
   comment Folder with annotation files:
   text tg_folder /home/rolando/corpus
   comment Folder with sound files:
   text audio_folder . (= Relative path)
   boolean Adjust_volume 1
   comment Table columns:
-  natural File_name 5
-  integer Start_time 3
-  integer End_time 4
+  word File_name file_name
+  word Start_time tmin
+  word End_time tmax
 endform
 
 tb = selected()
+file_name = Get column index: file_name$
+start_time = Get column index: start_time$
+end_time = Get column index: end_time$
+
 n_files = object[tb].nrow
 file_number = 1
 relative_path = if startsWith(audio_folder$, ".") then 1 else 0 fi
