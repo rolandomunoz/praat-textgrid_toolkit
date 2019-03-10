@@ -19,8 +19,8 @@ Add menu command: "Objects", "Goodies", "Open files (TextGridEditor)...", "tgToo
 
 ## Modify
 Add menu command: "Objects", "Goodies", "Create", "tgToolkit", 1, ""
-Add menu command: "Objects", "Goodies", "Create TextGrid...", "Create", 2, "scripts/create_textgrid.praat"
-Add menu command: "Objects", "Goodies", "Create TextGrid (silences)...", "Create", 2, "scripts/create_textgrid_silences.praat"
+Add menu command: "Objects", "Goodies", "Sound to TextGrid...", "Create", 2, "scripts/create_textgrid.praat"
+Add menu command: "Objects", "Goodies", "Sound to TextGrid (silences)...", "Create", 2, "scripts/create_textgrid_silences.praat"
 
 Add menu command: "Objects", "Goodies", "Modify", "tgToolkit", 1, ""
 Add menu command: "Objects", "Goodies", "Insert tier...", "Modify", 2, "scripts/mod_insert_tier.praat"

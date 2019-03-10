@@ -9,7 +9,7 @@
 #
 include ../procedures/list_recursive_path.proc
 
-form Create TextGrid (silences)
+form Sound to TextGrid (silences)
   comment Folder with sound files:
   text sdFolder /home/rolando/corpus
   boolean Recursive_search 0
