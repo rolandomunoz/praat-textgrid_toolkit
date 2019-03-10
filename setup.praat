@@ -44,7 +44,5 @@ Add menu command: "Objects", "Goodies", "-", "", 1, ""
 Add menu command: "Objects", "Goodies", "About", "tgToolkit", 1, "scripts/about.praat"
 
 # Dynamic menu
-Add action command: "TextGrid", 1, "", 0, "", 0, "Report duration...", "Get total duration", 2, "scripts/dynamic_menu/get_duration_by_tier.praat"
-
 Add action command: "Table", 1, "", 0, "", 0, "Annotation tools", "", 0, ""
 Add action command: "Table", 1, "", 0, "", 0, "Open annotation files...", "Annotation tools", 1, "scripts/dynamic_menu/open_tg_from_table.praat"
