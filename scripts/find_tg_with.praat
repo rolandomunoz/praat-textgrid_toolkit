@@ -2,7 +2,7 @@ include ../procedures/list_recursive_path.proc
 
 form Find TextGrids with...
   comment Folder with annotation files:
-  text tg_folder /home/rolando/corpus
+  text tgFolder /home/rolando/corpus
   boolean Recursive_search 0
   comment TextGrids
   optionmenu Find_TextGrid_which 1
@@ -21,13 +21,13 @@ Sort
 wordListTier = To WordList
 
 # Find files
-@createStringAsFileList: "fileList", tg_folder$ + "/*TextGrid", recursive_search
+@createStringAsFileList: "fileList", tgFolder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 nList = Get number of strings
 
 for iFile to nList
   tgName$ = object$[fileList, iFile]
-  tgPath$ = tg_folder$ + "/" + tgName$
+  tgPath$ = tgFolder$ + "/" + tgName$
   tg = Read from file: tgPath$
   nTgTiers = Get number of tiers
   tierCounter = 0
