@@ -1,8 +1,8 @@
 form To TextGridEditor
   comment Folder with annotation files:
-  text tg_folder /home/rolando/corpus
+  text tgFolder 
   comment Folder with sound files:
-  text audio_folder . (= Relative path)
+  text audioFolder . (= Relative path)
   boolean Adjust_volume 1
   comment Table columns:
   word Filename filename
@@ -11,14 +11,14 @@ form To TextGridEditor
 endform
 
 tb = selected()
-file_name = Get column index: file_name$
+filename = Get column index: filename$
 start_time = Get column index: start_time$
 end_time = Get column index: end_time$
 
 n_files = object[tb].nrow
 file_number = 1
-relative_path = if startsWith(audio_folder$, ".") then 1 else 0 fi
-audio_folder$ = if audio_folder$ == ". (= Relative path)" then "." else audio_folder$ fi
+relative_path = if startsWith(audioFolder$, ".") then 1 else 0 fi
+audioFolder$ = if audioFolder$ == ". (= Relative path)" then "." else audioFolder$ fi
 tg_ext$ = "TextGrid"
 audio_ext$ = "wav"
 volume = 0.99
@@ -29,28 +29,29 @@ while pause
   file_number = if file_number > n_files then 1 else file_number fi
   
   # Read from table
-  tg$ = object$[tb, file_number, file_name]
+  tg$ = object$[tb, file_number, filename]
   
   # Get tg and sd fullpaths
-  tg_full_path$ = tg_folder$ + "/" + tg$
-  path$ = replace_regex$(tg_full_path$, "(.+)/(.+)", "\1", 1)
-  basename$ = replace_regex$(tg_full_path$, "(.+)/(.+)", "\2", 1)
+  tgFullpath$ = tgFolder$ + "/" + tg$
+  path$ = replace_regex$(tgFullpath$, "(.+)/(.+)", "\1", 1)
+  basename$ = replace_regex$(tgFullpath$, "(.+)/(.+)", "\2", 1)
   sd$ = basename$ - tg_ext$ + audio_ext$
 
   if relative_path
-    sound_full_path$ = path$ + "/" + audio_folder$ + "/" + sd$
+    sdFullpath$ = path$ + "/" + audioFolder$ + "/" + sd$
   else
-    sound_full_path$ = audio_folder$ + "/" + sd$
+    sdFullpath$ = audioFolder$ + "/" + sd$
   endif
-
-  tg = Read from file: tg_full_path$
-  open_with_sound = if fileReadable(sound_full_path$) then 1 else 0 fi
+  
+  tg = Read from file: tgFullpath$
+  
+  open_with_sound = if fileReadable(sdFullpath$) then 1 else 0 fi
   if open_with_sound
     if adjust_volume
-      sd = Read from file: sound_full_path$
+      sd = Read from file: sdFullpath$
       Scale peak: volume
     else
-      sd = Open long sound file: sound_full_path$
+      sd = Open long sound file: sdFullpath$
     endif
     objectList# = {sd, tg}
   else
@@ -60,7 +61,7 @@ while pause
   selectObject: objectList#
   View & Edit
   editor: tg
-  if start_time != 0 or end_time != 0
+  if start_time != 0 and end_time != 0
     tmin = object[tb, file_number, start_time]
     tmax = object[tb, file_number, end_time]
 
@@ -82,7 +83,7 @@ while pause
   buttonChoice = clicked_pause 
   if clicked_pause = 1
     selectObject: tg
-    Save as text file: tg_full_path$
+    Save as text file: tgFullpath$
   endif
   
   removeObject: objectList#
