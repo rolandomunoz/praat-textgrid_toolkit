@@ -8,13 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unrealised]
 
 ### Added
-  - `View & Edit when...` command
+  - `To TextGridEditor` command
   
 ### Changed
-  - Rename menu `Do each` to `Do one-by-one`
-  
+  - Four command categories: Create, Modify, Query and Corpus
+  - Use form/endform dialogue boxes
+  - New list_recursive_search.proc
+ 
 ### Fixed
-  - Recursive search in `Do one-by-one` commands
   
 ### Modified
   - Recursive search procedures
