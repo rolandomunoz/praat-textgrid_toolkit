@@ -24,7 +24,7 @@ endform
 if tgFolder$ == ""
   writeInfoLine: "The field 'TextGrid folder' is empty."
   exitScript()
-endifendif
+endif
 
 @createStringAsFileList: "fileList", tgFolder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")

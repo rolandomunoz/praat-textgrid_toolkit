@@ -26,7 +26,7 @@ str_tier$ = tier_name$
 if tgFolder$ == ""
   writeInfoLine: "The field 'TextGrid folder' is empty."
   exitScript()
-endifendif
+endif
 
 # Find directories
 @createStringAsFileList: "fileList", tgFolder$ + "/*TextGrid", recursive_search
