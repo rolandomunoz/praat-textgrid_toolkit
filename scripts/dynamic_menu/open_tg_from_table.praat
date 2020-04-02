@@ -67,6 +67,7 @@ while pause
 
     dur = tmax - tmin
     dur_10 = dur*0.10
+    dur_10 = if dur_10 == 0 then 0.1 fi
     Zoom: tmin - dur_10, tmax + dur_10
     Select: tmin, tmax
   endif
