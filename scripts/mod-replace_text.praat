@@ -13,7 +13,7 @@ include ../procedures/list_recursive_path.proc
 
 form Replace tier text
   comment Folder with annotation files:
-  text tgFolderPath /home/user/Desktop/corpus
+  text tgFolderPath /home/rolando/corpus
   boolean Recursive_search 0
   comment Replace text...
   word Tier_name phrase
