@@ -10,21 +10,21 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 include ../procedures/list_recursive_path.proc
+include ../procedures/intervalpoint.proc
 
 form Check TextGrid whitespaces...
   comment Folder with annotation files:
   text Textgrid_folder /home/rolando/corpus
   boolean Recursive_search 0
-  comment Do...
+  comment Create Table...
   boolean Create_Table_with_detailed_report
-  boolean Remove_white_space_characters 0
 endform
 
 @createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
-tb = Create Table with column names: "white_spaces", 0, "error tier interval filename count"
+tb = Create Table with column names: "white_spaces", 0, "error tier_name tier interval tmin tmax filename count"
 
 # Open one-by-one all the TextGrids
 for i to n_fileList
@@ -47,46 +47,41 @@ for i to n_fileList
       label$ = get_label_of_item.return$
       
       if index_regex(label$, "[ \t\v\n]")
+        @get_time_of_item: iTier, iPosition
+        tmin = get_time_of_item.tmin
+        tmax = get_time_of_item.tmax
+
+        errorName$ = "white space between words"
+        if index_regex(label$, "\t")
+          errorName$ = "horizontal tab"
+        elif index_regex(label$, "\v")
+          errorName$ = "vertical tab"
+        elif index_regex(label$, "\n")
+          errorName$ = "new line"
+        elif index_regex(label$, "^ +$")
+          errorName$ = "white space label"
+        elif index_regex(label$, " +$")
+          errorName$ = "white space at the end"
+          pattern$ = " +$"
+        elif index_regex(label$, "^ +")
+          errorName$ = "white space at the start"
+          pattern$ = "^ +"
+        elif index_regex(label$, "  +")
+          errorName$ = "two or more white spaces"
+        endif
+
         selectObject: tb
         Append row
         currentRow = object[tb].nrow
-
-        if index_regex(label$, "\t")
-          errorName$ = "Horizontal tab"
-        elif index_regex(label$, "\v")
-          errorName$ = "Vertical tab"
-        elif index_regex(label$, "\n")
-          errorName$ = "New line"
-        elif index_regex(label$, "^ +$")
-          errorName$ = "White space label"
-        elif index_regex(label$, " +$")
-          errorName$ = "White space at end"
-          pattern$ = " +$"
-        elif index_regex(label$, "^ +")
-          errorName$ = "White space at start"
-          pattern$ = "^ +"
-        elif index_regex(label$, " +")
-          errorName$ = "White spaces"
-          pattern$ = " +"
-        endif
-
+        
         Set string value: currentRow, "error", errorName$
+        Set string value: currentRow, "tier_name", tierName$
         Set numeric value: currentRow, "tier", iTier
         Set numeric value: currentRow, "interval", iPosition
+        Set numeric value: currentRow, "tmin", tmin
+        Set numeric value: currentRow, "tmax", tmax
         Set numeric value: currentRow, "count", 1
         Set string value: currentRow, "filename", tgPath$
-
-        label$ = replace_regex$(label$, "[\t\v\n]", " ", 0)
-        label$ = replace_regex$(label$, "^ +$", "", 0)
-        label$ = replace_regex$(label$, " +$", "", 0)
-        label$ = replace_regex$(label$, "^ +", "", 0)
-        label$ = replace_regex$(label$, " +", " ", 0)
-        
-        if remove_white_space_characters
-          selectObject: tg
-          @set_item_text: iTier, iPosition, label$
-        endif
-
       endif
     endfor
   endfor
@@ -94,6 +89,7 @@ for i to n_fileList
 endfor
 
 selectObject: tb
+Sort rows: "error"
 tb_info = Collapse rows: "error", "count", "", "", "", ""
 info$ = List: 0
 
@@ -107,30 +103,3 @@ info$ = replace_regex$(info$, "error\tcount", "\n_______________________Summary_
 info$ = replace_regex$(info$, "\t", ": ", 0)
 writeInfoLine: "Check TextGrid content..."
 appendInfoLine: info$
-
-procedure set_item_text: .tier, .position, .text$
-  isIntervalTier = Is interval tier: .tier
-    if isIntervalTier
-      Set interval text: .tier, .position, .text$
-    else
-      Set point text: .tier, .position, .text$
-    endif
-endproc
-
-procedure get_number_of_items: .tier
-  isIntervalTier = Is interval tier: .tier
-    if isIntervalTier
-      .return = Get number of intervals: .tier
-    else
-      .return = Get number of points: .tier
-    endif
-endproc
-
-procedure get_label_of_item: .tier, .position
-  isIntervalTier = Is interval tier: .tier
-    if isIntervalTier
-      .return$ = Get label of interval: .tier, .position
-    else
-      .return$ = Get label of point: .tier, .position
-    endif
-endproc
