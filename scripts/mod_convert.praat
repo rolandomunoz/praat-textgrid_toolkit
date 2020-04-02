@@ -10,7 +10,7 @@
 #
 include ../procedures/list_recursive_path.proc
 
-form Covert annotation files
+form Covert
   comment Folder with annotation files:
   text tgFolder /home/rolando/corpus
   boolean Recursive_search 0
