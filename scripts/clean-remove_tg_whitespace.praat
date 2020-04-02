@@ -17,7 +17,7 @@ form Check TextGrid whitespaces...
   text Textgrid_folder /home/rolando/corpus
   boolean Recursive_search 0
   comment Settings...
-  boolean Keep_white_space_between_words 0
+  boolean Keep_white_space_between_words 1
 endform
 
 @createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
