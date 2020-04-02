@@ -66,9 +66,8 @@ while pause
     tmax = object[tb, file_number, end_time]
 
     dur = tmax - tmin
-    dur_10 = dur*0.10
-    dur_10 = if dur_10 == 0 then 0.1 fi
-    Zoom: tmin - dur_10, tmax + dur_10
+    margin = if dur == 0 then 0.1 else dur*0.1 fi
+    Zoom: tmin - margin, tmax + margin
     Select: tmin, tmax
   endif
   
