@@ -36,7 +36,7 @@ Add menu command: "Objects", "Goodies", "Create Table child/parent...", "Query",
 
 Add menu command: "Objects", "Goodies", "Clean", "TgToolkit", 1, ""
 Add menu command: "Objects", "Goodies", "Check TextGrid tiers...", "Clean", 2, "scripts/clean-check_tg_tiers.praat"
-Add menu command: "Objects", "Goodies", "Check TextGrid white spaces...", "Clean", 2, "scripts/clean-check_tg_content.praat"
+Add menu command: "Objects", "Goodies", "Check TextGrid white spaces...", "Clean", 2, "scripts/clean-check_tg_whitespaces.praat"
 Add menu command: "Objects", "Goodies", "Find TextGrid files if tier name...", "Clean", 2, "scripts/clean-find_tg_if_tier_name.praat"
 Add menu command: "Objects", "Goodies", "-", "Clean", 2, ""
 Add menu command: "Objects", "Goodies", "Remove TextGrid white spaces...", "Clean", 2, "scripts/clean-remove_tg_whitespace.praat"
