@@ -94,7 +94,7 @@ tb_info = Collapse rows: "error", "count", "", "", "", ""
 info$ = List: 0
 
 removeObject: tb_info, fileList
-
+selectObject: tb
 if not create_Table_with_detailed_report
   removeObject: tb
 endif
