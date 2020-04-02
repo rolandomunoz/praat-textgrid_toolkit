@@ -1,6 +1,6 @@
 # TgToolkit
 
-A tool for processing many annotation files at once. Use this plug-in to create, modify or query your annotation files. Some additional features allows you summarize your transcriptions.
+A tool for processing many annotation files at once. Use this plug-in to create, modify, query or clean your annotation files.
 
 ## Documentation
 - [Website](https://rolandomunoz.github.io/praat_tools/tg_toolkit.html)
