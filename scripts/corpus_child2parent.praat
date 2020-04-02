@@ -3,7 +3,7 @@
 include ../procedures/link_intervals.proc
 include ../procedures/list_recursive_path.proc
 
-form Create parent/child tier corpus
+form Create Table parent/child tier
   comment Folder with annotation files:
   text tg_folder /home/rolando/corpus
   boolean Recursive_search 0

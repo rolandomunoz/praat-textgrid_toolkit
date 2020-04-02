@@ -1,6 +1,6 @@
 include ../procedures/list_recursive_path.proc
 
-form Get info from annotation files...
+form Check TextGrid tiers...
   comment Folder with annotation files:
   text Textgrid_folder /home/rolando/corpus
   boolean Recursive_search 0

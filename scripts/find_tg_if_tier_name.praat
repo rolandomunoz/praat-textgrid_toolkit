@@ -10,7 +10,7 @@
 #
 include ../procedures/list_recursive_path.proc
 
-form Find annotation files if...
+form Find TextGrid files if tier name...
   comment Folder with annotation files:
   text tgFolder /home/rolando/corpus
   boolean Recursive_search 0

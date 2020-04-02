@@ -29,14 +29,15 @@ Add menu command: "Objects", "Goodies", "Replace text...", "Modify", 2, "scripts
 Add menu command: "Objects", "Goodies", "Replace text (dictionary)...", "Modify", 2, "scripts/mod_replace_text_from_csv.praat"
 
 Add menu command: "Objects", "Goodies", "Query", "TgToolkit", 1, ""
-Add menu command: "Objects", "Goodies", "Get info...", "Query", 2, "scripts/get_textgrid_report.praat"
-Add menu command: "Objects", "Goodies", "Find annotation file if tier name...", "Query", 2, "scripts/find_tg_if_tier_name.praat"
-Add menu command: "Objects", "Goodies", "-", "Query", 2, ""
 Add menu command: "Objects", "Goodies", "Report duration...", "Query", 2, "scripts/get_duration.praat"
+Add menu command: "Objects", "Goodies", "-", "Query", 2, ""
+Add menu command: "Objects", "Goodies", "Create Table word occurrences...", "Query", 2, "scripts/corpus_word_occurrences.praat"
+Add menu command: "Objects", "Goodies", "Create Table child/parent...", "Query", 2, "scripts/corpus_child2parent.praat"
 
-Add menu command: "Objects", "Goodies", "Corpus", "TgToolkit", 1, ""
-Add menu command: "Objects", "Goodies", "Create word occurrences corpus...", "Corpus", 2, "scripts/corpus_word_occurrences.praat"
-Add menu command: "Objects", "Goodies", "Create child/parent corpus...", "Corpus", 2, "scripts/corpus_child2parent.praat"
+Add menu command: "Objects", "Goodies", "Clean", "TgToolkit", 1, ""
+Add menu command: "Objects", "Goodies", "Check TextGrid tiers...", "Clean", 2, "scripts/clean_check_tg_tiers.praat"
+Add menu command: "Objects", "Goodies", "Find TextGrid files if tier name...", "Clean", 2, "scripts/find_tg_if_tier_name.praat"
+
 
 Add menu command: "Objects", "Goodies", "-", "", 1, ""
 Add menu command: "Objects", "Goodies", "About", "TgToolkit", 1, "scripts/about.praat"
