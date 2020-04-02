@@ -1,0 +1,49 @@
+procedure replace_item_texts: .tier, .search$, .replace$
+  .isIntervalTier = Is interval tier: .tier
+  if .isIntervalTier
+    Replace interval texts: .tier, 1, 0, .search$, .replace$, "Regular Expressions"
+  else
+    .nPoints = Get number of points: .tier
+    if .nPoints
+      Replace point texts: .tier, 1, 0, .search$, .replace$, "Regular Expressions"
+    endif
+  endif
+endproc
+
+procedure get_time_of_item: .tier, .position
+  .isIntervalTier = Is interval tier: .tier
+    if .isIntervalTier
+      .tmin = Get start time of interval: .tier, .position
+      .tmax = Get end time of interval: .tier, .position
+    else
+      .tmin = Get time of point: .tier, .position
+      .tmax = .tmin
+    endif
+endproc
+
+procedure set_item_text: .tier, .position, .text$
+  .isIntervalTier = Is interval tier: .tier
+    if .isIntervalTier
+      Set interval text: .tier, .position, .text$
+    else
+      Set point text: .tier, .position, .text$
+    endif
+endproc
+
+procedure get_number_of_items: .tier
+  .isIntervalTier = Is interval tier: .tier
+    if .isIntervalTier
+      .return = Get number of intervals: .tier
+    else
+      .return = Get number of points: .tier
+    endif
+endproc
+
+procedure get_label_of_item: .tier, .position
+  .isIntervalTier = Is interval tier: .tier
+    if .isIntervalTier
+      .return$ = Get label of interval: .tier, .position
+    else
+      .return$ = Get label of point: .tier, .position
+    endif
+endproc
