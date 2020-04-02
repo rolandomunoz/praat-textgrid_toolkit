@@ -18,6 +18,8 @@ Add menu command: "Objects", "Goodies", "Sound to TextGrid...", "Create", 2, "sc
 Add menu command: "Objects", "Goodies", "Sound to TextGrid (silences)...", "Create", 2, "scripts/create_textgrid_silences.praat"
 
 Add menu command: "Objects", "Goodies", "Modify", "TgToolkit", 1, ""
+Add menu command: "Objects", "Goodies", "Convert annotation files...", "Modify", 2, "scripts/mod_convert.praat"
+Add menu command: "Objects", "Goodies", "-", "Modify", 2, ""
 Add menu command: "Objects", "Goodies", "Insert tier...", "Modify", 2, "scripts/mod_insert_tier.praat"
 Add menu command: "Objects", "Goodies", "Duplicate tier...", "Modify", 2, "scripts/mod_duplicate_tier.praat"
 Add menu command: "Objects", "Goodies", "Remove tier...", "Modify", 2, "scripts/mod_remove_tier.praat"
