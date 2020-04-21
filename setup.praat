@@ -47,3 +47,5 @@ Add menu command: "Objects", "Goodies", "About", "TgToolkit", 1, "scripts/about.
 # Dynamic menu
 Add action command: "Table", 1, "", 0, "", 0, "TgToolkit", "", 0, ""
 Add action command: "Table", 1, "", 0, "", 0, "To TextGridEditor", "TgToolkit", 0, "scripts/dynamic_menu/open_tg_from_table.praat"
+Add action command: "TextGrid", 1, "", 0, "", 0, "-", "Modify interval tier", 2, ""
+Add action command: "TextGrid", 1, "", 0, "", 0, "Merge tiers...", "Modify interval tier", 2, "scripts/dynamic_menu/tg-join_interval_tiers.praat"
