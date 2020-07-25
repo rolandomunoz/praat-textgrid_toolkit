@@ -9,97 +9,129 @@
 #
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
-include ../procedures/list_recursive_path.proc
-include ../procedures/intervalpoint.proc
 
-form Check TextGrid whitespaces...
+form Check whitespaces
   comment Folder with annotation files:
   text Textgrid_folder /home/rolando/corpus
   boolean Recursive_search 0
-  comment Create Table...
-  boolean Create_Table_with_detailed_report
+  optionmenu Mode 1
+  option Only summary
+  option Create a report Table
+  option Remove white spaces
 endform
 
 @createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
-tb = Create Table with column names: "white_spaces", 0, "error tier_name tier interval tmin tmax filename count"
+tb = Create Table with column names: "whitespaces", 0, "error tier_name tier interval tmin tmax filename count"
 
 # Open one-by-one all the TextGrids
 for i to n_fileList
   # Read all the tiers from the TextGrid
   tg$ = object$[fileList, i]
   basename$ = replace_regex$(tg$, "(.+/)(.+)", "\2", 0)
-  tgPath$ = textgrid_folder$ + "/" + tg$
-  tg = Read from file: tgPath$
-  nTiers = Get number of tiers
-  for iTier to nTiers
+  tg_path$ = textgrid_folder$ + "/" + tg$
+  tg = Read from file: tg_path$
+  n_tiers = Get number of tiers
+  for i_tier to n_tiers
     selectObject: tg
-    tierName$ = Get tier name: iTier
-    @get_number_of_items: iTier
-    nPositions= get_number_of_items.return
+    tier_name$ = Get tier name: i_tier
+    @get_number_of_items: i_tier
+    n_positions = get_number_of_items.return
     
-
-    for iPosition to nPositions
+    for i_position to n_positions
       selectObject: tg
-      @get_label_of_item: iTier, iPosition
+      @get_label_of_item: i_tier, i_position
       label$ = get_label_of_item.return$
       
       if index_regex(label$, "[ \t\v\n]")
-        @get_time_of_item: iTier, iPosition
+        @get_time_of_item: i_tier, i_position
         tmin = get_time_of_item.tmin
         tmax = get_time_of_item.tmax
 
-        errorName$ = "white space between words"
+        error_name$ = "white space between words"
         if index_regex(label$, "\t")
-          errorName$ = "horizontal tab"
+          error_name$ = "horizontal tab"
         elif index_regex(label$, "\v")
-          errorName$ = "vertical tab"
+          error_name$ = "vertical tab"
         elif index_regex(label$, "\n")
-          errorName$ = "new line"
+          error_name$ = "new line"
         elif index_regex(label$, "^ +$")
-          errorName$ = "white space label"
+          error_name$ = "white space label"
         elif index_regex(label$, " +$")
-          errorName$ = "white space at the end"
+          error_name$ = "white space at the end"
           pattern$ = " +$"
         elif index_regex(label$, "^ +")
-          errorName$ = "white space at the start"
+          error_name$ = "white space at the start"
           pattern$ = "^ +"
         elif index_regex(label$, "  +")
-          errorName$ = "two or more white spaces"
+          error_name$ = "two or more white spaces"
         endif
 
         selectObject: tb
         Append row
-        currentRow = object[tb].nrow
+        current_row = object[tb].nrow
         
-        Set string value: currentRow, "error", errorName$
-        Set string value: currentRow, "tier_name", tierName$
-        Set numeric value: currentRow, "tier", iTier
-        Set numeric value: currentRow, "interval", iPosition
-        Set numeric value: currentRow, "tmin", tmin
-        Set numeric value: currentRow, "tmax", tmax
-        Set numeric value: currentRow, "count", 1
-        Set string value: currentRow, "filename", tgPath$
+        Set string value: current_row, "error", error_name$
+        Set string value: current_row, "tier_name", tier_name$
+        Set numeric value: current_row, "tier", i_tier
+        Set numeric value: current_row, "interval", i_position
+        Set numeric value: current_row, "tmin", tmin
+        Set numeric value: current_row, "tmax", tmax
+        Set numeric value: current_row, "count", 1
+        Set string value: current_row, "filename", tg_path$
       endif
     endfor
   endfor
   removeObject: tg
 endfor
+removeObject: fileList
 
-selectObject: tb
-Sort rows: "error"
-tb_info = Collapse rows: "error", "count", "", "", "", ""
-info$ = List: 0
+# Start mode
+if mode == 1
+  # Get info for summary
+  selectObject: tb
+  Sort rows: "error"
+  tb_info = Collapse rows: "error", "count", "", "", "", ""
+  info$ = List: 0
 
-removeObject: tb_info, fileList
-selectObject: tb
-if not create_Table_with_detailed_report
+  # Print summary
+  info$ = replace_regex$(info$, "error\tcount", "\n_______________________Summary_______________________________", 0)
+  info$ = replace_regex$(info$, "\t", ": ", 0)
+  writeInfoLine: "Check TextGrid content..."
+  appendInfoLine: info$
+  removeObject: tb, tb_info
+elsif mode == 3
+  beginPause: "Remove whitespaces"
+  comment: "Do you want to keep 1 space character between words?"
+  boolean: "Yes", 1
+  clicked = endPause: "Cancel", "Ok", 2
+  
+  if clicked == 2
+    for i to object[tb].nrow
+      tg_path$ = object$[tb, i, "filename"]
+      tg = Read from file: tg_path$
+      n_tiers = Get number of tiers
+      for i_tier to n_tiers
+        selectObject: tg
+        @replace_item_texts: i_tier, "[\t\v\n]", " "
+        @replace_item_texts: i_tier, "^ +$", ""
+        @replace_item_texts: i_tier, " +$", ""
+        @replace_item_texts: i_tier, "^ +", ""
+        if yes
+          @replace_item_texts: i_tier, "  +", " "
+        else
+          @replace_item_texts: i_tier, " +", ""
+        endif
+      endfor
+      Save as text file: tg_path$
+      removeObject: tg
+    endfor
+    writeInfoLine: "Remove TextGrid white space characters... Done!"
+  endif
   removeObject: tb
 endif
 
-info$ = replace_regex$(info$, "error\tcount", "\n_______________________Summary_______________________________", 0)
-info$ = replace_regex$(info$, "\t", ": ", 0)
-writeInfoLine: "Check TextGrid content..."
-appendInfoLine: info$
+include ../procedures/list_recursive_path.proc
+include ../procedures/intervalpoint.proc
