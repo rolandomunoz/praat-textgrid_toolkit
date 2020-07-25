@@ -82,6 +82,7 @@ endproc
 #!    - .tier: a tier position
 #!    - .search$: a string pattern to be search
 #!    - .replace$: a string to replace if a search is matched
+#!    - .matching_mode$: range from "equal to", "contains", "matches (regex)", etc...
 #!  out:
 #!    - nothing
 #!  selection:
@@ -93,14 +94,14 @@ endproc
 #!
 #!  A wrapper procedure for "Replace (interval or point) text" functions.
 #!
-procedure replace_item_texts: .tier, .search$, .replace$
-  .isIntervalTier = Is interval tier: .tier
-  if .isIntervalTier
-    Replace interval texts: .tier, 1, 0, .search$, .replace$, "Regular Expressions"
+procedure replace_item_texts: .tier, .search$, .replace$, .matching_mode$
+  .is_interval_tier = Is interval tier: .tier
+  if .is_interval_tier
+    Replace interval texts: .tier, 1, 0, .search$, .replace$, .matching_mode$
   else
     .nPoints = Get number of points: .tier
     if .nPoints
-      Replace point texts: .tier, 1, 0, .search$, .replace$, "Regular Expressions"
+      Replace point texts: .tier, 1, 0, .search$, .replace$,  .matching_mode$
     endif
   endif
 endproc
@@ -122,8 +123,8 @@ endproc
 #! A wrapper procedure for "Get time (interval or point)" functions.
 #!
 procedure get_time_of_item: .tier, .position
-  .isIntervalTier = Is interval tier: .tier
-  if .isIntervalTier
+  .is_interval_tier = Is interval tier: .tier
+  if .is_interval_tier
     .tmin = Get start time of interval: .tier, .position
     .tmax = Get end time of interval: .tier, .position
   else
@@ -149,8 +150,8 @@ endproc
 #!  A wrapper procedure for "Set (interval or point) text" functions.
 #!
 procedure set_item_text: .tier, .position, .text$
-  .isIntervalTier = Is interval tier: .tier
-  if .isIntervalTier
+  .is_interval_tier = Is interval tier: .tier
+  if .is_interval_tier
     Set interval text: .tier, .position, .text$
   else
     Set point text: .tier, .position, .text$
@@ -172,8 +173,8 @@ endproc
 #!  A wrapper procedure for "Get number of (intervals or points)" functions.
 #!
 procedure get_number_of_items: .tier
-  .isIntervalTier = Is interval tier: .tier
-  if .isIntervalTier
+  .is_interval_tier = Is interval tier: .tier
+  if .is_interval_tier
     .return = Get number of intervals: .tier
   else
     .return = Get number of points: .tier
@@ -196,10 +197,35 @@ endproc
 #!  A wrapper procedure for "Get label of (interval or point)" functions.
 #!
 procedure get_label_of_item: .tier, .position
-  .isIntervalTier = Is interval tier: .tier
-  if .isIntervalTier
+  .is_interval_tier = Is interval tier: .tier
+  if .is_interval_tier
     .return$ = Get label of interval: .tier, .position
   else
     .return$ = Get label of point: .tier, .position
+  endif
+endproc
+
+#! ~~~ params
+#!  in:
+#!    - .tier: a tier position
+#!    - .matching_mode$: range from "equal to", "contains", "matches (regex)", etc...
+#!    - .text$: an interval or point position
+#!  out:
+#!    - .return: the number of occurrences of a sring pattern  in a interval or point tier
+#!  selection:
+#!    in:
+#!      - TextGrid: 1
+#!    out:
+#!      - nothing
+#! ~~~
+#!
+#!  A wrapper procedure for "Count (intervals or points) where" functions.
+#!
+procedure count_item_where: .tier, .matching_mode$, .text$
+  .is_interval_tier= Is interval tier: .tier
+  if .is_interval_tier
+    .return = Count intervals where: .tier, .matching_mode$, .text$
+  else
+    .return = Count points where: .tier, .matching_mode$, .text$
   endif
 endproc
