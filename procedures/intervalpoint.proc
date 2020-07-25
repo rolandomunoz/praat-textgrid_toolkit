@@ -1,3 +1,5 @@
+# Written by Rolando Muñoz (2018)
+# Last modified (July 2020)
 procedure diff_boundary_times: .tier_src, .tier_dst
   .tg = selected("TextGrid")
   .tb= Create Table with column names: "Missing boundaries", 0, "time"
