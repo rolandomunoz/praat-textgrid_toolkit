@@ -8,9 +8,7 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/list_recursive_path.proc
-
-form Find TextGrid files if tier name...
+form Find TextGrid files if tier name
   comment Folder with annotation files:
   text tgFolder /home/rolando/corpus
   boolean Recursive_search 0
@@ -42,12 +40,12 @@ for iFile to nList
   nTgTiers = Get number of tiers
   tierCounter = 0
 
-  for iTgTier to nTgTiers
+  for i_tier to nTgTiers
     selectObject: tg
-    tierName$ = Get tier name: iTgTier
+    tier_name$ = Get tier name: i_tier
     
     selectObject: wordListTier
-    isTier = Has word: tierName$
+    isTier = Has word: tier_name$
     tierCounter = if isTier then tierCounter + 1 else tierCounter fi
   endfor
 
@@ -69,3 +67,5 @@ for iFile to nList
   removeObject: tg
 endfor
 removeObject: fileList, wordListTier, tierList
+
+include ../procedures/list_recursive_path.proc

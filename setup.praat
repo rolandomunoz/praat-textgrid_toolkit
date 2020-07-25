@@ -36,13 +36,10 @@ Add menu command: "Objects", "Goodies", "Create Table child/parent...", "Query",
 
 Add menu command: "Objects", "Goodies", "Clean", "TgToolkit", 1, ""
 Add menu command: "Objects", "Goodies", "Summarize tiers...", "Clean", 2, "scripts/clean-check_tg_tiers.praat"
-Add menu command: "Objects", "Goodies", "Get mismatched boundaries...", "Clean", 2, "scripts/clean-get_missing_time_boundaries.praat"
-
-Add menu command: "Objects", "Goodies", "Check white spaces...", "Clean", 2, "scripts/clean-check_tg_whitespaces.praat"
-Add menu command: "Objects", "Goodies", "Check mismatched boundaries...", "Clean", 2, "scripts/clean-check_tg_whitespaces.praat"
 Add menu command: "Objects", "Goodies", "Find TextGrid files if tier name...", "Clean", 2, "scripts/clean-find_tg_if_tier_name.praat"
-Add menu command: "Objects", "Goodies", "-", "Clean", 2, ""
-Add menu command: "Objects", "Goodies", "Remove TextGrid white spaces...", "Clean", 2, "scripts/clean-remove_tg_whitespace.praat"
+Add menu command: "Objects", "Goodies", "Check boundary aligments...", "Clean", 2, "scripts/clean-get_missing_time_boundaries.praat"
+Add menu command: "Objects", "Goodies", "Check whitespaces...", "Clean", 2, "scripts/clean-check_tg_whitespaces.praat"
+
 
 Add menu command: "Objects", "Goodies", "-", "", 1, ""
 Add menu command: "Objects", "Goodies", "About", "TgToolkit", 1, "scripts/about.praat"
@@ -53,4 +50,4 @@ Add action command: "Table", 1, "", 0, "", 0, "To TextGridEditor", "TgToolkit", 
 Add action command: "TextGrid", 1, "", 0, "", 0, "-", "Modify interval tier", 2, ""
 Add action command: "TextGrid", 1, "", 0, "", 0, "Merge tiers by name", "Modify interval tier", 2, "scripts/dynamic_menu/tg-join_interval_tiers_by_name.praat"
 Add action command: "TextGrid", 1, "", 0, "", 0, "Merge tiers...", "Modify interval tier", 2, "scripts/dynamic_menu/tg-join_interval_tiers.praat"
-Add action command: "TextGrid", 1, "", 0, "", 0, "Get mismatched boundaries...", "Tabulate occurrences...", 3, "scripts/dynamic_menu/tg-missing_time_boundaries.praat"
+Add action command: "TextGrid", 1, "", 0, "", 0, "Tabulate bad aligments...", "Tabulate occurrences...", 3, "scripts/dynamic_menu/tg-missing_time_boundaries.praat"
