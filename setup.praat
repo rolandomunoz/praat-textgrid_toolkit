@@ -50,3 +50,4 @@ Add action command: "Table", 1, "", 0, "", 0, "To TextGridEditor", "TgToolkit", 
 Add action command: "TextGrid", 1, "", 0, "", 0, "-", "Modify interval tier", 2, ""
 Add action command: "TextGrid", 1, "", 0, "", 0, "Merge tiers by name", "Modify interval tier", 2, "scripts/dynamic_menu/tg-join_interval_tiers_by_name.praat"
 Add action command: "TextGrid", 1, "", 0, "", 0, "Merge tiers...", "Modify interval tier", 2, "scripts/dynamic_menu/tg-join_interval_tiers.praat"
+Add action command: "TextGrid", 1, "", 0, "", 0, "Get mismatched boundaries...", "Tabulate occurrences...", 3, "scripts/dynamic_menu/tg-missing_time_boundaries.praat"
