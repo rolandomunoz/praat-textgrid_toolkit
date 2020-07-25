@@ -11,7 +11,7 @@
 # <http://www.gnu.org/licenses/>.
 include ../procedures/list_recursive_path.proc
 
-form Check TextGrid tiers...
+form Summarize tiers...
   comment Folder with annotation files:
   text Textgrid_folder /home/rolando/corpus
   boolean Recursive_search 0
