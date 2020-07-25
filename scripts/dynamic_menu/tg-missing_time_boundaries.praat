@@ -1,6 +1,5 @@
 # Written by Rolando Muñoz (2020-07-24)
-# This script checks if the boundaries from a tier exists in other tiers.
-# When a boundary is not found, a Table with this information is created.
+# Checks if the boundaries from a tier exists in other tiers. Outputs a Table object.
 
 form Get mismatched boundaries
   comment Get the mismatched boundaries of the source tier in target tier
