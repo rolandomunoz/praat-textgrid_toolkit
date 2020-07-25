@@ -2,14 +2,14 @@
 # This script checks if the boundaries from a tier exists in other tiers.
 # When a boundary is not found, a Table with this information is created.
 
-form Missing (interval or point) time boundaries
-  comment Report the mismatching boundaries of Source tier in  Destiny tier
+form Get mismatched boundaries
+  comment Get the mismatched boundaries of the source tier in target tier
+  natural Target_tier 2
   natural Source_tier 1
-  natural Destiny_tier 2
 endform
  
 tg = selected("TextGrid")
 
-@diff_times: source_tier, destiny_tier
+@diff_times: source_tier, target_tier
 
 include ../../procedures/intervalpoint.proc
