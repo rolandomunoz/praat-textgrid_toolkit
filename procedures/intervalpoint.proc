@@ -1,50 +1,98 @@
-# Written by Rolando Muñoz (2018)
-# Last modified (July 2020)
-procedure diff_boundary_times: .tier_src, .tier_dst
+# Written by Rolando Munoz Aramburu (2018)
+# Last modify on Jul 2020
+# This script is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# A copy of the GNU General Public License is available at
+# <http://www.gnu.org/licenses/>.
+#
+# Description: "These procedures are related with TextGrid objects.
+# They wrap interval and point tier functions in one function
+# Other procedures are aso include to compare boundaries times"
+
+#! ~~~ params
+#!  in:
+#!    - .tier_src: the file directory where local variables are stored
+#!    - .tier_dst: the file directory where local variables are stored
+#!  out:
+#!    - nothing
+#!  selection:
+#!    in:
+#!      - TextGrid: 1
+#!    out:
+#!      - Table: 1
+#! ~~~
+#!
+#!  Report the mismatching boundaries of TIER_SRC in  TIER_DST
+#!
+procedure diff_times: .tier_src, .tier_dst
   .tg = selected("TextGrid")
   .tb= Create Table with column names: "Missing boundaries", 0, "time"
   .row = 0
   
   selectObject: .tg
-  .n_intervals = Get number of intervals: .tier_src
-  for .i to .n_intervals
+  @get_number_of_items: .tier_src
+
+  for .i to get_number_of_items.return
     selectObject: .tg
-    .start_time = Get start time of interval: .tier_src, .i
-    @check_if_boundary_exists: .tier_dst, .start_time
+    @get_time_of_item: .tier_src, .i
+    @check_if_boundary_exists: .tier_dst, get_time_of_item.tmin
     if not check_if_boundary_exists.return
       selectObject: .tb
       .row+=1
       Append row
-      Set numeric value: .row, "time", .start_time
+      Set numeric value: .row, "time", get_time_of_item.tmin
     endif
   endfor
   selectObject: .tb
 endproc
 
-procedure diff_point_times: .tier_src, .tier_dst
-  .n_points = Get number of points: .tier_src
-  for .i to .n_points
-    .time = Get time of point: .tier_dst, .i
-    @check_if_boundary_exists: .tier, .time
-    if not check_if_boundary_exists.return
-      appendInfoLine: .tier_src, .start_time
-    endif
-  endfor
-endproc
-
+#! ~~~ params
+#!  in:
+#!    - .tier: a tier position
+#!    - .time: the time in seconds to check if a boundary exist
+#!  out:
+#!    - .return: 1 (exist) or 0 (not exist)
+#!  selection:
+#!    in:
+#!      - TextGrid: 1
+#!    out:
+#!      - nothing
+#! ~~~
+#!
+#! Check if a boundary (point of interval) already exists in a tier
+#!
 procedure check_if_boundary_exists: .tier, .time
   .is_interval = Is interval tier: .tier
   if .is_interval
-     .interval = Get interval boundary from time: .tier, .time
-     .interval = if .time == 0 then 1 else .interval fi 
-     .return =  if .interval then 1 else 0 fi
+    .interval = Get interval boundary from time: .tier, .time
+    .return =  if .interval then 1 else 0 fi
   else
     .index = Get low index from time: .tier, .time
     .index_time = Get nearest index from time: .tier, .time
-    return = if .index == .index_time then 1 else 0 
+    .return = if .index == .index_time then 1 else 0 fi
   endif
+  .return = if .time == 0 then 1 else .return endif
 endproc
 
+#! ~~~ params
+#!  in:
+#!    - .tier: a tier position
+#!    - .search$: a string pattern to be search
+#!    - .replace$: a string to replace if a search is matched
+#!  out:
+#!    - nothing
+#!  selection:
+#!    in:
+#!      - TextGrid: 1
+#!    out:
+#!      - nothing
+#! ~~~
+#!
+#!  A wrapper procedure for "Replace (interval or point) text" functions.
+#!
 procedure replace_item_texts: .tier, .search$, .replace$
   .isIntervalTier = Is interval tier: .tier
   if .isIntervalTier
@@ -57,40 +105,101 @@ procedure replace_item_texts: .tier, .search$, .replace$
   endif
 endproc
 
+#! ~~~ params
+#!  in:
+#!    - .tier: a tier position
+#!    - .position: a interval or point number
+#!  out:
+#!    - .tmin: the start time of a interval or a point (where tmin == tmax)
+#!    - .tmax: the end time of a interval or point (where tmin == tmax)
+#! selection:
+#!   in:
+#!     - TextGrid: 1
+#!   out:
+#!     - nothing
+#! ~~~
+#!
+#! A wrapper procedure for "Get time (interval or point)" functions.
+#!
 procedure get_time_of_item: .tier, .position
   .isIntervalTier = Is interval tier: .tier
-    if .isIntervalTier
-      .tmin = Get start time of interval: .tier, .position
-      .tmax = Get end time of interval: .tier, .position
-    else
-      .tmin = Get time of point: .tier, .position
-      .tmax = .tmin
-    endif
+  if .isIntervalTier
+    .tmin = Get start time of interval: .tier, .position
+    .tmax = Get end time of interval: .tier, .position
+  else
+    .tmin = Get time of point: .tier, .position
+    .tmax = .tmin
+  endif
 endproc
 
+#! ~~~ params
+#!  in:
+#!    - .tier: a tier position
+#!    - .position: a interval or point number
+#!    - .text$: a string to be placed
+#!  out:
+#!    - nothing
+#!  selection:
+#!    in:
+#!      - TextGrid: 1
+#!    out:
+#!      - nothing
+#! ~~~
+#!
+#!  A wrapper procedure for "Set (interval or point) text" functions.
+#!
 procedure set_item_text: .tier, .position, .text$
   .isIntervalTier = Is interval tier: .tier
-    if .isIntervalTier
-      Set interval text: .tier, .position, .text$
-    else
-      Set point text: .tier, .position, .text$
-    endif
+  if .isIntervalTier
+    Set interval text: .tier, .position, .text$
+  else
+    Set point text: .tier, .position, .text$
+  endif
 endproc
 
+#! ~~~ params
+#!  in:
+#!    - .tier: a tier position
+#!  out:
+#!    - .return: the number of intervals or points
+#!  selection:
+#!    in:
+#!      - TextGrid: 1
+#!    out:
+#!      - nothing
+#! ~~~
+#!
+#!  A wrapper procedure for "Get number of (intervals or points)" functions.
+#!
 procedure get_number_of_items: .tier
   .isIntervalTier = Is interval tier: .tier
-    if .isIntervalTier
-      .return = Get number of intervals: .tier
-    else
-      .return = Get number of points: .tier
-    endif
+  if .isIntervalTier
+    .return = Get number of intervals: .tier
+  else
+    .return = Get number of points: .tier
+  endif
 endproc
 
+#! ~~~ params
+#!  in:
+#!    - .tier: a tier position
+#!    - .position: an interval or point position
+#!  out:
+#!    - .return$: the label of a specific interval or point
+#!  selection:
+#!    in:
+#!      - TextGrid: 1
+#!    out:
+#!      - nothing
+#! ~~~
+#!
+#!  A wrapper procedure for "Get label of (interval or point)" functions.
+#!
 procedure get_label_of_item: .tier, .position
   .isIntervalTier = Is interval tier: .tier
-    if .isIntervalTier
-      .return$ = Get label of interval: .tier, .position
-    else
-      .return$ = Get label of point: .tier, .position
-    endif
+  if .isIntervalTier
+    .return$ = Get label of interval: .tier, .position
+  else
+    .return$ = Get label of point: .tier, .position
+  endif
 endproc
