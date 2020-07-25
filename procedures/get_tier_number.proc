@@ -1,9 +1,66 @@
-# Copyright 2017 Rolando Munoz Aramburú
+# Written by Rolando Munoz Aramburu on 2017
+# Last modify on Jul 2020
+# This script is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# A copy of the GNU General Public License is available at
+# <http://www.gnu.org/licenses/>.
+#
+# Description: ""
+#
 
+#! ~~~ params
+#!  in:
+#!    - nothing
+#!  out:
+#!    - .return: a dictionary with tier names as keys and their position as values. tier[tier name] = tier position
+#!    - .all_tier_names: a string wrapped between white spaces containing all tier names in the position they occur
+#!  selection:
+#!    in:
+#!      - TextGrid: 1
+#!    out:
+#!      - nothing
+#! ~~~
+#!
+#!  Create a dictionary mapping tier names and their positions
+#!
 procedure getTierNumber
   .n = Get number of tiers
+  .all_tier_names$ = ""
   for .i to .n
-    .tierName$ = Get tier name: .i
-    .return[.tierName$] = .i
+    .tier_name$ = Get tier name: .i
+    .all_tier_names$ += " " + .tier_name$
+    .return[.tier_name$] = .i
   endfor
+  .all_tier_names$ += " "
+endproc
+
+#! ~~~ params
+#!  in:
+#!    - .tier_name$: the tier name to be searched
+#!  out:
+#!    - .return: 1 if the tier is already stored in the TextGrids, otherwise it outputs 0
+#!  selection:
+#!    in:
+#!      - nothing
+#!    out:
+#!      - nothing
+#! ~~~
+#!
+#!  Check if a tier name already exists by using the .all_tier_names$ variable
+#!  of the getTierNumber procedure.
+#!  Warning: Before using this procedure, call @getTierNumber to 
+#!  generate a dictionary, otherwise this procedure won't work!
+#!
+#!
+procedure isTierName: .tier_name$
+  return = 0
+  if variableExists("getTierNumber.all_tier_names$")
+    .return = if index(getTierNumber.all_tier_names$, " '.tier_name$' ") then 1 else 0 fi
+  else
+    writeInfoLine("Error: Use @getTierNumber procedure before using isTierName!")
+    pauseScript()
+  endif
 endproc
