@@ -35,8 +35,11 @@ Add menu command: "Objects", "Goodies", "Create Table word occurrences...", "Que
 Add menu command: "Objects", "Goodies", "Create Table child/parent...", "Query", 2, "scripts/corpus-child2parent.praat"
 
 Add menu command: "Objects", "Goodies", "Clean", "TgToolkit", 1, ""
-Add menu command: "Objects", "Goodies", "Check TextGrid tiers...", "Clean", 2, "scripts/clean-check_tg_tiers.praat"
-Add menu command: "Objects", "Goodies", "Check TextGrid white spaces...", "Clean", 2, "scripts/clean-check_tg_whitespaces.praat"
+Add menu command: "Objects", "Goodies", "Summarize tiers...", "Clean", 2, "scripts/clean-check_tg_tiers.praat"
+Add menu command: "Objects", "Goodies", "Get mismatched boundaries...", "Clean", 2, "scripts/clean-get_missing_time_boundaries.praat"
+
+Add menu command: "Objects", "Goodies", "Check white spaces...", "Clean", 2, "scripts/clean-check_tg_whitespaces.praat"
+Add menu command: "Objects", "Goodies", "Check mismatched boundaries...", "Clean", 2, "scripts/clean-check_tg_whitespaces.praat"
 Add menu command: "Objects", "Goodies", "Find TextGrid files if tier name...", "Clean", 2, "scripts/clean-find_tg_if_tier_name.praat"
 Add menu command: "Objects", "Goodies", "-", "Clean", 2, ""
 Add menu command: "Objects", "Goodies", "Remove TextGrid white spaces...", "Clean", 2, "scripts/clean-remove_tg_whitespace.praat"
