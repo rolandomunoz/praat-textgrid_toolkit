@@ -1,3 +1,48 @@
+procedure diff_boundary_times: .tier_src, .tier_dst
+  .tg = selected("TextGrid")
+  .tb= Create Table with column names: "Missing boundaries", 0, "time"
+  .row = 0
+  
+  selectObject: .tg
+  .n_intervals = Get number of intervals: .tier_src
+  for .i to .n_intervals
+    selectObject: .tg
+    .start_time = Get start time of interval: .tier_src, .i
+    @check_if_boundary_exists: .tier_dst, .start_time
+    if not check_if_boundary_exists.return
+      selectObject: .tb
+      .row+=1
+      Append row
+      Set numeric value: .row, "time", .start_time
+    endif
+  endfor
+  selectObject: .tb
+endproc
+
+procedure diff_point_times: .tier_src, .tier_dst
+  .n_points = Get number of points: .tier_src
+  for .i to .n_points
+    .time = Get time of point: .tier_dst, .i
+    @check_if_boundary_exists: .tier, .time
+    if not check_if_boundary_exists.return
+      appendInfoLine: .tier_src, .start_time
+    endif
+  endfor
+endproc
+
+procedure check_if_boundary_exists: .tier, .time
+  .is_interval = Is interval tier: .tier
+  if .is_interval
+     .interval = Get interval boundary from time: .tier, .time
+     .interval = if .time == 0 then 1 else .interval fi 
+     .return =  if .interval then 1 else 0 fi
+  else
+    .index = Get low index from time: .tier, .time
+    .index_time = Get nearest index from time: .tier, .time
+    return = if .index == .index_time then 1 else 0 
+  endif
+endproc
+
 procedure replace_item_texts: .tier, .search$, .replace$
   .isIntervalTier = Is interval tier: .tier
   if .isIntervalTier
