@@ -10,6 +10,6 @@ endform
  
 tg = selected("TextGrid")
 
-@diff_times: tier_1, tier_2
+@diff_times: source_tier, destiny_tier
 
 include ../../procedures/intervalpoint.proc
