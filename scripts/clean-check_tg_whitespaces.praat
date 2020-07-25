@@ -17,14 +17,65 @@ form Check whitespaces
   optionmenu Mode 1
   option Only summary
   option Create a report Table
-  option Remove white spaces
+  option Remove whitespaces
 endform
+
+if mode == 3
+  beginPause: "Remove whitespaces"
+  comment: "Do you want to keep 1 space character between words?"
+  boolean: "Yes", 1
+  clicked = endPause: "Cancel", "Ok", 2
+  if clicked == 1
+    exitScript()
+  else
+    keep_one_space_characters = yes
+  endif
+endif
 
 @createStringAsFileList: "fileList", textgrid_folder$ + "/*TextGrid", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
 
-tb = Create Table with column names: "whitespaces", 0, "error tier_name tier interval tmin tmax filename count"
+# Objects
+if mode == 2
+  tb = Create Table with column names: "whitespaces", 0, "error error_id tier_name tier filename"
+endif
+
+# Variables
+number_of_errors = 7
+row = 0
+count_mod = 0
+
+error_name$[1] = "Horizontal tabs"
+error_name$[2] = "Vertical tabs"
+error_name$[3] = "New line"
+error_name$[4] = "Only space characters"
+error_name$[5] = "Space character at the end"
+error_name$[6] = "Space character at the start"
+error_name$[7] = "More than two space characters together"
+
+error_pattern$[1] = "\t"
+error_pattern$[2] = "\v"
+error_pattern$[3] = "\n"
+error_pattern$[4] = "^ +$"
+error_pattern$[5] = " +$"
+error_pattern$[6] = "^ +"
+error_pattern$[7] = "  +"
+
+if mode == 3
+  error_replace$[1] = " "
+  error_replace$[2] = " "
+  error_replace$[3] = " "
+  error_replace$[4] = ""
+  error_replace$[5] = ""
+  error_replace$[6] = ""
+  error_replace$[7] = if keep_one_space_characters then " " else "" fi
+endif
+
+## Initialize variables
+for i_error to number_of_errors
+  total_errors[i_error] = 0
+endfor
 
 # Open one-by-one all the TextGrids
 for i to n_fileList
@@ -34,103 +85,87 @@ for i to n_fileList
   tg_path$ = textgrid_folder$ + "/" + tg$
   tg = Read from file: tg_path$
   n_tiers = Get number of tiers
+  save_tg = 0
   for i_tier to n_tiers
     selectObject: tg
     tier_name$ = Get tier name: i_tier
-    @get_number_of_items: i_tier
-    n_positions = get_number_of_items.return
     
-    for i_position to n_positions
-      selectObject: tg
-      @get_label_of_item: i_tier, i_position
-      label$ = get_label_of_item.return$
-      
-      if index_regex(label$, "[ \t\v\n]")
-        @get_time_of_item: i_tier, i_position
-        tmin = get_time_of_item.tmin
-        tmax = get_time_of_item.tmax
-
-        error_name$ = "white space between words"
-        if index_regex(label$, "\t")
-          error_name$ = "horizontal tab"
-        elif index_regex(label$, "\v")
-          error_name$ = "vertical tab"
-        elif index_regex(label$, "\n")
-          error_name$ = "new line"
-        elif index_regex(label$, "^ +$")
-          error_name$ = "white space label"
-        elif index_regex(label$, " +$")
-          error_name$ = "white space at the end"
-          pattern$ = " +$"
-        elif index_regex(label$, "^ +")
-          error_name$ = "white space at the start"
-          pattern$ = "^ +"
-        elif index_regex(label$, "  +")
-          error_name$ = "two or more white spaces"
+    for i_error to number_of_errors
+      @count_item_where: i_tier, "matches (regex)", error_pattern$[i_error]
+      current_error[i_error] = count_item_where.return
+      total_errors[i_error] += current_error[i_error]
+      if current_error[i_error] > 0
+        if mode == 2
+          selectObject: tb
+          Append row
+          row+= 1
+          Set string value: row, "error", error_name$[i_error]
+          Set string value: row, "tier_name", tier_name$
+          Set numeric value: row, "tier", i_tier
+          Set numeric value: row, "error_id", i_error
+          Set string value: row, "filename", tg_path$
         endif
-
-        selectObject: tb
-        Append row
-        current_row = object[tb].nrow
         
-        Set string value: current_row, "error", error_name$
-        Set string value: current_row, "tier_name", tier_name$
-        Set numeric value: current_row, "tier", i_tier
-        Set numeric value: current_row, "interval", i_position
-        Set numeric value: current_row, "tmin", tmin
-        Set numeric value: current_row, "tmax", tmax
-        Set numeric value: current_row, "count", 1
-        Set string value: current_row, "filename", tg_path$
+        selectObject: tg
+        if mode == 3
+          @replace_item_texts: i_tier, error_pattern$[i_error], error_replace$[i_error], "Regular Expressions"
+          save_tg = 1
+        endif
       endif
     endfor
   endfor
+  if save_tg
+    Save as text file: tg_path$
+    count_mod +=1
+  endif
   removeObject: tg
 endfor
 removeObject: fileList
 
-# Start mode
 if mode == 1
-  # Get info for summary
-  selectObject: tb
-  Sort rows: "error"
-  tb_info = Collapse rows: "error", "count", "", "", "", ""
-  info$ = List: 0
-
-  # Print summary
-  info$ = replace_regex$(info$, "error\tcount", "\n_______________________Summary_______________________________", 0)
-  info$ = replace_regex$(info$, "\t", ": ", 0)
-  writeInfoLine: "Check TextGrid content..."
-  appendInfoLine: info$
-  removeObject: tb, tb_info
-elsif mode == 3
-  beginPause: "Remove whitespaces"
-  comment: "Do you want to keep 1 space character between words?"
-  boolean: "Yes", 1
-  clicked = endPause: "Cancel", "Ok", 2
-  
-  if clicked == 2
-    for i to object[tb].nrow
-      tg_path$ = object$[tb, i, "filename"]
-      tg = Read from file: tg_path$
-      n_tiers = Get number of tiers
-      for i_tier to n_tiers
-        selectObject: tg
-        @replace_item_texts: i_tier, "[\t\v\n]", " "
-        @replace_item_texts: i_tier, "^ +$", ""
-        @replace_item_texts: i_tier, " +$", ""
-        @replace_item_texts: i_tier, "^ +", ""
-        if yes
-          @replace_item_texts: i_tier, "  +", " "
-        else
-          @replace_item_texts: i_tier, " +", ""
-        endif
-      endfor
-      Save as text file: tg_path$
-      removeObject: tg
-    endfor
-    writeInfoLine: "Remove TextGrid white space characters... Done!"
+  writeInfoLine: "Check whitespaces"
+  appendInfoLine: "_______________________Summary_______________________________"
+  appendInfoLine: ""
+  error_count = 0
+  for i_error to number_of_errors
+    if total_errors[i_error] > 0
+      appendInfoLine: error_name$[i_error], ": ", total_errors[i_error]
+      error_count+=1
+    endif
+  endfor
+  if error_count == 0
+    appendInfoLine: "Everything is ok!"
   endif
-  removeObject: tb
+elif mode == 2
+  selectObject: tb
+  Append column: "tmin"
+  Append column: "tmax"
+  for i_row to object[tb].nrow
+    filename$ = object$[tb, i_row, "filename"]
+    tier = object[tb, i_row, "tier"]
+    error_id = object[tb, i_row, "error_id"]
+    
+    tg =  Read from file: filename$
+    @get_number_of_items: tier
+
+    for i_item to get_number_of_items.return
+      @get_label_of_item: tier, i_item
+      exists = index_regex(get_label_of_item.return$, error_pattern$[error_id])
+      if exists
+        @get_time_of_item: tier, i_item
+        selectObject: tb
+        Set numeric value: i_row, "tmin", get_time_of_item.tmin
+        Set numeric value: i_row, "tmax", get_time_of_item.tmax
+        selectObject: tg
+      endif
+    endfor
+    removeObject: tg
+  endfor
+  selectObject: tb
+elif mode == 3
+  writeInfoLine: "Check whitespaces... changes done!"
+  appendInfoLine: ""
+  appendInfoLine: "Modified files: ", count_mod
 endif
 
 include ../procedures/list_recursive_path.proc
