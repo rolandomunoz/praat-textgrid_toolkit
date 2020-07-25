@@ -11,7 +11,8 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 
-form Get mismatched boundaries
+form Check boundary alignments
+  comment Get the mismatched boundaries of the source tier in target tiers
   comment Folder with annotation files:
   text Textgrid_folder /home/rolando/corpus
   boolean Recursive_search 0
