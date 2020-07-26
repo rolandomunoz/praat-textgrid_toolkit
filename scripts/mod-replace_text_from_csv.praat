@@ -52,18 +52,21 @@ for iFile to nFiles
     @get_number_of_items: new_tier
     
     # Search and replace labels
-    for i_position to get_number_of_items
+    for i_position to get_number_of_items.return
       selectObject: tg
       @get_label_of_item: new_tier, i_position
       label$ = get_label_of_item.return$
       if label$ != ""
         selectObject: dictionary
         is_word = Search column: search_column$, label$
-        n_changes += 1
         selectObject: tg
-        replace_text$ = object$[dictionary, row, replace_column$]
-        replace_text$ = if is_word then  replace_text$ else "*'label$'"
-        @set_item_text: new_tier, i_position, replace_text$
+        if is_word
+          row = is_word
+          n_changes += 1
+          replace_text$ = object$[dictionary, row, replace_column$]
+          replace_text$ = if is_word then  replace_text$ else "*'label$'" endif
+          @set_item_text: new_tier, i_position, replace_text$
+        endif
       endif
     endfor
     
@@ -73,7 +76,7 @@ for iFile to nFiles
       Save as text file: tg_folder_path$ + "/" + tg$
     endif
   else
-    
+      
   endif
   removeObject: tg
 endfor
