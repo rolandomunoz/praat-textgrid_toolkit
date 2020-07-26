@@ -1,5 +1,5 @@
 # Written by Rolando Munoz A. (8 October 2018)
-#
+# Last modified on 26 July 2020
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -8,8 +8,6 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/get_tier_number.proc
-include ../procedures/list_recursive_path.proc
 
 form Replace text (dictionary)
   comment Replace dictionary (csv):
@@ -43,9 +41,9 @@ for iFile to nFiles
   save = 0
   tg$ = object$[fileList, iFile]
   tg = Read from file: tg_folder_path$ + "/" +tg$
-  getTierNumber.return[tier_name$]= 0
-  @getTierNumber
-  tier= getTierNumber.return[tier_name$]
+  @index_tiers
+  @get_tier_position: tier_name$
+  tier = get_tier_position.return
   
   if tier
     replaceTier = tier + 1
@@ -96,3 +94,7 @@ appendInfoLine: "  Replace column: ", replace_column$
 appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", nFiles
 appendInfoLine: "  Modified files (total): ", counter
+
+include ../procedures/qtier.proc
+include ../procedures/intervalpoint.proc
+include ../procedures/list_recursive_path.proc
