@@ -70,6 +70,8 @@ mode_mod$= if mode = 1 then "contains" else "matches (regex)" fi
 # endif
 
 counter = 0
+missing_tier_list$ = ""
+missing_tier_list = 0
 
 for iFile to n_fileList
   tg$ = object$[fileList, iFile]
@@ -88,6 +90,9 @@ for iFile to n_fileList
       @replace_item_texts: tier, 1, 0, search$, replace$, mode$
       Save as text file: tgFullPath$
     endif
+  else
+    missing_tier_list += 1
+    missing_tier_list$ += tgFullPath$ + newline$
   endif
   removeObject: tg
 endfor
@@ -104,6 +109,14 @@ appendInfoLine: "  Mode: ", mode$
 appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", counter
+
+if not missing_tier_list$ == ""
+  message1$ = "'newline$'WARNING: TextGrid files does not contain the tier ""'tier_name$'"""
+  message2$ = "'newline$'WARNING: The tier ""'tier_name$'"" was not found in 'missing_tier_list' TextGrid files. 'newline$''newline$''missing_tier_list$'"
+  
+  info$ = if missing_tier_list == n_fileList then message1$ else message2$ fi
+  appendInfo: info$ 
+endif
 
 include ../procedures/qtier.proc
 include ../procedures/intervalpoint.proc
