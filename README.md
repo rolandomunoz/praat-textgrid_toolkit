@@ -12,6 +12,6 @@ A tool for processing many annotation files with just a few clicks! Use this plu
 
 ## License
 
-This project is licensed under the GNU GPL terms - see the [LICENSE.md](https://gitlab.com/praat_plugins_rma/plugin_tokenizer/blob/master/LICENSE)
+This project is licensed under the GNU GPL terms - see the [LICENSE.md](https://github.com/rolandomunoz/plugin_textgrid_toolkit/blob/master/LICENSE.txt)
  file for details.
  
