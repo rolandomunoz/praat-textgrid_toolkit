@@ -70,13 +70,14 @@ for iFile to nFiles
           number_of_modifier_items += 1
           row = is_word
           replace_text$ = object$[dictionary, row, replace_column$]
-          replace_text$ = if track_changes == 2 then "*'replace_text$'" then replace_text$ fi
+          replace_text$ = if track_changes == 2 then "*" + replace_text$ else replace_text$ fi
           @set_item_text: tier, i_position, replace_text$
         else
           number_of_mismatching_items +=1
           if track_changes == 3
             save_tg = 1
-            @set_item_text: tier, i_position, "*'label$'"
+            replace_text$ = "*" + label$
+            @set_item_text: tier, i_position, replace_text$
           endif
         endif
       endif
@@ -88,7 +89,7 @@ for iFile to nFiles
       Save as text file: tg_folder_path$ + "/" + tg$
     endif
   else
-    
+      
   endif
   removeObject: tg
 endfor
@@ -109,7 +110,11 @@ appendInfoLine: "  Search column: ", search_column$
 appendInfoLine: "  Replace column: ", replace_column$
 appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", nFiles
-appendInfoLine: "  Modified files (total): ", counter
+appendInfoLine: "  Modified files (total): ", number_of_modified_files
+if number_of_modified_files > 0
+  appendInfoLine: "  Modified intervals or points (total): ", number_of_modifier_items
+  appendInfoLine: "  Mismatched intervals or points (total): ", number_of_mismatching_items
+endif
 
 include ../procedures/qtier.proc
 include ../procedures/intervalpoint.proc
