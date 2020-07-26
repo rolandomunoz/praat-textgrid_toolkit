@@ -8,8 +8,6 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/get_tier_number.proc
-include ../procedures/list_recursive_path.proc
 
 form Replace tier text
   comment Folder with annotation files:
@@ -78,25 +76,16 @@ for iFile to n_fileList
   tgFullPath$ = tgFolderPath$ + "/" +tg$
   
   tg = Read from file: tgFullPath$
-  getTierNumber.return[tier_name$]= 0
-  @getTierNumber
-  tier= getTierNumber.return[tier_name$]
+  @index_tiers
+  @get_tier_position: tier_name$
+  tier = get_tier_position.return
   
   if tier
-    isInterval= Is interval tier: tier
-    if isInterval
-      is_text= Count intervals where: tier, mode_mod$, search$
-    else
-      is_text= Count points where: tier, mode_mod$, search$
-    endif
-
+    @count_item_where: tier, mode_mod$, search$
+    is_text = count_item_where.return
     if is_text
       counter+=1
-      if isInterval
-        Replace interval text: tier, 0, 0, search$, replace$, mode$
-      else
-        Replace point text: tier, 0, 0, search$, replace$, mode$
-      endif
+      @replace_item_texts: tier, 1, 0, search$, replace$, mode$
       Save as text file: tgFullPath$
     endif
   endif
@@ -115,3 +104,7 @@ appendInfoLine: "  Mode: ", mode$
 appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", counter
+
+include ../procedures/qtier.proc
+include ../procedures/intervalpoint.proc
+include ../procedures/list_recursive_path.proc
