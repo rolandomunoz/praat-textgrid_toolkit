@@ -108,7 +108,7 @@ for i to n_fileList
         
         selectObject: tg
         if mode == 3
-          @replace_item_texts: i_tier, error_pattern$[i_error], error_replace$[i_error], "Regular Expressions"
+          @replace_item_texts: i_tier, 1, 0, error_pattern$[i_error], error_replace$[i_error], "Regular Expressions"
           save_tg = 1
         endif
       endif
