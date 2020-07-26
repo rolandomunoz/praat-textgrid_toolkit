@@ -37,17 +37,20 @@ endif
 # Open TextGrids one by one
 @createStringAsFileList: "fileList",  tg_folder_path$ + "/*.TextGrid", recursive_search
 fileList = selected("Strings")
-nFiles = Get number of strings
+n_file_list = Get number of strings
 
 number_of_modified_files = 0
 number_of_modifier_items = 0
 number_of_mismatching_items = 0
+missing_tier_list = 0
+missing_tier_list$ = ""
 
-for iFile to nFiles
+for i_file to n_file_list
   save_tg = 0
 
-  tg$ = object$[fileList, iFile]
-  tg = Read from file: tg_folder_path$ + "/" +tg$
+  tg$ = object$[fileList, i_file]
+  tg_full_path$ =  tg_folder_path$ + "/" +tg$
+  tg = Read from file: tg_full_path$
   @index_tiers
   @get_tier_position: tier_name$
   tier = get_tier_position.return
@@ -89,7 +92,8 @@ for iFile to nFiles
       Save as text file: tg_folder_path$ + "/" + tg$
     endif
   else
-      
+    missing_tier_list += 1
+    missing_tier_list$ += tg_full_path$ + newline$
   endif
   removeObject: tg
 endfor
@@ -109,11 +113,20 @@ appendInfoLine: "  Tier name: ", tier_name$
 appendInfoLine: "  Search column: ", search_column$
 appendInfoLine: "  Replace column: ", replace_column$
 appendInfoLine: "Output:"
-appendInfoLine: "  Files (total): ", nFiles
+appendInfoLine: "  Files (total): ", n_file_list
 appendInfoLine: "  Modified files (total): ", number_of_modified_files
+
 if number_of_modified_files > 0
   appendInfoLine: "  Modified intervals or points (total): ", number_of_modifier_items
   appendInfoLine: "  Mismatched intervals or points (total): ", number_of_mismatching_items
+endif
+
+if not missing_tier_list$ == ""
+  message1$ = "'newline$'WARNING: TextGrid files does not contain the tier ""'tier_name$'"""
+  message2$ = "'newline$'WARNING: The tier ""'tier_name$'"" was not found in 'missing_tier_list' TextGrid files. 'newline$''newline$''missing_tier_list$'"
+  
+  info$ = if missing_tier_list == n_file_list then message1$ else message2$ fi
+  appendInfo: info$ 
 endif
 
 include ../procedures/qtier.proc
