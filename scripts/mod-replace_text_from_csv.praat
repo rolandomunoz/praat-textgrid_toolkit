@@ -15,6 +15,10 @@ form Replace text (dictionary)
   boolean Recursive_search 0
   comment TextGrid Object:
   word Tier_name phrase
+  optionmenu Track_changes 1
+  option no
+  option matched items
+  option mismatched items
   comment Dictionary file path (a csv file):
   text Dictionary_path ../temp/dictionary.csv
   word Search_column search
@@ -35,10 +39,13 @@ endif
 fileList = selected("Strings")
 nFiles = Get number of strings
 
-counter = 0
+number_of_modified_files = 0
+number_of_modifier_items = 0
+number_of_mismatching_items = 0
 
 for iFile to nFiles
-  n_changes = 0
+  save_tg = 0
+
   tg$ = object$[fileList, iFile]
   tg = Read from file: tg_folder_path$ + "/" +tg$
   @index_tiers
@@ -46,7 +53,6 @@ for iFile to nFiles
   tier = get_tier_position.return
   
   if tier
-    # Duplacate tier to prevent any error
     @get_number_of_items: tier
     
     # Search and replace labels
@@ -58,24 +64,31 @@ for iFile to nFiles
         selectObject: dictionary
         is_word = Search column: search_column$, label$
         selectObject: tg
+        
         if is_word
+          save_tg = 1
+          number_of_modifier_items += 1
           row = is_word
-          n_changes += 1
           replace_text$ = object$[dictionary, row, replace_column$]
-          replace_text$ = if is_word then  replace_text$ else "*'label$'" endif
+          replace_text$ = if track_changes == 2 then "*'replace_text$'" then replace_text$ fi
+          @set_item_text: tier, i_position, replace_text$
+        else
+          number_of_mismatching_items +=1
+          if track_changes == 3
+            save_tg = 1
+            @set_item_text: tier, i_position, "*'label$'"
+          endif
         endif
-        @set_item_text: tier, i_position, replace_text$
-
       endif
     endfor
     
-    # If any changes, then save the TextGrid
-    if n_changes > 0
-      counter += 1
+    # If any change, then save the TextGrid
+    if save_tg
+      number_of_modified_files += 1
       Save as text file: tg_folder_path$ + "/" + tg$
     endif
   else
-      
+    
   endif
   removeObject: tg
 endfor
