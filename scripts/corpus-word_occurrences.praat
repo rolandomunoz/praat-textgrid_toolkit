@@ -6,9 +6,14 @@ form Create Table word occurrences...
   sentence Tier_name word
 endform
 
+tbWordOccurrencesCorpus= Create Table with column names: "word_ocurrences", 0, "word tmin text tmax filename"
 runScript: "_collect_text_from_one_tier.praat", tg_folder$, recursive_search, tier_name$
 tbCorpus = selected("Table")
-
+if object[tbCorpus].nrow == 0
+  removeObject: tbCorpus
+  selectObject: tbWordOccurrencesCorpus
+  exitScript()
+endif
 
 #Unique words
 textAll$ = ""
@@ -21,7 +26,6 @@ categories = To Categories
 uniqCategories = To unique Categories
 uniqWordList = To Strings
 
-tbWordOccurrencesCorpus= Create Table with column names: "word_ocurrences", 0, "word tmin text tmax filename"
 selectObject: uniqWordList
 nWords = Get number of strings
 for iWord to nWords
