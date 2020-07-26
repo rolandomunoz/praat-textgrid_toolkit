@@ -8,9 +8,6 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/get_tier_number.proc
-include ../procedures/list_recursive_path.proc
-
 form Duplicate tier
   comment Folder with annotation files:
   text tgFolder /home/rolando/corpus
@@ -28,8 +25,8 @@ if tgFolder$ == ""
 endif
 
 # Find files
-@createStringAsFileList: "fileList", tgFolder$ + "/*TextGrid", recursive_search
-fileList= selected("Strings")
+@createStringAsFileList: "file_list", tgFolder$ + "/*TextGrid", recursive_search
+file_list= selected("Strings")
 n_fileList= Get number of strings
 
 # Do not duplicate tiers!
@@ -40,26 +37,25 @@ endif
 counter = 0
 
 for iFile to n_fileList
-  getTierNumber.return[tier_name$]= 0
-  getTierNumber.return[after_tier$]= 0
-
-  tg$ = object$[fileList, iFile]
-  tgFullPath$ = tgFolder$ + "/" +tg$
+  tg$ = object$[file_list, iFile]
+  tg_full_path$ = tgFolder$ + "/" +tg$
   
-  tg = Read from file: tgFullPath$
-  @getTierNumber
-  tier= getTierNumber.return[tier_name$]
-  position= getTierNumber.return[after_tier$] + 1
+  tg = Read from file: tg_full_path$
+  @index_tiers
+  @get_tier_position: tier_name$
+  tier = get_tier_position.return
+  @get_tier_position: after_tier$
+  position = get_tier_position.return + 1
   
   if tier
     counter+=1
     Duplicate tier: tier, position, new_tier_name$
-    Save as text file: tgFullPath$
+    Save as text file: tg_full_path$
   endif
   removeObject: tg
 endfor
 
-removeObject: fileList
+removeObject: file_list
 
 # Print info
 writeInfoLine: "Duplicate tier"
@@ -70,3 +66,6 @@ appendInfoLine: "  New tier name: ", new_tier_name$
 appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", counter
+
+include ../procedures/qtier.proc
+include ../procedures/list_recursive_path.proc
