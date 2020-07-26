@@ -123,9 +123,7 @@ endfor
 removeObject: fileList
 
 if mode == 1
-  writeInfoLine: "Check whitespaces"
-  appendInfoLine: "_______________________Summary_______________________________"
-  appendInfoLine: ""
+  writeInfoLine: "Check whitespaces'newline$'_______________________Summary_______________________________'newline$'"
   error_count = 0
   for i_error to number_of_errors
     if total_errors[i_error] > 0
@@ -163,9 +161,7 @@ elif mode == 2
   endfor
   selectObject: tb
 elif mode == 3
-  writeInfoLine: "Check whitespaces... changes done!"
-  appendInfoLine: ""
-  appendInfoLine: "Modified files: ", count_mod
+  writeInfoLine: "Check whitespaces... changes done!'newline$'Modified files: 'count_mod'"
 endif
 
 include ../procedures/list_recursive_path.proc
