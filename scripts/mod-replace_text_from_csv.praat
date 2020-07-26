@@ -38,7 +38,7 @@ nFiles = Get number of strings
 counter = 0
 
 for iFile to nFiles
-  save = 0
+  n_changes = 0
   tg$ = object$[fileList, iFile]
   tg = Read from file: tg_folder_path$ + "/" +tg$
   @index_tiers
@@ -46,33 +46,34 @@ for iFile to nFiles
   tier = get_tier_position.return
   
   if tier
-    replaceTier = tier + 1
-    Duplicate tier: tier, replaceTier, replace_column$
-    isInterval = Is interval tier: replaceTier
-    type$ = if isInterval then "interval" else "point" fi
-    nTypes = do("Get number of 'type$'s...", replaceTier)
-    for iType to nTypes
+    # Duplacate tier to prevent any error
+    new_tier = tier + 1
+    Duplicate tier: tier, new_tier, replace_column$
+    @get_number_of_items: new_tier
+    
+    # Search and replace labels
+    for i_position to get_number_of_items
       selectObject: tg
-      label$ = do$("Get label of 'type$'...", replaceTier, iType)
-      if label$ <> ""
-        selectObject: dictionary 
-        isWord = Search column: search_column$, label$
-        save = 1
-        if isWord
-          selectObject: tg
-          row = isWord
-          do("Set 'type$' text...", replaceTier, iType, object$[dictionary, row, replace_column$])
-        else
-          selectObject: tg
-          do("Set 'type$' text...", replaceTier, iType, "*'label$'")
-        endif
+      @get_label_of_item: new_tier, i_position
+      label$ = get_label_of_item.return$
+      if label$ != ""
+        selectObject: dictionary
+        is_word = Search column: search_column$, label$
+        n_changes += 1
+        selectObject: tg
+        replace_text$ = object$[dictionary, row, replace_column$]
+        replace_text$ = if is_word then  replace_text$ else "*'label$'"
+        @set_item_text: new_tier, i_position, replace_text$
       endif
     endfor
     
-    if save
+    # If any changes, then save the TextGrid
+    if n_changes > 0
       counter += 1
       Save as text file: tg_folder_path$ + "/" + tg$
     endif
+  else
+    
   endif
   removeObject: tg
 endfor
