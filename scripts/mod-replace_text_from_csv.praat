@@ -47,14 +47,12 @@ for iFile to nFiles
   
   if tier
     # Duplacate tier to prevent any error
-    new_tier = tier + 1
-    Duplicate tier: tier, new_tier, replace_column$
-    @get_number_of_items: new_tier
+    @get_number_of_items: tier
     
     # Search and replace labels
     for i_position to get_number_of_items.return
       selectObject: tg
-      @get_label_of_item: new_tier, i_position
+      @get_label_of_item: tier, i_position
       label$ = get_label_of_item.return$
       if label$ != ""
         selectObject: dictionary
@@ -65,8 +63,9 @@ for iFile to nFiles
           n_changes += 1
           replace_text$ = object$[dictionary, row, replace_column$]
           replace_text$ = if is_word then  replace_text$ else "*'label$'" endif
-          @set_item_text: new_tier, i_position, replace_text$
         endif
+        @set_item_text: tier, i_position, replace_text$
+
       endif
     endfor
     
