@@ -75,9 +75,9 @@ missing_tier_list = 0
 
 for iFile to n_fileList
   tg$ = object$[fileList, iFile]
-  tgFullPath$ = tgFolderPath$ + "/" +tg$
+  tg_full_path$ = tgFolderPath$ + "/" +tg$
   
-  tg = Read from file: tgFullPath$
+  tg = Read from file: tg_full_path$
   @index_tiers
   @get_tier_position: tier_name$
   tier = get_tier_position.return
@@ -88,11 +88,11 @@ for iFile to n_fileList
     if is_text
       counter+=1
       @replace_item_texts: tier, 1, 0, search$, replace$, mode$
-      Save as text file: tgFullPath$
+      Save as text file: tg_full_path$
     endif
   else
     missing_tier_list += 1
-    missing_tier_list$ += tgFullPath$ + newline$
+    missing_tier_list$ += tg_full_path$ + newline$
   endif
   removeObject: tg
 endfor
