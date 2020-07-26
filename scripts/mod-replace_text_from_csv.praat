@@ -10,15 +10,15 @@
 #
 
 form Replace text (dictionary)
-  comment Replace dictionary (csv):
-  text Dictionary_path ../temp/dictionary.csv
-  word Search_column search
-  word Replace_column replace
   comment Folder with annotation files:
   text tg_folder_path /home/user/Desktop/corpus
   boolean Recursive_search 0
   comment TextGrid Object:
   word Tier_name phrase
+  comment Dictionary file path (a csv file):
+  text Dictionary_path ../temp/dictionary.csv
+  word Search_column search
+  word Replace_column replace
 endform
 
 # Check table
