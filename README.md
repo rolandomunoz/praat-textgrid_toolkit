@@ -1,4 +1,4 @@
-# Plugin: TextGrid toolkit
+TextGrid toolkit
 
 A tool for processing many annotation files with just a few clicks! Use this plug-in to create, modify, query or clean your annotation files.
 
