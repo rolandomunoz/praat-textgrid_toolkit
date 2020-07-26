@@ -80,6 +80,8 @@ endproc
 #! ~~~ params
 #!  in:
 #!    - .tier: a tier position
+#!    - .from_tier: an interval number from which changes will start
+#!    - .to_tier: an interval number to which changes will end
 #!    - .search$: a string pattern to be search
 #!    - .replace$: a string to replace if a search is matched
 #!    - .matching_mode$: range from "equal to", "contains", "matches (regex)", etc...
@@ -94,14 +96,14 @@ endproc
 #!
 #!  A wrapper procedure for "Replace (interval or point) text" functions.
 #!
-procedure replace_item_texts: .tier, .search$, .replace$, .matching_mode$
+procedure replace_item_texts: .tier, .from_interval, .to_interval, .search$, .replace$, .matching_mode$
   .is_interval_tier = Is interval tier: .tier
   if .is_interval_tier
-    Replace interval texts: .tier, 1, 0, .search$, .replace$, .matching_mode$
+    Replace interval texts: .tier, .from_interval, .to_interval, .search$, .replace$, .matching_mode$
   else
     .nPoints = Get number of points: .tier
     if .nPoints
-      Replace point texts: .tier, 1, 0, .search$, .replace$,  .matching_mode$
+      Replace point texts: .tier, .from_interval, .to_interval, .search$, .replace$,  .matching_mode$
     endif
   endif
 endproc
