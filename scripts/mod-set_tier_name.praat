@@ -8,15 +8,13 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/get_tier_number.proc
-include ../procedures/list_recursive_path.proc
 
 form Set tier name
   comment Folder with annotation files:
   text tgFolder /home/rolando/corpus
   boolean Recursive_search 0
   comment Set tier(s)...
-  sentence Tier_name
+  word Tier_name
   word New_name
 endform
 
@@ -32,14 +30,13 @@ n_fileList= Get number of strings
 
 counter = 0
 for iFile to n_fileList
-  getTierNumber.return[tier_name$]= 0
-
   tg$ = object$[fileList, iFile]
   tgFullPath$ = tgFolder$ + "/" +tg$
 
   tg= Read from file: tgFullPath$
-  @getTierNumber
-  tier= getTierNumber.return[tier_name$]
+  @index_tiers
+  @get_tier_position: tier_name$
+  tier = get_tier_position.return
   
   if tier
     counter+=1
@@ -59,3 +56,6 @@ appendInfoLine: "  New name: ",  new_name$
 appendInfoLine: "Output:"
 appendInfoLine: "  Files (total): ", n_fileList
 appendInfoLine: "  Modified files (total): ", counter
+
+include ../procedures/qtier.proc
+include ../procedures/list_recursive_path.proc
