@@ -3,6 +3,7 @@
 # Written by Rolando Munoz A. (13 Sep 2017)
 # Modify by Rolando Munoz A. on (28 Jun 2018)
 # Modify by Rolando Munoz A. on (30 Jul 2019)
+# Modify by Rolando Munoz A. on (10 Oct 2020)
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -51,6 +52,7 @@ procedure createStringAsFileList: .objectName$, .filePath$, .recursive_search
       Formula: "path", ~replace$(self$["path"], "/","\",0)
     endif
     @_tb2Strings: "path"
+    .return = selected("Strings")
     Rename: .objectName$
     removeObject: .tb_fileList
   else
