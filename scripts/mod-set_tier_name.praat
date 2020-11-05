@@ -14,7 +14,7 @@ form Set tier name
   text tgFolder /home/rolando/corpus
   boolean Recursive_search 0
   comment Set tier(s)...
-  word Tier_name
+  sentence Tier_name
   word New_name
 endform
 
