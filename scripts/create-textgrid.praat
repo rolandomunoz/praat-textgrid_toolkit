@@ -12,37 +12,37 @@ include ../procedures/list_recursive_path.proc
 
 form Sound to TextGrid
   comment Folder with sound files:
-  text sdFolder /home/rolando/corpus
+  text sd_folder /home/rolando/corpus
   boolean Recursive_search 0
   comment Folder with annotation files:
-  text tgFolder .
+  text tg_folder .
   #(= relative path to sound files)
   comment To TextGrid...
   sentence All_tier_names Mary John bell
   sentence Which_of_these_are_point_tiers bell
 endform
 
-sdExt$= ".wav"
-tgFolder$ = if tgFolder$ == "" then "." else tgFolder$ fi
-relative_path = if startsWith(tgFolder$, ".") then  1 else 0 fi
+sound_extension$= ".wav"
+tg_folder$ = if tg_folder$ == "" then "." else tg_folder$ fi
+relative_path = if startsWith(tg_folder$, ".") then  1 else 0 fi
 
 # Find directories
-@createStringAsFileList: "fileList", sdFolder$ + "/*'sdExt$'", recursive_search
+@createStringAsFileList: "fileList", sd_folder$ + "/*'sound_extension$'", recursive_search
 fileList= selected("Strings")
 n_fileList= Get number of strings
-
+pauseScript()
 newFileCounter= 0
 
 # Open each file
 for i to n_fileList
-  sdPath$ = sdFolder$ + "/" + object$[fileList, i]
+  sdPath$ = sd_folder$ + "/" + object$[fileList, i]
   sd$ = replace_regex$(sdPath$, ".*/", "", 1)
-  basename$ =  sd$ - sdExt$
+  basename$ =  sd$ - sound_extension$
 
   if relative_path
-    tgPath$ = sdPath$ - sd$ + "/" + tgFolder$ + "/" + basename$ + ".TextGrid"
+    tgPath$ = sdPath$ - sd$ + "/" + tg_folder$ + "/" + basename$ + ".TextGrid"
   else
-    tgPath$ = tgFolder$ + "/" + basename$ + ".TextGrid"
+    tgPath$ = tg_folder$ + "/" + basename$ + ".TextGrid"
   endif
   
   if not fileReadable(tgPath$)
