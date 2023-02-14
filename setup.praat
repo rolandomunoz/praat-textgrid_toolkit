@@ -1,8 +1,8 @@
 # Copyright 2017-2019 Rolando Munoz Aramburú
 
-if praatVersion < 6204
-  appendInfoLine: "Plug-in name: TextGrid Toolkit"
-  appendInfoLine: "Warning: This plug-in works on Praat 6.2.04 or later. Please, get a more recent version of Praat."
+if praatVersion < 6033
+  appendInfoLine: "Plug-in name: Annotation Assistant"
+  appendInfoLine: "Warning: This plug-in only works on Praat version above 6.0.32. Please, get a more recent version of Praat."
   appendInfoLine: "Praat website: http://www.fon.hum.uva.nl/praat/"
 endif
 
@@ -14,7 +14,7 @@ Add menu command: "Objects", "Goodies", "Open files (TextGridEditor)...", "TextG
 
 ## Modify
 Add menu command: "Objects", "Goodies", "Create", "TextGrid Toolkit", 1, ""
-Add menu command: "Objects", "Goodies", "Sound to TextGrid...", "Create", 2, "scripts/create_textgrid.praat"
+Add menu command: "Objects", "Goodies", "Sound to TextGrid...", "Create", 2, "scripts/create-textgrid.praat"
 Add menu command: "Objects", "Goodies", "Sound to TextGrid (silences)...", "Create", 2, "scripts/create-textgrid_silences.praat"
 
 Add menu command: "Objects", "Goodies", "Modify", "TextGrid Toolkit", 1, ""
