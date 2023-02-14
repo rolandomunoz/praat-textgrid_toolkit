@@ -10,8 +10,6 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 #
-include ../procedures/list_recursive_path.proc
-
 form Open files (TextGridEditor)
     comment Folder with annotation files:
     text tgFolder /home/rolando/corpus
@@ -102,3 +100,5 @@ while pause
 endwhile
 
 removeObject: fileList
+
+include ../procedures/list_recursive_path.proc
